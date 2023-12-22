@@ -5,7 +5,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -57,17 +56,17 @@ public abstract class FluxConnectorBlock extends FluxDeviceBlock implements Simp
         }
     }
 
-    @Override
-    public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
-        super.onNeighborChange(state, level, pos, neighbor);
-        // block entity changed, not always being called, because some mods do not call related methods
-        if (!level.isClientSide() && level.getBlockEntity(pos) instanceof TileFluxConnector c) {
-            Direction dir = FluxUtils.getBlockDirection(pos, neighbor);
-            if (dir != null) {
-                c.updateSideTransfer(dir, level.getBlockEntity(neighbor));
-            }
-        }
-    }
+//    @Override
+//    public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
+//        super.onNeighborChange(state, level, pos, neighbor);
+//        // block entity changed, not always being called, because some mods do not call related methods
+//        if (!level.isClientSide() && level.getBlockEntity(pos) instanceof TileFluxConnector c) {
+//            Direction dir = FluxUtils.getBlockDirection(pos, neighbor);
+//            if (dir != null) {
+//                c.updateSideTransfer(dir, level.getBlockEntity(neighbor));
+//            }
+//        }
+//    }
 
     @Nullable
     @Override

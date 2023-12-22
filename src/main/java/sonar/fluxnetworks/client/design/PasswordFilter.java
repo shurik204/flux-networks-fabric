@@ -2,8 +2,8 @@ package sonar.fluxnetworks.client.design;
 
 import icyllis.modernui.text.InputFilter;
 import icyllis.modernui.text.Spanned;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import sonar.fluxnetworks.common.connection.FluxNetwork;
 import sonar.fluxnetworks.common.util.FluxUtils;
 
@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
  *
  * @see icyllis.modernui.widget.TextView#setFilters(InputFilter[])
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class PasswordFilter extends InputFilter.LengthFilter {
 
     private static final PasswordFilter sInstance = new PasswordFilter();

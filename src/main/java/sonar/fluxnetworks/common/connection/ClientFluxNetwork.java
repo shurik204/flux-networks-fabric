@@ -1,8 +1,8 @@
 package sonar.fluxnetworks.common.connection;
 
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import sonar.fluxnetworks.api.network.AccessLevel;
 import sonar.fluxnetworks.client.ClientCache;
 import sonar.fluxnetworks.common.device.TileFluxDevice;
@@ -10,7 +10,7 @@ import sonar.fluxnetworks.common.device.TileFluxDevice;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class ClientFluxNetwork extends FluxNetwork {
 
     public ClientFluxNetwork(int ignored) {

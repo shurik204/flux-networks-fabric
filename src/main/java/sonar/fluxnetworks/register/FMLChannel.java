@@ -9,8 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
@@ -28,7 +28,7 @@ public class FMLChannel extends Channel {
                 .registerObject(this);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     @SubscribeEvent
     void onCustomPayload(@Nonnull NetworkEvent.ServerCustomPayloadEvent e) {
         FriendlyByteBuf payload = e.getPayload();

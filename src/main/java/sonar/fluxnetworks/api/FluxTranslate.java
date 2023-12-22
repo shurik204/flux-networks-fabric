@@ -4,8 +4,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.*;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -182,13 +182,13 @@ public class FluxTranslate {
     }
 
     @Nonnull
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public String format() {
         return get();
     }
 
     @Nonnull
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public String format(Object... args) {
         return I18n.get(mKey, args);
     }

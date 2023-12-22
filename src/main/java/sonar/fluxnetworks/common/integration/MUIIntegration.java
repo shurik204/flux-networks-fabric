@@ -1,8 +1,9 @@
 package sonar.fluxnetworks.common.integration;
 
+import icyllis.modernui.ModernUI;
 import icyllis.modernui.core.Core;
-import icyllis.modernui.mc.forge.MenuScreenFactory;
-import icyllis.modernui.mc.forge.MuiForgeApi;
+import icyllis.modernui.mc.fabric.MenuScreenFactory;
+import icyllis.modernui.mc.fabric.MuiFabricApi;
 import icyllis.modernui.text.SpannableString;
 import icyllis.modernui.text.Spanned;
 import icyllis.modernui.text.style.ForegroundColorSpan;
@@ -25,9 +26,10 @@ public class MUIIntegration {
         text.setSpan(new ForegroundColorSpan(0xFFCF1515), 0, text.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         if (Core.isOnUiThread()) {
-            Toast.makeText(text, Toast.LENGTH_SHORT).show();
+            // Avoid deprecated method
+            Toast.makeText(ModernUI.getInstance(), text, Toast.LENGTH_SHORT).show();
         } else {
-            MuiForgeApi.postToUiThread(() -> Toast.makeText(text, Toast.LENGTH_SHORT).show());
+            MuiFabricApi.postToUiThread(() -> Toast.makeText(ModernUI.getInstance(), text, Toast.LENGTH_SHORT).show());
         }
     }
 

@@ -10,8 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.client.gui.basic.GuiFluxCore;
 import sonar.fluxnetworks.common.device.TileFluxDevice;
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Render network color on blocks and items.
  */
 //FIXME
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class FluxColorHandler implements BlockColor, ItemColor {
 
     public static final FluxColorHandler INSTANCE = new FluxColorHandler();

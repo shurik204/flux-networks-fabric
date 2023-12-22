@@ -3,8 +3,8 @@ package sonar.fluxnetworks.client;
 import it.unimi.dsi.fastutil.ints.*;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.api.device.IFluxDevice;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Main thread only.
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public final class ClientCache {
 
     private static final int MAX_RECENT_PASSWORD_COUNT = 5;

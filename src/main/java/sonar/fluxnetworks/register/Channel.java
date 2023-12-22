@@ -5,8 +5,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import javax.annotation.Nonnull;
 
@@ -29,7 +29,7 @@ public abstract class Channel {
         return sChannel;
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public abstract void sendToServer(@Nonnull FriendlyByteBuf payload);
 
     public final void sendToPlayer(@Nonnull FriendlyByteBuf payload, @Nonnull Player player) {

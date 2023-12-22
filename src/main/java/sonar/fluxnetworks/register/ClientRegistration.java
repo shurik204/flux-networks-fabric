@@ -2,8 +2,8 @@ package sonar.fluxnetworks.register;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,7 +20,7 @@ import sonar.fluxnetworks.common.integration.MUIIntegration;
 
 import javax.annotation.Nonnull;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = FluxNetworks.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientRegistration {
 

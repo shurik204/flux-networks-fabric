@@ -1,15 +1,17 @@
 package sonar.fluxnetworks;
 
 import com.google.common.collect.Lists;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.IConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import sonar.fluxnetworks.common.util.EnergyUtils;
 
 import javax.annotation.Nonnull;
@@ -29,7 +31,7 @@ public class FluxConfig {
     static {
         ForgeConfigSpec.Builder builder;
 
-        if (FMLEnvironment.dist.isClient()) {
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             builder = new ForgeConfigSpec.Builder();
             CLIENT_CONFIG = new Client(builder);
             CLIENT_SPEC = builder.build();
@@ -48,16 +50,17 @@ public class FluxConfig {
     }
 
     static void init() {
-        if (FMLEnvironment.dist.isClient()) {
-            ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CLIENT_SPEC);
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+            ForgeConfigRegistry.INSTANCE.register(FluxNetworks.MODID, ModConfig.Type.CLIENT, CLIENT_SPEC);
         }
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_SPEC);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SERVER_SPEC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(FluxConfig::reload);
+        ForgeConfigRegistry.INSTANCE.register(FluxNetworks.MODID, ModConfig.Type.COMMON, COMMON_SPEC);
+        ForgeConfigRegistry.INSTANCE.register(FluxNetworks.MODID, ModConfig.Type.SERVER, SERVER_SPEC);
+
+        ModConfigEvents.reloading(FluxNetworks.MODID).register(FluxConfig::reload);
     }
 
-    static void reload(@Nonnull ModConfigEvent event) {
-        final IConfigSpec<?> spec = event.getConfig().getSpec();
+    static void reload(@Nonnull ModConfig config) {
+        final IConfigSpec<?> spec = config.getSpec();
         if (spec == CLIENT_SPEC) {
             CLIENT_CONFIG.load();
             FluxNetworks.LOGGER.debug("Client config loaded");
@@ -78,7 +81,7 @@ public class FluxConfig {
     public static int maximumPerPlayer, superAdminRequiredPermission;
     public static boolean enableGTCEU;
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     private static class Client {
 
         private final ForgeConfigSpec.BooleanValue mEnableButtonSound;
@@ -272,12 +275,4 @@ public class FluxConfig {
             gargantuanTransfer = mGargantuanTransfer.get();
         }
     }
-
-    /*public static void generateFluxChunkConfig() {
-        if(!ForgeChunkManager.getConfig().hasCategory(FluxNetworks.MODID)) {
-            ForgeChunkManager.getConfig().get(FluxNetworks.MODID, "maximumChunksPerTicket", 1000000).setMinValue(0);
-            ForgeChunkManager.getConfig().get(FluxNetworks.MODID, "maximumTicketCount", 1000000).setMinValue(0);
-            ForgeChunkManager.getConfig().save();
-        }
-    }*/
 }
