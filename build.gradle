@@ -1,176 +1,163 @@
 plugins {
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'fabric-loom' version '1.4-SNAPSHOT' // Fabric Loom
+    id "io.github.p03w.machete" version "1.1.4" // Build jar compression
+
+    id "com.modrinth.minotaur" version "2.+" // Modrinth publishing
+    id "com.matthewprenger.cursegradle" version "1.+" // CurseForge publishing
+    id 'maven-publish' // Maven publishing
 }
 
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
+version = "${minecraft_version}-${mod_version}"
+group = project.maven_group
 
-version = "${minecraft_version}-${mod_version}" as String
-group = 'sonar.fluxnetworks'
-archivesBaseName = 'FluxNetworks'
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-minecraft {
-    mappings channel: 'parchment', version: "2023.07.16-1.20.1"
-
-    runs {
-        client {
-            workingDirectory project.file('run')
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods {
-                fluxnetworks {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods {
-                fluxnetworks {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            args '--mod', 'fluxnetworks', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-            mods {
-                fluxnetworks {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
-}
-
-sourceSets {
-    api {
-        java {
-            srcDir 'src/api/java'
-        }
-    }
-    main {
-        java {
-            srcDir 'src/main/java'
-        }
-        resources {
-            include '**/**'
-            exclude '**/*.psd'
-            srcDirs += 'src/generated/resources'
-            exclude '.cache'
-        }
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
-    }
+base {
+    archivesName = project.archives_base_name
 }
 
 repositories {
-    mavenLocal()
+    maven {
+        // Forge Config API port
+        url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/'
+    }
+    maven {
+        // Parchment mappings
+        url 'https://maven.parchmentmc.org'
+    }
     maven {
         // JEI
-        name 'Progwml6 maven'
         url 'https://dvs1.progwml6.com/files/maven/'
     }
     maven {
         // The One Probe
-        name 'tterrag maven'
         url 'https://maven.tterrag.com/'
     }
     maven {
         // Curios
-        name 'TheIllusiveC4 maven'
         url 'https://maven.theillusivec4.top/'
     }
     maven {
         // JEI, Mekanism
-        name 'ModMaven'
         url 'https://modmaven.dev/'
     }
     maven {
         // Modern UI
-        name 'IzzelAliz Maven'
         url 'https://maven.izzel.io/releases/'
     }
     maven {
+        // EMI
+        url "https://maven.terraformersmc.com/"
+    }
+    maven {
+        url "https://maven.shedaniel.me/"
+    }
+    maven {
         name 'CurseMaven'
-        url 'https://www.cursemaven.com/'
+        url 'https://cursemaven.com/'
         content {
             includeGroup "curse.maven"
         }
     }
-    mavenCentral()
 }
 
+
+
 dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    minecraft "com.mojang:minecraft:${minecraft_version}"
 
-    /*compileOnly "mekanism:Mekanism:${mekanism_version}:api"
-    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}")*/
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+    }
 
-    implementation fg.deobf("curse.maven:the-one-probe-245211:4629624") // 1.20.1-10.0.1
-    //implementation fg.deobf("curse.maven:ic2-classic-242942:4441313") // 1.19.2-2.0.5
-    //runtimeOnly fg.deobf("curse.maven:powah-rearchitected-633483:3855683") // [FORGE 1.18.2] v3.0.1-beta
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
-    //runtimeOnly fg.deobf("curse.maven:applied-energistics-2-223794:3554445")
-    compileOnly fg.deobf("curse.maven:gregtechceu-modern-890405:4676506") // GregTechCEu 1.20.1-1.0.10-forge
+    // Fabric API
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    implementation fg.deobf("mezz.jei:jei-${minecraft_version}-core:${jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
-    compileOnly "mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"
+//    modCompileOnly "curse.maven:gregtechceu-modern-890405:4676506" // GregTechCEu 1.20.1-1.0.10-forge
 
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:5.2.0-beta.3+1.20.1:api")
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:5.2.0-beta.3+1.20.1")
+    // EMI
+    modCompileOnly ("dev.emi:emi-fabric:$emi_version:api") { transitive = false }
+    // JEI
+    modCompileOnly ("mezz.jei:jei-$minecraft_version-fabric:$jei_version") { transitive = false }
+    // REI
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:$rei_version"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:$rei_version"
 
-    minecraftLibrary("icyllis.modernui:ModernUI-Core:${modernui_core_version}") {
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
+    // Forge Config API port
+    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:8.0.0"
+
+//    modImplementation "mezz.jei:jei-${minecraft_version}-core:${jei_version}"
+//    runtimeOnly "mezz.jei:jei-${minecraft_version}-forge:${jei_version}"
+//    compileOnly "mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"
+
+    // TODO: Trinkets
+//    compileOnly "top.theillusivec4.curios:curios-fabric:5.2.0-beta.3+1.20.1:api"
+//    runtimeOnly "top.theillusivec4.curios:curios-fabric:5.2.0-beta.3+1.20.1"
+
+    modImplementation(include("icyllis.modernui:ModernUI-Core:${modernui_core_version}") {
         exclude group: "org.apache.logging.log4j", module: "log4j-core"
         exclude group: "org.apache.logging.log4j", module: "log4j-api"
         exclude group: "com.google.code.findbugs", module: "jsr305"
         exclude group: "org.jetbrains", module: "annotations"
         exclude group: "com.ibm.icu", module: "icu4j"
         exclude group: "it.unimi.dsi", module: "fastutil"
-    }
-    minecraftLibrary("icyllis.modernui:ModernUI-Markdown:${modernui_core_version}") {
+    })
+    modImplementation(include("icyllis.modernui:ModernUI-Markdown:${modernui_core_version}") {
         exclude group: "org.apache.logging.log4j", module: "log4j-core"
         exclude group: "org.apache.logging.log4j", module: "log4j-api"
         exclude group: "com.google.code.findbugs", module: "jsr305"
         exclude group: "org.jetbrains", module: "annotations"
         exclude group: "com.ibm.icu", module: "icu4j"
         exclude group: "it.unimi.dsi", module: "fastutil"
-    }
-    implementation fg.deobf("icyllis.modernui:ModernUI-Forge:${minecraft_version}-${modernui_forge_version}")
+    })
+    modImplementation "icyllis.modernui:ModernUI-Fabric:${minecraft_version}-${modernui_fabric_version}"
+
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 processResources {
-    inputs.property 'version', mod_version
+    inputs.property "version", project.version
 
-    filesMatching("META-INF/mods.toml") {
-        expand 'version': mod_version
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
     }
 }
 
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 17
+}
+
+java {
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    // If you remove this line, sources will not be generated.
+    withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "Flux-Networks",
-                "Specification-Vendor"    : "SonarSonic",
-                "Specification-Version"   : "1",
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.version,
-                "Implementation-Vendor"   : "SonarSonic, BloCamLimb",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
+    from("LICENSE") {
+        rename { "${it}_${base.archivesName.get()}"}
+    }
+}
+
+// configure the maven publication
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+        // Notice: This block does NOT have the same function as the block in the top level.
+        // The repositories here will be used for publishing your artifact, not for
+        // retrieving dependencies.
     }
 }
