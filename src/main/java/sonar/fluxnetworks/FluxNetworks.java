@@ -1,15 +1,14 @@
 package sonar.fluxnetworks;
 
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 
-@Mod(FluxNetworks.MODID)
-public class FluxNetworks {
+public class FluxNetworks implements ModInitializer {
 
     public static final String MODID = "fluxnetworks";
     public static final String NAME = "Flux Networks";
@@ -20,9 +19,9 @@ public class FluxNetworks {
     private static boolean sCuriosLoaded;
     private static boolean sModernUILoaded;
 
-    public FluxNetworks() {
-        sCuriosLoaded = ModList.get().isLoaded("curios");
-        sModernUILoaded = ModList.get().isLoaded("modernui");
+    public void onInitialize() {
+        sCuriosLoaded = FabricLoader.getInstance().isModLoaded("trinkets");
+        sModernUILoaded = FabricLoader.getInstance().isModLoaded("modernui");
 
         FluxConfig.init();
     }
