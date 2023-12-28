@@ -5,7 +5,7 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.api.device.IFluxDevice;
 import sonar.fluxnetworks.api.network.*;
@@ -393,7 +393,7 @@ public class FluxNetwork {
                     list.add(subTag);
                 }
             }
-            List<ServerPlayer> players = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers();
+            List<ServerPlayer> players = FluxNetworks.getServer().getPlayerList().getPlayers();
             for (ServerPlayer p : players) {
                 if (getMemberByUUID(p.getUUID()) == null) {
                     CompoundTag subTag = new CompoundTag();

@@ -14,7 +14,6 @@ import net.fabricmc.api.Environment;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import sonar.fluxnetworks.FluxNetworks;
 
 import javax.annotation.Nonnull;
@@ -62,7 +61,7 @@ public class FMLChannel extends Channel {
 
     @Override
     public void sendToAll(@Nonnull FriendlyByteBuf payload) {
-        ServerLifecycleHooks.getCurrentServer().getPlayerList()
+        FluxNetworks.getServer().getPlayerList()
                 .broadcastAll(new ClientboundCustomPayloadPacket(CHANNEL_NAME, payload));
     }
 

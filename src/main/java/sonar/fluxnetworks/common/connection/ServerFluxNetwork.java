@@ -2,7 +2,7 @@ package sonar.fluxnetworks.common.connection;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.api.device.*;
 import sonar.fluxnetworks.api.network.*;
@@ -214,7 +214,7 @@ public class ServerFluxNetwork extends FluxNetwork {
 
     @Override
     public boolean enqueueConnectionAddition(@Nonnull TileFluxDevice device) {
-        if (device.getDeviceType().isController() && getLogicalDevices(CONTROLLER).size() > 0) {
+        if (device.getDeviceType().isController() && !getLogicalDevices(CONTROLLER).isEmpty()) {
             return false;
         }
         if (!mToAdd.contains(device) && !getLogicalDevices(ANY).contains(device)) {
@@ -267,7 +267,7 @@ public class ServerFluxNetwork extends FluxNetwork {
 
         // create new member
         if (type == FluxConstants.MEMBERSHIP_SET_USER && current == null) {
-            final Player target = ServerLifecycleHooks.getCurrentServer()
+            final Player target = FluxNetworks.getServer()
                     .getPlayerList().getPlayer(targetUUID);
             if (target != null) {
                 NetworkMember m = NetworkMember.create(target, AccessLevel.USER);
@@ -315,7 +315,7 @@ public class ServerFluxNetwork extends FluxNetwork {
             if (self && access == AccessLevel.OWNER) {
                 return FluxConstants.RESPONSE_INVALID_USER;
             }
-            Player target = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(targetUUID);
+            Player target = FluxNetworks.getServer().getPlayerList().getPlayer(targetUUID);
             // is online
             if (target != null) {
                 getAllMembers().forEach(f -> {

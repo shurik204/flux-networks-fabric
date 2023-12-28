@@ -10,7 +10,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.thread.BlockableEventLoop;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.api.device.IFluxDevice;
@@ -201,7 +200,7 @@ public class Messages {
     }
 
     static void msg(short index, FriendlyByteBuf payload, Supplier<ServerPlayer> player) {
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        MinecraftServer server = FluxNetworks.getServer();
         switch (index) {
             case C2S_DEVICE_BUFFER -> onDeviceBuffer(payload, player, server);
             case C2S_SUPER_ADMIN -> onSuperAdmin(payload, player, server);

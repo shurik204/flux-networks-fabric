@@ -6,7 +6,6 @@ import net.minecraft.nbt.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import sonar.fluxnetworks.FluxConfig;
 import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxConstants;
@@ -65,7 +64,7 @@ public final class FluxNetworkData extends SavedData {
     @Nonnull
     public static FluxNetworkData getInstance() {
         if (data == null) {
-            ServerLevel level = ServerLifecycleHooks.getCurrentServer().overworld();
+            ServerLevel level = FluxNetworks.getServer().overworld();
             data = level.getDataStorage()
                     .computeIfAbsent(FluxNetworkData::new, FluxNetworkData::new, NETWORK_DATA);
             FluxNetworks.LOGGER.debug("FluxNetworkData has been successfully loaded");
@@ -225,7 +224,7 @@ public final class FluxNetworkData extends SavedData {
         if (!members.isEmpty()) {
             members.forEach(s -> list.add(s.writeNBT(new CompoundNBT())));
         }
-        List<ServerPlayerEntity> players = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers();
+        List<ServerPlayerEntity> players = FluxNetworks.getServer().getPlayerList().getPlayers();
         if (!players.isEmpty()) {
             players.stream().filter(p -> members.stream().noneMatch(s -> s.getPlayerUUID().equals(p.getUniqueID())))
                     .forEach(s -> list.add(NetworkMember.create(s, getPermission(s)).writeNBT(new CompoundNBT())));
