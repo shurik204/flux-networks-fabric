@@ -29,33 +29,33 @@ import java.util.Set;
 public class FluxBlockLoot extends BlockLootSubProvider {
 
     // there are not many registry entries, so use an array
-    private final Set<Block> knownBlocks = new ObjectArraySet<>();
+//    private final Set<Block> knownBlocks = new ObjectArraySet<>();
 
     public FluxBlockLoot() {
         super(Collections.emptySet(), FeatureFlags.REGISTRY.allFlags());
     }
 
-    @Nonnull
-    @Override
-    public final Iterable<Block> getKnownBlocks() {
-        return knownBlocks;
-    }
+//    @Nonnull
+//    @Override
+//    public final Iterable<Block> getKnownBlocks() {
+//        return knownBlocks;
+//    }
 
     @Override
-    protected final void add(@Nonnull Block blockIn, @Nonnull LootTable.Builder table) {
+    public final void add(@Nonnull Block blockIn, @Nonnull LootTable.Builder table) {
         super.add(blockIn, table);
-        knownBlocks.add(blockIn);
+//        knownBlocks.add(blockIn);
     }
 
     @Override
-    protected void generate() {
-        dropSelf(RegistryBlocks.FLUX_BLOCK.get());
-        add(RegistryBlocks.FLUX_PLUG.get(), this::createDevice);
-        add(RegistryBlocks.FLUX_POINT.get(), this::createDevice);
-        add(RegistryBlocks.FLUX_CONTROLLER.get(), this::createDevice);
-        add(RegistryBlocks.BASIC_FLUX_STORAGE.get(), this::createDevice);
-        add(RegistryBlocks.HERCULEAN_FLUX_STORAGE.get(), this::createDevice);
-        add(RegistryBlocks.GARGANTUAN_FLUX_STORAGE.get(), this::createDevice);
+    public void generate() {
+        dropSelf(RegistryBlocks.FLUX_BLOCK);
+        add(RegistryBlocks.FLUX_PLUG, this::createDevice);
+        add(RegistryBlocks.FLUX_POINT, this::createDevice);
+        add(RegistryBlocks.FLUX_CONTROLLER, this::createDevice);
+        add(RegistryBlocks.BASIC_FLUX_STORAGE, this::createDevice);
+        add(RegistryBlocks.HERCULEAN_FLUX_STORAGE, this::createDevice);
+        add(RegistryBlocks.GARGANTUAN_FLUX_STORAGE, this::createDevice);
     }
 
     /**

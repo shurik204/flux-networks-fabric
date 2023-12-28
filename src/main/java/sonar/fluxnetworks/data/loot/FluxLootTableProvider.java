@@ -16,10 +16,4 @@ public class FluxLootTableProvider extends LootTableProvider {
         super(packOutput, Collections.emptySet(), List.of(
                 new SubProviderEntry(FluxBlockLoot::new, LootContextParamSets.BLOCK)));
     }
-
-    @Override
-    protected void validate(@Nonnull Map<ResourceLocation, LootTable> map,
-                            @Nonnull ValidationContext validationContext) {
-        // NO-OP
-    }
 }

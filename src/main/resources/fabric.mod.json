@@ -14,12 +14,15 @@
 		"sources": "https://github.com/shurik204/flux-networks-fabric",
 		"issues": "https://github.com/shurik204/flux-networks-fabric/issues"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/fluxnetworks/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
 			"sonar.fluxnetworks.FluxNetworks"
+		],
+		"client": [
+			"sonar.fluxnetworks.client.FluxNetworksClient"
 		]
 	},
 	"mixins": [

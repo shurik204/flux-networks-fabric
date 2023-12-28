@@ -23,8 +23,13 @@ public class FluxMenu extends AbstractContainerMenu {
     public OnResultListener mOnResultListener;
 
     // both side
+    public FluxMenu(int containerId, Inventory inventory) {
+        // TODO: Likely doesn't work as intended
+        this(containerId, inventory, new ItemFluxConfigurator.Provider(inventory.player.getMainHandItem()));
+    }
+
     public FluxMenu(int containerId, @Nonnull Inventory inventory, @Nonnull IFluxProvider provider) {
-        super(RegistryMenuTypes.FLUX_MENU.get(), containerId);
+        super(RegistryMenuTypes.FLUX_MENU, containerId);
         mProvider = provider;
         provider.onPlayerOpened(inventory.player);
     }
@@ -35,9 +40,9 @@ public class FluxMenu extends AbstractContainerMenu {
         if (mProvider instanceof TileFluxDevice device) {
             return device.isChunkLoaded() && device.getLevel() == player.level();
         } else if (mProvider instanceof ItemFluxConfigurator.Provider) {
-            return player.getMainHandItem().is(RegistryItems.FLUX_CONFIGURATOR.get());
+            return player.getMainHandItem().is(RegistryItems.FLUX_CONFIGURATOR);
         }
-        return player.getMainHandItem().is(RegistryItems.ADMIN_CONFIGURATOR.get());
+        return player.getMainHandItem().is(RegistryItems.ADMIN_CONFIGURATOR);
     }
 
     @Override

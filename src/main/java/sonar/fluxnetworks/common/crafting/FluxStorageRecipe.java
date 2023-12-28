@@ -19,7 +19,7 @@ public class FluxStorageRecipe extends ShapedRecipe {
     }
 
     public FluxStorageRecipe(@Nonnull ShapedRecipe recipe) {
-        super(recipe.getId(), recipe.getGroup(), recipe.category(), recipe.getRecipeWidth(), recipe.getRecipeHeight(),
+        super(recipe.getId(), recipe.getGroup(), recipe.category(), recipe.getWidth(), recipe.getHeight(),
                 recipe.getIngredients(), recipe.getResultItem(RegistryAccess.EMPTY));
     }
 

@@ -1,40 +1,35 @@
 package sonar.fluxnetworks.register;
 
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.RegisterEvent;
-import net.minecraftforge.registries.RegistryObject;
 import sonar.fluxnetworks.FluxNetworks;
 
 public class RegistryCreativeModeTabs {
     public static final ResourceLocation CREATIVE_MODE_TAB_KEY = FluxNetworks.location("tab");
 
-    public static final RegistryObject<CreativeModeTab> CREATIVE_MODE_TAB = RegistryObject.create(
-            CREATIVE_MODE_TAB_KEY, Registries.CREATIVE_MODE_TAB, FluxNetworks.MODID
-    );
+    public static final CreativeModeTab CREATIVE_MODE_TAB = register(CREATIVE_MODE_TAB_KEY, CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0).title(Component.translatable("itemGroup." + FluxNetworks.MODID))
+            .icon(() -> new ItemStack(RegistryItems.FLUX_CORE))
+            .displayItems((parameters, output) -> {
+                output.accept(RegistryItems.FLUX_BLOCK);
+                output.accept(RegistryItems.FLUX_PLUG);
+                output.accept(RegistryItems.FLUX_POINT);
+                output.accept(RegistryItems.FLUX_CONTROLLER);
+                output.accept(RegistryItems.BASIC_FLUX_STORAGE);
+                output.accept(RegistryItems.HERCULEAN_FLUX_STORAGE);
+                output.accept(RegistryItems.GARGANTUAN_FLUX_STORAGE);
+                output.accept(RegistryItems.FLUX_DUST);
+                output.accept(RegistryItems.FLUX_CORE);
+                output.accept(RegistryItems.FLUX_CONFIGURATOR);
+                output.accept(RegistryItems.ADMIN_CONFIGURATOR);
+            }).build());
 
-    static void register(RegisterEvent.RegisterHelper<CreativeModeTab> helper) {
-        helper.register(CREATIVE_MODE_TAB_KEY, CreativeModeTab.builder()
-                .title(Component.translatable("itemGroup." + FluxNetworks.MODID))
-                .icon(() -> new ItemStack(RegistryItems.FLUX_CORE.get()))
-                .displayItems((parameters, output) -> {
-                    output.accept(RegistryItems.FLUX_BLOCK.get());
-                    output.accept(RegistryItems.FLUX_PLUG.get());
-                    output.accept(RegistryItems.FLUX_POINT.get());
-                    output.accept(RegistryItems.FLUX_CONTROLLER.get());
-                    output.accept(RegistryItems.BASIC_FLUX_STORAGE.get());
-                    output.accept(RegistryItems.HERCULEAN_FLUX_STORAGE.get());
-                    output.accept(RegistryItems.GARGANTUAN_FLUX_STORAGE.get());
-                    output.accept(RegistryItems.FLUX_DUST.get());
-                    output.accept(RegistryItems.FLUX_CORE.get());
-                    output.accept(RegistryItems.FLUX_CONFIGURATOR.get());
-                    output.accept(RegistryItems.ADMIN_CONFIGURATOR.get());
-                })
-                .build());
+    private static CreativeModeTab register(ResourceLocation key, CreativeModeTab creativeModeTab) {
+        return Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, key, creativeModeTab);
     }
 
-    private RegistryCreativeModeTabs() {}
+    public static void init() {}
 }

@@ -1,13 +1,13 @@
 package sonar.fluxnetworks.common.util;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 import sonar.fluxnetworks.FluxConfig;
@@ -55,7 +55,7 @@ public final class EnergyUtils {
             ITEM_ENERGY_CONNECTORS.add(IC2EnergyHandler.INSTANCE);
         }*/
 
-        if (FluxConfig.enableGTCEU && ModList.get().isLoaded("gtceu")) {
+        if (FluxConfig.enableGTCEU && FabricLoader.getInstance().isModLoaded("gtceu")) {
             BLOCK_ENERGY_CONNECTORS.add(GTCEUEnergyConnector.INSTANCE);
             ITEM_ENERGY_CONNECTORS.add(GTCEUEnergyConnector.INSTANCE);
         }
@@ -68,10 +68,7 @@ public final class EnergyUtils {
                 continue;
             }
             try {
-                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s));
-                if (block != null) {
-                    BLOCK_BLACKLIST.add(block);
-                }
+                BuiltInRegistries.BLOCK.getOptional(new ResourceLocation(s)).ifPresent(BLOCK_BLACKLIST::add);
             } catch (Exception e) {
                 FluxNetworks.LOGGER.warn(MARKER, "Block blacklist error: {} has incorrect formatting", s, e);
             }
@@ -82,10 +79,7 @@ public final class EnergyUtils {
                 continue;
             }
             try {
-                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(s));
-                if (item != null) {
-                    ITEM_BLACKLIST.add(item);
-                }
+                BuiltInRegistries.ITEM.getOptional(new ResourceLocation(s)).ifPresent(ITEM_BLACKLIST::add);
             } catch (Exception e) {
                 FluxNetworks.LOGGER.warn(MARKER, "Item blacklist error: {} has incorrect formatting", s, e);
             }
