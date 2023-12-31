@@ -86,7 +86,7 @@ public class GuiTabStatistics extends GuiTabCore {
     protected void drawBackgroundLayer(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
         super.drawBackgroundLayer(gr, mouseX, mouseY, deltaTicks);
         if (getNetwork().isValid() && mChart != null) {
-            mChart.drawChart(getMinecraft(), gr, deltaTicks);
+            mChart.drawChart(Minecraft.getInstance(), gr, deltaTicks);
         }
     }
 

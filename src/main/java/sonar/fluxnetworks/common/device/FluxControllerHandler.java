@@ -5,14 +5,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import sonar.fluxnetworks.FluxConfig;
 import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.api.energy.IItemEnergyConnector;
 import sonar.fluxnetworks.api.network.NetworkMember;
 import sonar.fluxnetworks.api.network.WirelessType;
-import sonar.fluxnetworks.common.capability.FluxPlayer;
+import sonar.fluxnetworks.common.access.FluxPlayer;
 import sonar.fluxnetworks.common.connection.TransferHandler;
 import sonar.fluxnetworks.common.integration.CuriosIntegration;
 import sonar.fluxnetworks.common.util.EnergyUtils;
@@ -109,16 +108,16 @@ public class FluxControllerHandler extends TransferHandler {
     private void updatePlayers() {
         mPlayers.clear();
 
-        PlayerList playerList = ServerLifecycleHooks.getCurrentServer().getPlayerList();
+        PlayerList playerList = FluxNetworks.getServer().getPlayerList();
         for (NetworkMember p : mDevice.getNetwork().getAllMembers()) {
             ServerPlayer player = playerList.getPlayer(p.getPlayerUUID());
             if (player == null || !player.isAlive()) {
                 continue;
             }
-            FluxPlayer fluxPlayer = FluxUtils.get(player, FluxPlayer.FLUX_PLAYER);
-            if (fluxPlayer == null) {
-                continue;
-            }
+            FluxPlayer fluxPlayer = FluxUtils.getFluxPlayer(player);
+//            if (fluxPlayer == null) {
+//                continue;
+//            }
             if (fluxPlayer.getWirelessNetwork() != mDevice.getNetworkID()) {
                 continue;
             }

@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.network.NetworkHooks;
 import sonar.fluxnetworks.FluxConfig;
 import sonar.fluxnetworks.FluxNetworks;
@@ -118,18 +117,18 @@ public abstract class TileFluxDevice extends BlockEntity implements IFluxDevice 
             mNetwork.enqueueConnectionRemoval(this, false);
             if (isForcedLoading()) {
                 //FluxChunkManager.removeChunkLoader(this);
-                long chunkPos = ChunkPos.asLong(worldPosition);
-                ForgeChunkManager.forceChunk((ServerLevel) level, FluxNetworks.MODID, worldPosition,
-                        ChunkPos.getX(chunkPos), ChunkPos.getZ(chunkPos), false, true);
+                // TODO: Fix chunk loading
+//                long chunkPos = ChunkPos.asLong(worldPosition);
+//                ForgeChunkManager.forceChunk((ServerLevel) level, FluxNetworks.MODID, worldPosition,
+//                        ChunkPos.getX(chunkPos), ChunkPos.getZ(chunkPos), false, true);
             }
             getTransferHandler().onNetworkChanged();
             mFlags &= ~FLAG_FIRST_TICKED;
         }
     }
 
-    @Override
+    // TODO: Mixin into LevelChunk.clearAllBlockEntities() and call this method on all TileFluxDevice blocks
     public void onChunkUnloaded() {
-        super.onChunkUnloaded();
         if (!level.isClientSide && (mFlags & FLAG_FIRST_TICKED) != 0) {
             mNetwork.enqueueConnectionRemoval(this, true);
             getTransferHandler().onNetworkChanged();
@@ -326,9 +325,10 @@ public abstract class TileFluxDevice extends BlockEntity implements IFluxDevice 
             if (tag.contains(FluxConstants.FORCED_LOADING)) {
                 boolean load = tag.getBoolean(FluxConstants.FORCED_LOADING) &&
                         FluxConfig.enableChunkLoading && !getDeviceType().isStorage();
-                long chunkPos = ChunkPos.asLong(worldPosition);
-                ForgeChunkManager.forceChunk((ServerLevel) level, FluxNetworks.MODID, worldPosition,
-                        ChunkPos.getX(chunkPos), ChunkPos.getZ(chunkPos), load, true);
+                // TODO: Fix chunk loading
+//                long chunkPos = ChunkPos.asLong(worldPosition);
+//                ForgeChunkManager.forceChunk((ServerLevel) level, FluxNetworks.MODID, worldPosition,
+//                        ChunkPos.getX(chunkPos), ChunkPos.getZ(chunkPos), load, true);
                 setForcedLoading(load);
             }
             // notify listeners

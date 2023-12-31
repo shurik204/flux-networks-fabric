@@ -10,7 +10,7 @@ import sonar.fluxnetworks.FluxConfig;
 import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.api.network.SecurityLevel;
-import sonar.fluxnetworks.common.capability.FluxPlayer;
+import sonar.fluxnetworks.common.access.FluxPlayer;
 import sonar.fluxnetworks.register.Channel;
 import sonar.fluxnetworks.register.Messages;
 

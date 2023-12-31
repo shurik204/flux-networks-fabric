@@ -1,6 +1,8 @@
 package sonar.fluxnetworks.register;
 
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.fabricmc.api.EnvType;
@@ -27,6 +29,8 @@ public class ClientRegistration {
         registerEntityRenderers();
         registerItemColorHandlers();
         registerBlockColorHandlers();
+        ClientPlayNetworking.registerGlobalReceiver(Channel.CHANNEL_NAME, (client, handler, buf, responseSender) ->
+                ClientMessages.msg(buf.readShort(), buf, () -> Minecraft.getInstance().player));
         // onPlayerLoggedOut is now handled by MinecraftClientMixin
     }
 

@@ -26,7 +26,7 @@ public class TileFluxPoint extends TileFluxConnector implements IFluxPoint {
     private LazyOptional<?> mEnergyCap;
 
     public TileFluxPoint(@Nonnull BlockPos pos, @Nonnull BlockState state) {
-        super(RegistryBlockEntityTypes.FLUX_POINT.get(), pos, state);
+        super(RegistryBlockEntityTypes.FLUX_POINT, pos, state);
     }
 
     @Nonnull

@@ -15,7 +15,7 @@ import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.api.device.IFluxDevice;
 import sonar.fluxnetworks.api.network.SecurityLevel;
 import sonar.fluxnetworks.api.network.WirelessType;
-import sonar.fluxnetworks.common.capability.FluxPlayer;
+import sonar.fluxnetworks.common.access.FluxPlayer;
 import sonar.fluxnetworks.common.connection.FluxMenu;
 import sonar.fluxnetworks.common.connection.FluxNetwork;
 import sonar.fluxnetworks.common.connection.FluxNetworkData;
@@ -127,13 +127,13 @@ public class Messages {
      */
     public static void syncCapability(Player player) {
         var buf = Channel.buffer(S2C_CAPABILITY);
-        FluxPlayer fluxPlayer = FluxUtils.get(player, FluxPlayer.FLUX_PLAYER);
-        if (fluxPlayer != null) {
+        FluxPlayer fluxPlayer = FluxUtils.getFluxPlayer(player);
+//        if (fluxPlayer != null) {
             buf.writeBoolean(FluxPlayer.isPlayerSuperAdmin(player));
             buf.writeInt(fluxPlayer.getWirelessMode());
             buf.writeVarInt(fluxPlayer.getWirelessNetwork());
             sChannel.sendToPlayer(buf, player);
-        }
+//        }
     }
 
     /**
@@ -272,8 +272,8 @@ public class Messages {
             if (p == null) {
                 return;
             }
-            final FluxPlayer fp = FluxUtils.get(p, FluxPlayer.FLUX_PLAYER);
-            if (fp != null) {
+            final FluxPlayer fp = FluxUtils.getFluxPlayer(p);
+//            if (fp != null) {
                 if (fp.isSuperAdmin() || FluxPlayer.canActivateSuperAdmin(p)) {
                     if (fp.setSuperAdmin(enable)) {
                         syncCapability(p);
@@ -281,9 +281,9 @@ public class Messages {
                 } else {
                     response(token, 0, FluxConstants.RESPONSE_REJECT, p);
                 }
-            } else {
-                response(token, 0, FluxConstants.RESPONSE_INVALID_USER, p);
-            }
+//            } else {
+//                response(token, 0, FluxConstants.RESPONSE_INVALID_USER, p);
+//            }
         });
     }
 
@@ -660,8 +660,8 @@ public class Messages {
             if (p == null) {
                 return;
             }
-            final FluxPlayer fp = FluxUtils.get(p, FluxPlayer.FLUX_PLAYER);
-            if (fp != null) {
+            final FluxPlayer fp = FluxUtils.getFluxPlayer(p);
+//            if (fp != null) {
                 final FluxNetwork network = FluxNetworkData.getNetwork(wirelessNetwork);
                 // allow set to invalid
                 boolean reject = network.isValid() &&
@@ -678,9 +678,9 @@ public class Messages {
                     fp.setWirelessNetwork(wirelessNetwork);
                     syncCapability(p);
                 }
-            } else {
-                response(token, 0, FluxConstants.RESPONSE_INVALID_USER, p);
-            }
+//            } else {
+//                response(token, 0, FluxConstants.RESPONSE_INVALID_USER, p);
+//            }
         });
     }
 

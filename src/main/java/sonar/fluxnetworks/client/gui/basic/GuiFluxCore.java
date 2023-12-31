@@ -2,6 +2,7 @@ package sonar.fluxnetworks.client.gui.basic;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.network.chat.Component;
@@ -50,7 +51,7 @@ public abstract class GuiFluxCore extends GuiPopupHost {
             if (FluxNetworks.isModernUILoaded()) {
                 MUIIntegration.showToastError(t);
             } else {
-                getMinecraft().getToasts().addToast(SystemToast.multiline(getMinecraft(),
+                Minecraft.getInstance().getToasts().addToast(SystemToast.multiline(Minecraft.getInstance(),
                         SystemToast.SystemToastIds.TUTORIAL_HINT,
                         Component.literal(FluxNetworks.NAME),
                         t.getComponent()));

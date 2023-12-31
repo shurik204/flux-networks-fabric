@@ -62,7 +62,7 @@ public class FluxPointBlock extends FluxConnectorBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                   BlockEntityType<T> type) {
-        if (type == RegistryBlockEntityTypes.FLUX_POINT.get()) {
+        if (type == RegistryBlockEntityTypes.FLUX_POINT) {
             return TileFluxDevice.getTicker(level);
         }
         return null;

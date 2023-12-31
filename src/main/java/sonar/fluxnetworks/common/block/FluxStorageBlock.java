@@ -59,7 +59,7 @@ public abstract class FluxStorageBlock extends FluxDeviceBlock {
         @Override
         public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                       BlockEntityType<T> type) {
-            if (type == RegistryBlockEntityTypes.BASIC_FLUX_STORAGE.get()) {
+            if (type == RegistryBlockEntityTypes.BASIC_FLUX_STORAGE) {
                 return TileFluxDevice.getTicker(level);
             }
             return null;
@@ -87,7 +87,7 @@ public abstract class FluxStorageBlock extends FluxDeviceBlock {
         @Override
         public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                       BlockEntityType<T> type) {
-            if (type == RegistryBlockEntityTypes.HERCULEAN_FLUX_STORAGE.get()) {
+            if (type == RegistryBlockEntityTypes.HERCULEAN_FLUX_STORAGE) {
                 return TileFluxDevice.getTicker(level);
             }
             return null;
@@ -115,7 +115,7 @@ public abstract class FluxStorageBlock extends FluxDeviceBlock {
         @Override
         public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                       BlockEntityType<T> type) {
-            if (type == RegistryBlockEntityTypes.GARGANTUAN_FLUX_STORAGE.get()) {
+            if (type == RegistryBlockEntityTypes.GARGANTUAN_FLUX_STORAGE) {
                 return TileFluxDevice.getTicker(level);
             }
             return null;

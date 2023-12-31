@@ -26,7 +26,7 @@ public class TileFluxPlug extends TileFluxConnector implements IFluxPlug {
     private final LazyOptional<?>[] mEnergyCaps = new LazyOptional[FluxUtils.DIRECTIONS.length];
 
     public TileFluxPlug(@Nonnull BlockPos pos, @Nonnull BlockState state) {
-        super(RegistryBlockEntityTypes.FLUX_PLUG.get(), pos, state);
+        super(RegistryBlockEntityTypes.FLUX_PLUG, pos, state);
     }
 
     @Nonnull

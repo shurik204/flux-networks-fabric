@@ -3,7 +3,8 @@
   "package": "sonar.fluxnetworks.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "MinecraftServerMixin"
+    "MinecraftServerMixin",
+    "FluxPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

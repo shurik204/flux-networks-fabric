@@ -8,12 +8,14 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import sonar.fluxnetworks.api.FluxTranslate;
 import sonar.fluxnetworks.api.device.FluxDeviceType;
 import sonar.fluxnetworks.api.device.IFluxDevice;
 import sonar.fluxnetworks.api.energy.EnergyType;
+import sonar.fluxnetworks.common.access.FluxPlayer;
 import sonar.fluxnetworks.common.connection.FluxNetwork;
 
 import javax.annotation.Nonnull;
@@ -327,6 +329,11 @@ public class FluxUtils {
     public static <T> T getCap(@Nonnull PlayerEntity player, Capability<T> capability) {
         return cap(player.getCapability(capability));
     }*/
+
+    // FluxPlayer capability replacement
+    public static FluxPlayer getFluxPlayer(@Nonnull Player player) {
+        return (FluxPlayer) player;
+    }
 
     @Nullable
     @SuppressWarnings("ConstantConditions")

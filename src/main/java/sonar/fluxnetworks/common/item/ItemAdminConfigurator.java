@@ -12,7 +12,7 @@ import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.network.NetworkHooks;
 import sonar.fluxnetworks.api.device.IFluxProvider;
 import sonar.fluxnetworks.client.ClientCache;
-import sonar.fluxnetworks.common.capability.FluxPlayer;
+import sonar.fluxnetworks.common.access.FluxPlayer;
 import sonar.fluxnetworks.common.connection.FluxMenu;
 import sonar.fluxnetworks.common.device.TileFluxStorage;
 

@@ -15,7 +15,7 @@ public class TileFluxController extends TileFluxDevice implements IFluxControlle
     private final FluxControllerHandler mHandler = new FluxControllerHandler(this);
 
     public TileFluxController(@Nonnull BlockPos pos, @Nonnull BlockState state) {
-        super(RegistryBlockEntityTypes.FLUX_CONTROLLER.get(), pos, state);
+        super(RegistryBlockEntityTypes.FLUX_CONTROLLER, pos, state);
     }
 
     @Nonnull

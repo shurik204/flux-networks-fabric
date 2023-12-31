@@ -1,5 +1,6 @@
 package sonar.fluxnetworks.register;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import sonar.fluxnetworks.common.util.EnergyUtils;
 
 public class Registration {
@@ -14,6 +15,9 @@ public class Registration {
         EventHandler.init();
         // Moved from FMLCommonSetupEvent
         EnergyUtils.register();
+        ServerPlayNetworking.registerGlobalReceiver(Channel.CHANNEL_NAME, (server, player, handler, buf, responseSender) ->
+                Messages.msg(buf.readShort(), buf, () -> player));
+        Channel.init();
     }
 
 //    TODO: FIX CHUNK LOADING
