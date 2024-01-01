@@ -1,5 +1,6 @@
 package sonar.fluxnetworks.common.device;
 
+import me.shurik.simplechunkmanager.api.SimpleChunkManager;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -11,7 +12,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -116,11 +116,7 @@ public abstract class TileFluxDevice extends BlockEntity implements IFluxDevice 
         if (!level.isClientSide && (mFlags & FLAG_FIRST_TICKED) != 0) {
             mNetwork.enqueueConnectionRemoval(this, false);
             if (isForcedLoading()) {
-                //FluxChunkManager.removeChunkLoader(this);
-                // TODO: Fix chunk loading
-//                long chunkPos = ChunkPos.asLong(worldPosition);
-//                ForgeChunkManager.forceChunk((ServerLevel) level, FluxNetworks.MODID, worldPosition,
-//                        ChunkPos.getX(chunkPos), ChunkPos.getZ(chunkPos), false, true);
+                SimpleChunkManager.getInstance().removeChunkLoader(FluxNetworks.location("flux_device"), (ServerLevel) level, worldPosition);
             }
             getTransferHandler().onNetworkChanged();
             mFlags &= ~FLAG_FIRST_TICKED;
@@ -325,10 +321,7 @@ public abstract class TileFluxDevice extends BlockEntity implements IFluxDevice 
             if (tag.contains(FluxConstants.FORCED_LOADING)) {
                 boolean load = tag.getBoolean(FluxConstants.FORCED_LOADING) &&
                         FluxConfig.enableChunkLoading && !getDeviceType().isStorage();
-                // TODO: Fix chunk loading
-//                long chunkPos = ChunkPos.asLong(worldPosition);
-//                ForgeChunkManager.forceChunk((ServerLevel) level, FluxNetworks.MODID, worldPosition,
-//                        ChunkPos.getX(chunkPos), ChunkPos.getZ(chunkPos), load, true);
+                SimpleChunkManager.getInstance().addChunkLoader(FluxNetworks.location("flux_device"), (ServerLevel) level, worldPosition);
                 setForcedLoading(load);
             }
             // notify listeners

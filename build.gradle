@@ -57,6 +57,7 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    mavenLocal()
 }
 
 
@@ -115,6 +116,8 @@ dependencies {
     modImplementation "icyllis.modernui:ModernUI-Fabric:${minecraft_version}-${modernui_fabric_version}"
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    modImplementation(include("me.shurik:simple-chunk-manager:0.1.0"))
 }
 
 processResources {

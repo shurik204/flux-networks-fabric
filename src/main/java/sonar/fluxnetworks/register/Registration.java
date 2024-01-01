@@ -1,6 +1,11 @@
 package sonar.fluxnetworks.register;
 
+import me.shurik.simplechunkmanager.api.BlockChunkLoader;
+import me.shurik.simplechunkmanager.api.SimpleChunkManager;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import sonar.fluxnetworks.FluxConfig;
+import sonar.fluxnetworks.FluxNetworks;
+import sonar.fluxnetworks.common.device.TileFluxDevice;
 import sonar.fluxnetworks.common.util.EnergyUtils;
 
 public class Registration {
@@ -18,41 +23,26 @@ public class Registration {
         ServerPlayNetworking.registerGlobalReceiver(Channel.CHANNEL_NAME, (server, player, handler, buf, responseSender) ->
                 Messages.msg(buf.readShort(), buf, () -> player));
         Channel.init();
-    }
 
-//    TODO: FIX CHUNK LOADING
-//    Plan A: port ForgeChunkManager to Fabric
-//    Plan B: reinvent the wheel
-//    public static void setup(FMLCommonSetupEvent event) {
-//        Channel.sChannel = new FMLChannel();
-//        event.enqueueWork(() -> ForgeChunkManager.setForcedChunkLoadingCallback(FluxNetworks.MODID, (level, helper) -> {
-//            if (!FluxConfig.enableChunkLoading) {
-//                helper.getBlockTickets().keySet().forEach(helper::removeAllTickets);
-//                FluxNetworks.LOGGER.info("Removed all chunk loaders because chunk loading is disabled");
-//            } else {
-//                int chunks = 0;
-//                for (var entry : helper.getBlockTickets().entrySet()) {
-//                    // this also loads the chunk
-//                    if (level.getBlockEntity(entry.getKey()) instanceof TileFluxDevice e) {
-//                        e.setForcedLoading(true);
-//                        var pair = entry.getValue();
-//                        int count = 0;
-//                        count += pair.getFirst().size();
-//                        count += pair.getSecond().size();
-//                        if (count != 1) {
-//                            FluxNetworks.LOGGER.warn("{} in {} didn't load just one chunk {}",
-//                                    entry.getValue(), level.dimension().location(), pair);
-//                        }
-//                        chunks += count;
-//                    } else {
-//                        helper.removeAllTickets(entry.getKey());
-//                    }
-//                }
-//                FluxNetworks.LOGGER.info("Load {} chunks by {} flux devices in {}",
-//                        chunks, helper.getBlockTickets().size(), level.dimension().location());
-//            }
-//        }));
-//    }
+        SimpleChunkManager.VALIDATION.register((level, manager) -> {
+            if (!FluxConfig.enableChunkLoading) {
+                manager.getChunkLoaders(FluxNetworks.MODID, level).forEach(chunkLoader -> manager.getAllChunkLoaders(level).remove(chunkLoader));
+                FluxNetworks.LOGGER.info("Removed all chunk loaders because chunk loading is disabled");
+            } else {
+                int chunks = 0;
+                for (BlockChunkLoader chunkLoader : manager.getChunkLoaders(FluxNetworks.MODID, level)) {
+                    if (level.getBlockEntity(chunkLoader.getPos()) instanceof TileFluxDevice e) {
+                        e.setForcedLoading(true);
+                        chunks++;
+                    } else {
+                        manager.getAllChunkLoaders(level).remove(chunkLoader);
+                    }
+                }
+                FluxNetworks.LOGGER.info("Loaded {} chunks by {} flux devices in {}",
+                        chunks, manager.getChunkLoaders(FluxNetworks.MODID, level).size(), level.dimension().location());
+            }
+        });
+    }
 
 //        TODO: replace with carryon:block_blacklist tag
 //        if (ModList.get().isLoaded("carryon")) {
