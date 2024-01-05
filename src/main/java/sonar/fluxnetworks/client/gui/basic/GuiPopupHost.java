@@ -1,5 +1,6 @@
 package sonar.fluxnetworks.client.gui.basic;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -26,7 +27,7 @@ public abstract class GuiPopupHost extends GuiFocusable {
         }
         closePopup();
         mCurrentPopup = popup;
-        mCurrentPopup.init(getMinecraft(), width, height);
+        mCurrentPopup.init(Minecraft.getInstance(), width, height);
         onPopupOpen(mCurrentPopup);
     }
 
@@ -201,7 +202,7 @@ public abstract class GuiPopupHost extends GuiFocusable {
     public void init() {
         super.init();
         if (mCurrentPopup != null) {
-            mCurrentPopup.init(getMinecraft(), width, height);
+            mCurrentPopup.init(Minecraft.getInstance(), width, height);
         }
     }
 

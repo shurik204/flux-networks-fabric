@@ -156,10 +156,10 @@ public abstract class GuiFluxCore extends GuiPopupHost {
      */
     protected void renderTransfer(GuiGraphics gr, IFluxDevice device, int x, int y) {
         RenderSystem.enableBlend();
-        gr.drawString(font, FluxUtils.getTransferInfo(device, EnergyType.FE), x, y, 0xffffff);
+        gr.drawString(font, FluxUtils.getTransferInfo(device, EnergyType.E), x, y, 0xffffff);
 
         String text = device.getDeviceType().isStorage() ? FluxTranslate.ENERGY.get() : FluxTranslate.BUFFER.get();
-        text += ": " + ChatFormatting.BLUE + EnergyType.FE.getStorage(device.getTransferBuffer());
+        text += ": " + ChatFormatting.BLUE + EnergyType.E.getStorage(device.getTransferBuffer());
         gr.drawString(font, text, x, y + 10, 0xffffff);
 
         renderItemStack(gr, device.getDisplayStack(), x - 20, y + 1);

@@ -1,5 +1,7 @@
 package sonar.fluxnetworks.common.item;
 
+import io.github.fabricators_of_create.porting_lib.item.UseFirstBehaviorItem;
+import io.github.fabricators_of_create.porting_lib.util.NetworkHooks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -14,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
 import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.api.FluxTranslate;
 import sonar.fluxnetworks.api.device.IFluxProvider;
@@ -29,7 +30,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemFluxConfigurator extends Item {
+public class ItemFluxConfigurator extends Item implements UseFirstBehaviorItem {
 
     public ItemFluxConfigurator(Properties props) {
         super(props);
@@ -91,7 +92,7 @@ public class ItemFluxConfigurator extends Item {
 
             if (tag.contains(FluxConstants.LIMIT)) {
                 tooltip.add(Component.literal(ChatFormatting.BLUE + FluxTranslate.TRANSFER_LIMIT.get() + ": " +
-                        ChatFormatting.RESET + EnergyType.FE.getStorage(tag.getLong(FluxConstants.LIMIT))));
+                        ChatFormatting.RESET + EnergyType.E.getStorage(tag.getLong(FluxConstants.LIMIT))));
             }
 
             if (tag.contains(FluxConstants.PRIORITY)) {

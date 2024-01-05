@@ -3,6 +3,8 @@ package sonar.fluxnetworks.client.gui.basic;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -53,6 +55,11 @@ public abstract class GuiFocusable extends AbstractContainerScreen<FluxMenu> {
         }
     }
 
+    // TODO: check if this works as intended
+    public boolean isActiveAndMatches(@Nonnull KeyMapping keyMapping, @Nonnull InputConstants.Key key, int scanCode) {
+        return keyMapping.isDown() && keyMapping.matches(key.getValue(), scanCode);
+    }
+
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         InputConstants.Key key = InputConstants.getKey(keyCode, scanCode);
@@ -61,10 +68,10 @@ public abstract class GuiFocusable extends AbstractContainerScreen<FluxMenu> {
                 setFocused(null);
                 return true;
             }
-            if (getMinecraft().options.keyInventory.isActiveAndMatches(key)) {
-                return false; // allows the typing of "E"
+            if (isActiveAndMatches(Minecraft.getInstance().options.keyInventory, key, scanCode)) {
+                return false;
             }
-        } else if (keyCode == GLFW.GLFW_KEY_ESCAPE || getMinecraft().options.keyInventory.isActiveAndMatches(key)) {
+        } else if (keyCode == GLFW.GLFW_KEY_ESCAPE || isActiveAndMatches(Minecraft.getInstance().options.keyInventory, key, scanCode)) {
             if (this instanceof GuiPopupCore core) {
                 core.mHost.closePopup();
                 return true;

@@ -33,7 +33,7 @@ public abstract class FluxStorageBlock extends FluxDeviceBlock {
                                 TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(FluxTranslate.FLUX_STORAGE_TOOLTIP.getComponent());
-        tooltip.add(FluxTranslate.FLUX_STORAGE_TOOLTIP_2.makeComponent(EnergyType.FE.getStorage(getEnergyCapacity())));
+        tooltip.add(FluxTranslate.FLUX_STORAGE_TOOLTIP_2.makeComponent(EnergyType.E.getStorage(getEnergyCapacity())));
     }
 
     public abstract long getEnergyCapacity();

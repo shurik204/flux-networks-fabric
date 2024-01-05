@@ -1,5 +1,9 @@
 package sonar.fluxnetworks.common.item;
 
+import io.github.fabricators_of_create.porting_lib.item.UseFirstBehaviorItem;
+import io.github.fabricators_of_create.porting_lib.util.NetworkHooks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Inventory;
@@ -8,8 +12,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.util.thread.EffectiveSide;
-import net.minecraftforge.network.NetworkHooks;
 import sonar.fluxnetworks.api.device.IFluxProvider;
 import sonar.fluxnetworks.client.ClientCache;
 import sonar.fluxnetworks.common.access.FluxPlayer;
@@ -19,7 +21,7 @@ import sonar.fluxnetworks.common.device.TileFluxStorage;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ItemAdminConfigurator extends Item {
+public class ItemAdminConfigurator extends Item implements UseFirstBehaviorItem {
 
     public ItemAdminConfigurator(Properties props) {
         super(props);
@@ -59,7 +61,8 @@ public class ItemAdminConfigurator extends Item {
 
         @Override
         public int getNetworkID() {
-            assert EffectiveSide.get().isClient();
+            // assert EffectiveSide.get().isClient();
+            assert FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT; // TODO: this check almost certainly doesn't work
             return ClientCache.sAdminViewingNetwork;
         }
 

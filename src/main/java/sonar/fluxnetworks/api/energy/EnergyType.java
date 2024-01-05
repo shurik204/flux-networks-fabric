@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import java.text.NumberFormat;
 
 public enum EnergyType {
-    FE("Forge Energy", "FE", "FE/t"),
+    E("Energy", "E", "E/t"),
     EU("Energy Unit", "EU", "EU/t");
 
     private final String name;

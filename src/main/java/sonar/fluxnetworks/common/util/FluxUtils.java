@@ -1,5 +1,8 @@
 package sonar.fluxnetworks.common.util;
 
+import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
+import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
@@ -9,14 +12,15 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import sonar.fluxnetworks.api.FluxTranslate;
 import sonar.fluxnetworks.api.device.FluxDeviceType;
 import sonar.fluxnetworks.api.device.IFluxDevice;
 import sonar.fluxnetworks.api.energy.EnergyType;
 import sonar.fluxnetworks.common.access.FluxPlayer;
 import sonar.fluxnetworks.common.connection.FluxNetwork;
+import team.reborn.energy.api.EnergyStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -336,15 +340,30 @@ public class FluxUtils {
     }
 
     @Nullable
-    @SuppressWarnings("ConstantConditions")
-    public static <T> T get(@Nonnull ICapabilityProvider provider, @Nonnull Capability<T> cap) {
-        return provider.getCapability(cap).orElse(null);
+    public static EnergyStorage getBlockEnergy(@Nonnull BlockEntity target, @Nullable Direction side) {
+        return getBlockApi(target, EnergyStorage.SIDED, side);
     }
 
     @Nullable
-    @SuppressWarnings("ConstantConditions")
-    public static <T> T get(@Nonnull ICapabilityProvider provider, @Nonnull Capability<T> cap, Direction side) {
-        return provider.getCapability(cap, side).orElse(null);
+    @SuppressWarnings("UnstableApiUsage")
+    public static EnergyStorage getItemEnergy(@Nonnull ItemStack stack) {
+        return getItemEnergy(stack, ContainerItemContext.withConstant(stack));
+    }
+
+    @Nullable
+    @SuppressWarnings("UnstableApiUsage")
+    public static EnergyStorage getItemEnergy(@Nonnull ItemStack stack, @Nonnull ContainerItemContext itemCtx) {
+        return getItemApi(stack, EnergyStorage.ITEM, itemCtx);
+    }
+
+    // TODO: add caching
+    @Nullable
+    public static <A, C> A getBlockApi(@Nonnull BlockEntity target, @Nonnull BlockApiLookup<A, C> lookup, @Nullable C context) {
+        return lookup.find(target.getLevel(), target.getBlockPos(), target.getBlockState(), target, context);
+    }
+
+    public static <A, C> A getItemApi(@Nonnull ItemStack stack, @Nonnull ItemApiLookup<A, C> lookup, @Nullable C context) {
+        return lookup.find(stack, context);
     }
 
     public static float getRed(int color) {
@@ -358,6 +377,7 @@ public class FluxUtils {
     public static float getBlue(int color) {
         return (float) (color & 255) / 255.0F;
     }
+
 
     /*public static CompoundNBT copyConfiguration(TileFluxDevice flux, CompoundNBT config) {
         for (FluxConfigurationType type : FluxConfigurationType.VALUES) {

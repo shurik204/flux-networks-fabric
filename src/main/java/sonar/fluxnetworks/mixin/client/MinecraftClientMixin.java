@@ -1,4 +1,4 @@
-package sonar.fluxnetworks.mixin;
+package sonar.fluxnetworks.mixin.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;

@@ -10,6 +10,7 @@ import sonar.fluxnetworks.common.device.TileFluxController;
 import sonar.fluxnetworks.common.device.TileFluxPlug;
 import sonar.fluxnetworks.common.device.TileFluxPoint;
 import sonar.fluxnetworks.common.device.TileFluxStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 import java.util.Set;
 
@@ -23,9 +24,10 @@ public class RegistryBlockEntityTypes {
 
     private static <T extends BlockEntity> BlockEntityType<T> register(ResourceLocation key, BlockEntityType<T> blockEntityType) {
         return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, key, blockEntityType);
-        // TODO: register block entity energy storage
-        // EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energy, ENERGY_STORAGE_BLOCK_ENTITY);
     }
 
-    public static void init() {}
+    public static void init() {
+        EnergyStorage.SIDED.registerForBlockEntity(TileFluxPoint::getEnergyStorage, FLUX_POINT);
+        EnergyStorage.SIDED.registerForBlockEntity(TileFluxPlug::getEnergyStorage, FLUX_PLUG);
+    }
 }

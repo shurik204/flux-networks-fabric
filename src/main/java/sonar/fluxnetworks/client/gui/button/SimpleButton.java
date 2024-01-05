@@ -1,5 +1,6 @@
 package sonar.fluxnetworks.client.gui.button;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import sonar.fluxnetworks.client.gui.basic.GuiButtonCore;
 import sonar.fluxnetworks.client.gui.basic.GuiFocusable;
@@ -39,11 +40,11 @@ public class SimpleButton extends GuiButtonCore {
             color = 0xFF000000 | (int) (r * 0.375) << 16 | (int) (g * 0.375) << 8 | (int) (b * 0.375);
         }
 
-        screen.getMinecraft().gameRenderer.lightTexture().turnOnLightLayer();
+        Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
         // outer stroke
         drawOuterFrame(gr, x, y, width, height, color);
 
-        gr.drawCenteredString(screen.getMinecraft().font, mText, x + width / 2, y + (height - 8) / 2, color);
+        gr.drawCenteredString(Minecraft.getInstance().font, mText, x + width / 2, y + (height - 8) / 2, color);
     }
 
     public void setColor(int color) {

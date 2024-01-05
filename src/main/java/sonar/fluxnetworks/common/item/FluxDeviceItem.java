@@ -51,7 +51,7 @@ public class FluxDeviceItem extends BlockItem {
 
             if (tag.contains(FluxConstants.LIMIT)) {
                 tooltip.add(Component.literal(ChatFormatting.BLUE + FluxTranslate.TRANSFER_LIMIT.get() + ": " +
-                        ChatFormatting.RESET + EnergyType.FE.getStorage(tag.getLong(FluxConstants.LIMIT))));
+                        ChatFormatting.RESET + EnergyType.E.getStorage(tag.getLong(FluxConstants.LIMIT))));
             }
 
             if (tag.contains(FluxConstants.PRIORITY)) {
@@ -61,7 +61,7 @@ public class FluxDeviceItem extends BlockItem {
 
             if (tag.contains(FluxConstants.BUFFER)) {
                 tooltip.add(Component.literal(ChatFormatting.BLUE + FluxTranslate.INTERNAL_BUFFER.get() + ": " +
-                        ChatFormatting.RESET + EnergyType.FE.getStorage(tag.getLong(FluxConstants.BUFFER))));
+                        ChatFormatting.RESET + EnergyType.E.getStorage(tag.getLong(FluxConstants.BUFFER))));
             } else if (tag.contains(FluxConstants.ENERGY)) {
                 long energy = tag.getLong(FluxConstants.ENERGY);
                 Block block = getBlock();
@@ -71,7 +71,7 @@ public class FluxDeviceItem extends BlockItem {
                 else
                     percentage = 0;
                 tooltip.add(Component.literal(ChatFormatting.BLUE + FluxTranslate.ENERGY_STORED.get() + ": " +
-                        ChatFormatting.RESET + EnergyType.FE.getStorage(energy) + String.format(" (%.1f%%)",
+                        ChatFormatting.RESET + EnergyType.E.getStorage(energy) + String.format(" (%.1f%%)",
                         percentage * 100)));
             }
 

@@ -1,0 +1,54 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_nbt",
+              "ops": [
+                {
+                  "op": "replace",
+                  "source": "networkID",
+                  "target": "FluxData.networkID"
+                },
+                {
+                  "op": "replace",
+                  "source": "customName",
+                  "target": "FluxData.customName"
+                },
+                {
+                  "op": "replace",
+                  "source": "priority",
+                  "target": "FluxData.priority"
+                },
+                {
+                  "op": "replace",
+                  "source": "limit",
+                  "target": "FluxData.limit"
+                },
+                {
+                  "op": "replace",
+                  "source": "energy",
+                  "target": "FluxData.energy"
+                }
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "fluxnetworks:herculean_flux_storage"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "fluxnetworks:blocks/herculean_flux_storage"
+}

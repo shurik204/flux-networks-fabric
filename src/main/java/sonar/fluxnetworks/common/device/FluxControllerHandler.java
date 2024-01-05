@@ -13,7 +13,7 @@ import sonar.fluxnetworks.api.network.NetworkMember;
 import sonar.fluxnetworks.api.network.WirelessType;
 import sonar.fluxnetworks.common.access.FluxPlayer;
 import sonar.fluxnetworks.common.connection.TransferHandler;
-import sonar.fluxnetworks.common.integration.CuriosIntegration;
+import sonar.fluxnetworks.common.integration.TrinketsIntegration;
 import sonar.fluxnetworks.common.util.EnergyUtils;
 import sonar.fluxnetworks.common.util.FluxUtils;
 
@@ -163,8 +163,8 @@ public class FluxControllerHandler extends TransferHandler {
             if (WirelessType.ARMOR.isActivated(wirelessMode)) {
                 handlers.add(new WirelessHandler(inventory.armor, NOT_EMPTY));
             }
-            if (WirelessType.CURIOS.isActivated(wirelessMode) && FluxNetworks.isCuriosLoaded()) {
-                handlers.add(new WirelessHandler(CuriosIntegration.getFlatStacks(player), NOT_EMPTY));
+            if (WirelessType.TRINKETS.isActivated(wirelessMode) && FluxNetworks.isTrinketsLoaded()) {
+                handlers.add(new WirelessHandler(TrinketsIntegration.getFlatStacks(player), NOT_EMPTY));
             }
             if (!handlers.isEmpty()) {
                 mPlayers.put(player, handlers);
@@ -182,8 +182,8 @@ public class FluxControllerHandler extends TransferHandler {
                 if (!validator.test(stack) || (connector = EnergyUtils.getConnector(stack)) == null) {
                     continue;
                 }
-                if (connector.canSendTo(stack)) {
-                    remaining -= connector.sendTo(remaining, stack, simulate);
+                if (connector.supportsInsertion(stack)) {
+                    remaining -= connector.insert(remaining, stack, simulate);
                     if (remaining <= 0) {
                         return 0;
                     }

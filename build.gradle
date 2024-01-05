@@ -15,49 +15,32 @@ base {
 }
 
 repositories {
-    maven {
-        // Forge Config API port
-        url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/'
-    }
-    maven {
-        // Parchment mappings
-        url 'https://maven.parchmentmc.org'
-    }
-    maven {
-        // JEI
-        url 'https://dvs1.progwml6.com/files/maven/'
-    }
-    maven {
-        // The One Probe
-        url 'https://maven.tterrag.com/'
-    }
-    maven {
-        // Curios
-        url 'https://maven.theillusivec4.top/'
-    }
-    maven {
-        // JEI, Mekanism
-        url 'https://modmaven.dev/'
-    }
-    maven {
-        // Modern UI
-        url 'https://maven.izzel.io/releases/'
-    }
-    maven {
-        // EMI
-        url "https://maven.terraformersmc.com/"
-    }
-    maven {
-        url "https://maven.shedaniel.me/"
-    }
-    maven {
-        name 'CurseMaven'
+    maven { url 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/' } // Forge Config API port
+    maven { url 'https://maven.parchmentmc.org' } // Parchment mappings
+    maven { url 'https://dvs1.progwml6.com/files/maven/' } // JEI
+    maven { url 'https://maven.tterrag.com/' } // The One Probe
+    maven { url 'https://maven.theillusivec4.top/' } // Curios
+    maven { url 'https://modmaven.dev/' } // JEI, Mekanism
+    maven { url 'https://maven.izzel.io/releases/' } // Modern UI
+    maven { url 'https://maven.terraformersmc.com/' } // EMI, Trinkets
+    maven { url 'https://maven.shedaniel.me/' } // REI
+    maven { url 'https://maven.shurik.me/releases' } // simple-chunk-manager
+    maven { // GregTechCEu
         url 'https://cursemaven.com/'
-        content {
-            includeGroup "curse.maven"
-        }
+        content { includeGroup 'curse.maven' }
     }
-    mavenLocal()
+    maven { url 'https://mvn.devos.one/snapshots/' } // Porting Lib
+    maven { url 'https://jitpack.io' } // Mixin Extras (Porting Lib)
+    maven { url 'https://maven.ladysnake.org/releases' } // Cardinal Components (Trinkets)
+//    maven { url 'https://maven.firstdarkdev.xyz/snapshots' } // LDLib (GregTechCEu)
+//    maven { // Architectury (LDLib)
+//        url 'https://maven.architectury.dev'
+//        content { includeGroup "dev.architectury" }
+//    }
+//    maven { // KubeJS and Rhino (LDLib)
+//        url 'https://maven.saps.dev/releases'
+//        content { includeGroup "dev.latvian.mods" }
+//    }
 }
 
 
@@ -97,27 +80,48 @@ dependencies {
 //    compileOnly "top.theillusivec4.curios:curios-fabric:5.2.0-beta.3+1.20.1:api"
 //    runtimeOnly "top.theillusivec4.curios:curios-fabric:5.2.0-beta.3+1.20.1"
 
-    modImplementation(include("icyllis.modernui:ModernUI-Core:${modernui_core_version}") {
+    modImplementation("icyllis.modernui:ModernUI-Core:${modernui_core_version}") {
         exclude group: "org.apache.logging.log4j", module: "log4j-core"
         exclude group: "org.apache.logging.log4j", module: "log4j-api"
         exclude group: "com.google.code.findbugs", module: "jsr305"
         exclude group: "org.jetbrains", module: "annotations"
         exclude group: "com.ibm.icu", module: "icu4j"
         exclude group: "it.unimi.dsi", module: "fastutil"
-    })
-    modImplementation(include("icyllis.modernui:ModernUI-Markdown:${modernui_core_version}") {
+    }
+    modImplementation("icyllis.modernui:ModernUI-Markdown:${modernui_core_version}") {
         exclude group: "org.apache.logging.log4j", module: "log4j-core"
         exclude group: "org.apache.logging.log4j", module: "log4j-api"
         exclude group: "com.google.code.findbugs", module: "jsr305"
         exclude group: "org.jetbrains", module: "annotations"
         exclude group: "com.ibm.icu", module: "icu4j"
         exclude group: "it.unimi.dsi", module: "fastutil"
-    })
+    }
     modImplementation "icyllis.modernui:ModernUI-Fabric:${minecraft_version}-${modernui_fabric_version}"
 
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    modImplementation(include("teamreborn:energy:${tr_energy_version}") {
+        exclude group: "net.fabricmc"
+        exclude group: "net.fabricmc.fabric-api"
+    })
 
-    modImplementation(include("me.shurik:simple-chunk-manager:0.1.0"))
+    modImplementation(include("me.shurik:simple-chunk-manager:0.1.1"))
+
+    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:base:${porting_lib_version}"))
+    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:models:${porting_lib_version}"))
+
+//    modImplementation "curse.maven:gregtechceu-modern-890405:${gtceu_file_id}"
+
+
+    modImplementation("dev.emi:trinkets:${trinkets_version}")
+//    modCompileOnly("dev.emi:trinkets:${trinkets_version}")
+    // for Trinkets
+    modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}")
+    modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}")
+
+    // for GregTechCEu
+    // modCompileOnly("com.lowdragmc.ldlib:ldlib-common-1.20.1:${ldlib_version}")
+    // modCompileOnly("com.lowdragmc.ldlib:ldlib-fabric-1.20.1:${ldlib_version}")
+
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 processResources {

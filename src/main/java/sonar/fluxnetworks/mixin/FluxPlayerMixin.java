@@ -8,6 +8,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import sonar.fluxnetworks.common.access.FluxPlayer;
+
+/**
+ * Reimplementation of FluxPlayer capability.
+ */
 @Unique
 @Mixin(Player.class)
 public class FluxPlayerMixin implements FluxPlayer {

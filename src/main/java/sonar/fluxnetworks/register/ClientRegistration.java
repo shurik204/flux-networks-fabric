@@ -58,6 +58,8 @@ public class ClientRegistration {
                 RegistryBlocks.FLUX_CONTROLLER,
                 RegistryBlocks.FLUX_POINT,
                 RegistryBlocks.FLUX_PLUG);
+        ColorHandlerRegistry.registerItemColors(FluxColorHandler::colorMultiplierForConfigurator,
+                RegistryItems.FLUX_CONFIGURATOR);
     }
 
     public static void registerBlockColorHandlers() {

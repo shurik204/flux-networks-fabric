@@ -1,6 +1,7 @@
 package sonar.fluxnetworks.client.gui.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import sonar.fluxnetworks.client.gui.basic.GuiButtonCore;
 import sonar.fluxnetworks.client.gui.basic.GuiFocusable;
@@ -50,7 +51,7 @@ public class EditButton extends GuiButtonCore {
         GuiFocusable.blitF(gr, x, y, width, height, mChecked ? mCheckU0 : mUncheckU0, 256, 64, 64);
 
         if (hovered && mClickable) {
-            gr.drawCenteredString(screen.getMinecraft().font, mChecked ? mCheckText : mUncheckText,
+            gr.drawCenteredString(Minecraft.getInstance().font, mChecked ? mCheckText : mUncheckText,
                     x + width / 2, y - 9, 0xFFFFFFFF);
         }
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);

@@ -62,16 +62,16 @@ public class GuiTabStatistics extends GuiTabCore {
                     ChatFormatting.RESET + stats.fluxControllerCount, 82, 36, color);
             gr.drawString(font,
                     ChatFormatting.GRAY + FluxTranslate.INPUT.get() + ChatFormatting.GRAY + ": " + ChatFormatting.RESET +
-                            EnergyType.FE.getUsage(stats.energyInput), 12, 48, color);
+                            EnergyType.E.getUsage(stats.energyInput), 12, 48, color);
             gr.drawString(font,
                     ChatFormatting.GRAY + FluxTranslate.OUTPUT.get() + ChatFormatting.GRAY + ": " + ChatFormatting.RESET +
-                            EnergyType.FE.getUsage(stats.energyOutput), 12, 60, color);
+                            EnergyType.E.getUsage(stats.energyOutput), 12, 60, color);
             gr.drawString(font,
                     ChatFormatting.GRAY + FluxTranslate.BUFFER.get() + ChatFormatting.GRAY + ": " + ChatFormatting.RESET +
-                            EnergyType.FE.getStorage(stats.totalBuffer), 12, 72, color);
+                            EnergyType.E.getStorage(stats.totalBuffer), 12, 72, color);
             gr.drawString(font,
                     ChatFormatting.GRAY + FluxTranslate.ENERGY.get() + ChatFormatting.GRAY + ": " + ChatFormatting.RESET +
-                            EnergyType.FE.getStorage(stats.totalEnergy), 12, 84, color);
+                            EnergyType.E.getStorage(stats.totalEnergy), 12, 84, color);
             gr.pose().scale(0.75f, 0.75f, 1);
             gr.drawCenteredString(font,
                     FluxTranslate.AVERAGE_TICK.get() + ": " + stats.averageTickMicro + " \u00b5s/t",
@@ -95,7 +95,7 @@ public class GuiTabStatistics extends GuiTabCore {
         super.init();
         if (getNetwork().isValid()) {
             mChart = new LineChart(width / 2 - 48, height / 2 + 20, 50, NetworkStatistics.CHANGE_COUNT, "s",
-                    EnergyType.FE.getStorageSuffix());
+                    EnergyType.E.getStorageSuffix());
             mChart.updateData(getNetwork().getStatistics().energyChange);
         }
     }
@@ -223,24 +223,25 @@ public class GuiTabStatistics extends GuiTabCore {
 
             gr.pose().pushPose();
             gr.pose().scale(0.75f, 0.75f, 1);
+            // TODO: is casting to int correct?
             gr.drawString(mc.font, suffixUnitY,
-                    (x - 15) / 0.75f - mc.font.width(suffixUnitY),
-                    (y - 7.5f) / 0.75f, 0xffffff, true);
+                    (int) ((x - 15) / 0.75f - mc.font.width(suffixUnitY)),
+                    (int) ((y - 7.5f) / 0.75f), 0xffffff, true);
             gr.drawString(mc.font, displayUnitY,
-                    (x - 15) / 0.75f - mc.font.width(displayUnitY),
-                    (y - 2) / 0.75f, 0xffffff, true);
+                    (int) ((x - 15) / 0.75f - mc.font.width(displayUnitY)),
+                    (int) ((y - 2) / 0.75f), 0xffffff, true);
             gr.drawString(mc.font, displayUnitX,
-                    ((x + 118) / 0.75f - mc.font.width(displayUnitX)),
-                    (y + height + 1.5f) / 0.75f, 0xffffff, true);
+                    (int) ((x + 118) / 0.75f - mc.font.width(displayUnitX)),
+                    (int) ((y + height + 1.5f) / 0.75f), 0xffffff, true);
             for (int i = 0; i < data.size(); i++) {
                 String d = FluxUtils.compact(data.getLong(i));
                 gr.drawString(mc.font, d,
-                        ((x + 20 * i) / 0.75f) - (mc.font.width(d) * 0.5f),
-                        (currentHeight.getFloat(i) - 8) / 0.75f, 0xffffff, true);
+                        (int) (((x + 20 * i) / 0.75f) - (mc.font.width(d) * 0.5f)),
+                        (int) ((currentHeight.getFloat(i) - 8) / 0.75f), 0xffffff, true);
                 String c = String.valueOf((5 - i) * 5);
                 gr.drawString(mc.font, c,
-                        ((x + 20 * i) / 0.75f) - (mc.font.width(c) * 0.5f),
-                        (y + height + 2) / 0.75f, 0xffffff, true);
+                        (int) (((x + 20 * i) / 0.75f) - (mc.font.width(c) * 0.5f)),
+                        (int) ((y + height + 2) / 0.75f), 0xffffff, true);
             }
             gr.pose().popPose();
 

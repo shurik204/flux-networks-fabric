@@ -37,8 +37,8 @@ public class SideTransfer {
         if (mTarget == null || mTarget.isRemoved()) {
             return 0;
         }
-        if (mAdapter.canSendTo(mTarget, mSide)) {
-            long op = mAdapter.sendTo(amount, mTarget, mSide, simulate);
+        if (mAdapter.supportsInsertion(mTarget, mSide)) {
+            long op = mAdapter.insert(amount, mTarget, mSide, simulate);
             if (!simulate) {
                 mChange -= op;
             }

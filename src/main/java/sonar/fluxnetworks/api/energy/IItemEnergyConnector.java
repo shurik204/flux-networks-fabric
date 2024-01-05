@@ -6,13 +6,13 @@ import javax.annotation.Nonnull;
 
 public interface IItemEnergyConnector {
 
-    boolean hasCapability(@Nonnull ItemStack stack);
+    boolean hasEnergyStorage(@Nonnull ItemStack stack);
 
-    boolean canSendTo(@Nonnull ItemStack stack);
+    boolean supportsInsertion(@Nonnull ItemStack stack);
 
-    boolean canReceiveFrom(@Nonnull ItemStack stack);
+    boolean supportsExtraction(@Nonnull ItemStack stack);
 
-    long sendTo(long amount, @Nonnull ItemStack stack, boolean simulate);
+    long insert(long amount, @Nonnull ItemStack stack, boolean simulate);
 
-    long receiveFrom(long amount, @Nonnull ItemStack stack, boolean simulate);
+    long extract(long amount, @Nonnull ItemStack stack, boolean simulate);
 }

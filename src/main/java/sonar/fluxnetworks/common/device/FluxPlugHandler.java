@@ -1,5 +1,6 @@
 package sonar.fluxnetworks.common.device;
 
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.Direction;
 
 import javax.annotation.Nonnull;
@@ -31,17 +32,20 @@ public class FluxPlugHandler extends FluxConnectorHandler {
         return op;
     }
 
-    public long receive(long maxReceive, @Nonnull Direction side, boolean simulate, long bufferLimiter) {
+    @SuppressWarnings("UnstableApiUsage")
+    public long insert(long maxReceive, @Nonnull Direction side, TransactionContext tCtx, long bufferLimiter) {
         long op = Math.min(Math.min(getLimit(), bufferLimiter - mBuffer) - mBuffer, maxReceive);
         if (op > 0) {
-            if (!simulate) {
-                mBuffer += op;
-                mReceived += op;
-                SideTransfer transfer = mTransfers[side.get3DDataValue()];
-                if (transfer != null) {
-                    transfer.receive(op);
+            tCtx.addCloseCallback((transaction, result) -> {
+                if (result == TransactionContext.Result.COMMITTED) {
+                    mBuffer += op;
+                    mReceived += op;
+                    SideTransfer transfer = mTransfers[side.get3DDataValue()];
+                    if (transfer != null) {
+                        transfer.receive(op);
+                    }
                 }
-            }
+            });
             return op;
         }
         return 0;

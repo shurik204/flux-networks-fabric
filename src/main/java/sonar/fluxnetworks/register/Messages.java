@@ -414,7 +414,7 @@ public class Messages {
                     return;
                 }
                 final FluxNetwork network = FluxNetworkData.getNetwork(networkID);
-                if (e.getDeviceType().isController() && network.getLogicalDevices(FluxNetwork.CONTROLLER).size() > 0) {
+                if (e.getDeviceType().isController() && !network.getLogicalDevices(FluxNetwork.CONTROLLER).isEmpty()) {
                     response(token, FluxConstants.REQUEST_TILE_NETWORK, FluxConstants.RESPONSE_HAS_CONTROLLER, p);
                     return;
                 }

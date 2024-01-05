@@ -1,5 +1,9 @@
 package sonar.fluxnetworks.common.device;
 
+import io.github.fabricators_of_create.porting_lib.block.ChunkUnloadListeningBlockEntity;
+import io.github.fabricators_of_create.porting_lib.block.CustomDataPacketHandlingBlockEntity;
+import io.github.fabricators_of_create.porting_lib.block.CustomUpdateTagHandlingBlockEntity;
+import io.github.fabricators_of_create.porting_lib.util.NetworkHooks;
 import me.shurik.simplechunkmanager.api.SimpleChunkManager;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -18,7 +22,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.network.NetworkHooks;
 import sonar.fluxnetworks.FluxConfig;
 import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxConstants;
@@ -41,7 +44,8 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings("ConstantConditions")
 @ParametersAreNonnullByDefault
-public abstract class TileFluxDevice extends BlockEntity implements IFluxDevice {
+public abstract class TileFluxDevice extends BlockEntity implements IFluxDevice,
+        /* Porting lib Forge events */ CustomDataPacketHandlingBlockEntity, CustomUpdateTagHandlingBlockEntity, ChunkUnloadListeningBlockEntity {
 
     private static final BlockEntityTicker<? extends TileFluxDevice> sTickerServer =
             (level, pos, state, tile) -> tile.onServerTick();
@@ -123,7 +127,6 @@ public abstract class TileFluxDevice extends BlockEntity implements IFluxDevice 
         }
     }
 
-    // TODO: Mixin into LevelChunk.clearAllBlockEntities() and call this method on all TileFluxDevice blocks
     public void onChunkUnloaded() {
         if (!level.isClientSide && (mFlags & FLAG_FIRST_TICKED) != 0) {
             mNetwork.enqueueConnectionRemoval(this, true);
@@ -249,7 +252,6 @@ public abstract class TileFluxDevice extends BlockEntity implements IFluxDevice 
         return tag;
     }
 
-    @Override
     public final void handleUpdateTag(CompoundTag tag) {
         // Client side, read NBT when updating chunk data
         super.load(tag);

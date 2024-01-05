@@ -67,7 +67,7 @@ public class GuiTabWireless extends GuiTabCore {
             mButtons.add(new InventoryButton(this, leftPos + 24, topPos + 28, 52, 16,
                     WirelessType.ARMOR, 0, 80));
             mButtons.add(new InventoryButton(this, leftPos + 100, topPos + 28, 52, 16,
-                    WirelessType.CURIOS, 0, 80));
+                    WirelessType.TRINKETS, 0, 80));
             mButtons.add(new InventoryButton(this, leftPos + 32, topPos + 52, 112, 40,
                     WirelessType.INVENTORY, 0, 0));
             mButtons.add(new InventoryButton(this, leftPos + 32, topPos + 100, 112, 16,

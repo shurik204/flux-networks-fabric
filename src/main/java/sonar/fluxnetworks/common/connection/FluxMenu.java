@@ -17,17 +17,12 @@ import javax.annotation.Nonnull;
  */
 public class FluxMenu extends AbstractContainerMenu {
 
-    // both side
+    // both sides
     public final IFluxProvider mProvider;
     // client only
     public OnResultListener mOnResultListener;
 
-    // both side
-    public FluxMenu(int containerId, Inventory inventory) {
-        // TODO: Likely doesn't work as intended
-        this(containerId, inventory, new ItemFluxConfigurator.Provider(inventory.player.getMainHandItem()));
-    }
-
+    // both sides
     public FluxMenu(int containerId, @Nonnull Inventory inventory, @Nonnull IFluxProvider provider) {
         super(RegistryMenuTypes.FLUX_MENU, containerId);
         mProvider = provider;
@@ -51,7 +46,7 @@ public class FluxMenu extends AbstractContainerMenu {
         return slots.get(pIndex).getItem();
     }
 
-    // both side
+    // both sides
     @Override
     public void removed(@Nonnull Player player) {
         super.removed(player);

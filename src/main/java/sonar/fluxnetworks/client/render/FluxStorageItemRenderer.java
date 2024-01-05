@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraftforge.client.model.data.ModelData;
 import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.client.ClientCache;
 import sonar.fluxnetworks.client.gui.basic.GuiFluxCore;
@@ -24,6 +23,8 @@ import javax.annotation.Nonnull;
 
 @Environment(EnvType.CLIENT)
 public class FluxStorageItemRenderer extends BlockEntityWithoutLevelRenderer {
+
+    public static final FluxStorageItemRenderer INSTANCE = new FluxStorageItemRenderer();
 
     public FluxStorageItemRenderer() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
@@ -81,7 +82,7 @@ public class FluxStorageItemRenderer extends BlockEntityWithoutLevelRenderer {
         float r = FluxUtils.getRed(color), g = FluxUtils.getGreen(color), b = FluxUtils.getBlue(color);
         dispatcher.getModelRenderer()
                 .renderModel(poseStack.last(), bufferSource.getBuffer(Sheets.cutoutBlockSheet()),
-                        renderState, model, r, g, b, packedLight, packedOverlay, ModelData.EMPTY, null);
+                        renderState, model, r, g, b, packedLight, packedOverlay);
         FluxStorageEntityRenderer.render(poseStack, bufferSource.getBuffer(FluxStorageRenderType.getType()),
                 color, packedOverlay, energy, block.getEnergyCapacity());
     }

@@ -1,6 +1,7 @@
 package sonar.fluxnetworks.client.gui.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -44,7 +45,9 @@ public class InventoryButton extends GuiButtonCore {
         gr.blit(INVENTORY, x, y, mU0, mV0 + height * (mType.isActivated(mHost.mWirelessMode) ? 1 : 0), width, height);
 
         if (hovered) {
-            Font font = screen.getMinecraft().font;
+            // TODO: Is this working?
+            // screen.getMinecraft().font
+            Font font = Minecraft.getInstance().font;
             gr.drawString(font, mText, x + (width - font.width(mText)) / 2 + 1, y - 9, 0xFFFFFF);
         }
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);

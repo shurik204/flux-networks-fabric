@@ -1,6 +1,5 @@
 package sonar.fluxnetworks.common.util;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -10,16 +9,18 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-import sonar.fluxnetworks.FluxConfig;
 import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.device.IFluxDevice;
 import sonar.fluxnetworks.api.energy.IBlockEnergyConnector;
 import sonar.fluxnetworks.api.energy.IItemEnergyConnector;
-import sonar.fluxnetworks.common.integration.energy.*;
+import sonar.fluxnetworks.common.integration.energy.TREnergyConnector;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public final class EnergyUtils {
 
@@ -32,11 +33,11 @@ public final class EnergyUtils {
     private static final Set<Item> ITEM_BLACKLIST = new HashSet<>();
 
     static {
-        BLOCK_ENERGY_CONNECTORS.add(FNEnergyConnector.INSTANCE);
-        ITEM_ENERGY_CONNECTORS.add(FNEnergyConnector.INSTANCE);
+        BLOCK_ENERGY_CONNECTORS.add(TREnergyConnector.INSTANCE);
+        ITEM_ENERGY_CONNECTORS.add(TREnergyConnector.INSTANCE);
 
-        BLOCK_ENERGY_CONNECTORS.add(ForgeEnergyConnector.INSTANCE);
-        ITEM_ENERGY_CONNECTORS.add(ForgeEnergyConnector.INSTANCE);
+//        BLOCK_ENERGY_CONNECTORS.add(ForgeEnergyConnector.INSTANCE);
+//        ITEM_ENERGY_CONNECTORS.add(ForgeEnergyConnector.INSTANCE);
     }
 
     private EnergyUtils() {
@@ -49,16 +50,19 @@ public final class EnergyUtils {
             ItemEnergyHandler.itemEnergyHandlers.add(GTEnergyHandler.INSTANCE);
         }*/
 
+
+
         // disable because of imbalance
         /*if (ModList.get().isLoaded("ic2")) {
             BLOCK_ENERGY_CONNECTORS.add(IC2EnergyHandler.INSTANCE);
             ITEM_ENERGY_CONNECTORS.add(IC2EnergyHandler.INSTANCE);
         }*/
 
-        if (FluxConfig.enableGTCEU && FabricLoader.getInstance().isModLoaded("gtceu")) {
-            BLOCK_ENERGY_CONNECTORS.add(GTCEUEnergyConnector.INSTANCE);
-            ITEM_ENERGY_CONNECTORS.add(GTCEUEnergyConnector.INSTANCE);
-        }
+        // TODO: fix gregtech energy connector
+//        if (FluxConfig.enableGTCEU && FabricLoader.getInstance().isModLoaded("gtceu")) {
+//            BLOCK_ENERGY_CONNECTORS.add(GTCEUEnergyConnector.INSTANCE);
+//            ITEM_ENERGY_CONNECTORS.add(GTCEUEnergyConnector.INSTANCE);
+//        }
     }
 
     public static void reloadBlacklist(@Nonnull List<String> blockBlacklist, @Nonnull List<String> itemBlacklist) {
@@ -103,7 +107,7 @@ public final class EnergyUtils {
             return null;
         }
         for (IBlockEnergyConnector connector : BLOCK_ENERGY_CONNECTORS) {
-            if (connector.hasCapability(target, side)) {
+            if (connector.hasEnergyStorage(target, side)) {
                 return connector;
             }
         }
@@ -122,7 +126,7 @@ public final class EnergyUtils {
             return null;
         }
         for (IItemEnergyConnector connector : ITEM_ENERGY_CONNECTORS) {
-            if (connector.hasCapability(stack)) {
+            if (connector.hasEnergyStorage(stack)) {
                 return connector;
             }
         }

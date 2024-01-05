@@ -135,8 +135,8 @@ public class GuiTabConnections extends GuiTabPages<IFluxDevice> {
         if (element.isChunkLoaded()) {
             gr.pose().pushPose();
             gr.pose().scale(0.75f, 0.75f, 1);
-            gr.drawString(font, FluxUtils.getTransferInfo(element, EnergyType.FE), (x + 20) / 0.75f,
-                    (y + 10) / 0.75f, textColor, true);
+            gr.drawString(font, FluxUtils.getTransferInfo(element, EnergyType.E), (int) ((x + 20) / 0.75f),
+                    (int) ((y + 10) / 0.75f), textColor, true);
             gr.pose().popPose();
             titleY = y + 2;
         } else {
@@ -171,22 +171,22 @@ public class GuiTabConnections extends GuiTabPages<IFluxDevice> {
             if (element.isForcedLoading()) {
                 components.add(FluxTranslate.FORCED_LOADING.makeComponent().withStyle(ChatFormatting.AQUA));
             }
-            components.add(Component.literal(FluxUtils.getTransferInfo(element, EnergyType.FE)));
+            components.add(Component.literal(FluxUtils.getTransferInfo(element, EnergyType.E)));
         } else {
             components.add(FluxTranslate.CHUNK_UNLOADED.makeComponent().withStyle(ChatFormatting.RED));
         }
 
         if (element.getDeviceType().isStorage()) {
             components.add(Component.literal(FluxTranslate.ENERGY_STORED.get() + ": " + ChatFormatting.BLUE +
-                    EnergyType.FE.getStorage(element.getTransferBuffer())));
+                    EnergyType.E.getStorage(element.getTransferBuffer())));
         } else {
             components.add(Component.literal(FluxTranslate.INTERNAL_BUFFER.get() + ": " + ChatFormatting.BLUE +
-                    EnergyType.FE.getStorage(element.getTransferBuffer())));
+                    EnergyType.E.getStorage(element.getTransferBuffer())));
         }
 
         components.add(Component.literal(FluxTranslate.TRANSFER_LIMIT.get() + ": " + ChatFormatting.GREEN +
                 (element.getDisableLimit() ? FluxTranslate.UNLIMITED.get() :
-                        EnergyType.FE.getStorage(element.getRawLimit()))));
+                        EnergyType.E.getStorage(element.getRawLimit()))));
         components.add(Component.literal(FluxTranslate.PRIORITY.get() + ": " + ChatFormatting.GREEN +
                 (element.getSurgeMode() ? FluxTranslate.SURGE.get() : element.getRawPriority())));
         components.add(Component.literal(FluxUtils.getDisplayPos(element.getGlobalPos()))

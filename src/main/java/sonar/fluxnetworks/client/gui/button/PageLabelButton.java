@@ -1,6 +1,7 @@
 package sonar.fluxnetworks.client.gui.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import sonar.fluxnetworks.client.gui.basic.GuiButtonCore;
 import sonar.fluxnetworks.client.gui.basic.GuiFocusable;
@@ -59,12 +60,12 @@ public class PageLabelButton extends GuiButtonCore {
         }
 
         if (mHoveredPage != -1) {
-            gr.drawCenteredString(screen.getMinecraft().font, (mHoveredPage + 1) + " / " + pages,
+            gr.drawCenteredString(Minecraft.getInstance().font, (mHoveredPage + 1) + " / " + pages,
                     x + width / 2, y + 6, mColor);
         } else if (mShowTick > 0) {
             int alpha = (int) Math.min(255, mShowTick * 24);
             if (alpha > 3) {
-                gr.drawCenteredString(screen.getMinecraft().font, (mPage + 1) + " / " + pages,
+                gr.drawCenteredString(Minecraft.getInstance().font, (mPage + 1) + " / " + pages,
                         x + width / 2, y + 6, mColor | alpha << 24);
             }
             mShowTick -= deltaTicks;

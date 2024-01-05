@@ -21,7 +21,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.client.model.data.ModelData;
 import org.joml.Quaternionf;
 import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxTranslate;
@@ -46,7 +45,7 @@ public class CreatingFluxRecipeCategory implements IRecipeCategory<CreatingFluxR
     public CreatingFluxRecipeCategory(@Nonnull IGuiHelper guiHelper) {
         this.background = guiHelper.createDrawable(TEXTURES, 0, -20, 128, 80);
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
-                new ItemStack(RegistryItems.FLUX_DUST.get()));
+                new ItemStack(RegistryItems.FLUX_DUST));
         this.timer = guiHelper.createTickTimer(60, 320, false);
     }
 
@@ -54,15 +53,15 @@ public class CreatingFluxRecipeCategory implements IRecipeCategory<CreatingFluxR
     public static List<CreatingFluxRecipe> getRecipes() {
         List<CreatingFluxRecipe> recipes = new ArrayList<>();
         recipes.add(new CreatingFluxRecipe(Blocks.BEDROCK, Blocks.OBSIDIAN,
-                new ItemStack(Items.REDSTONE), new ItemStack(RegistryItems.FLUX_DUST.get())));
-        recipes.add(new CreatingFluxRecipe(RegistryBlocks.FLUX_BLOCK.get(), Blocks.OBSIDIAN,
-                new ItemStack(Items.REDSTONE), new ItemStack(RegistryItems.FLUX_DUST.get())));
+                new ItemStack(Items.REDSTONE), new ItemStack(RegistryItems.FLUX_DUST)));
+        recipes.add(new CreatingFluxRecipe(RegistryBlocks.FLUX_BLOCK, Blocks.OBSIDIAN,
+                new ItemStack(Items.REDSTONE), new ItemStack(RegistryItems.FLUX_DUST)));
         return recipes;
     }
 
     @Nonnull
     public static List<ItemStack> getCatalysts() {
-        return List.of(new ItemStack(RegistryItems.FLUX_DUST.get()));
+        return List.of(new ItemStack(RegistryItems.FLUX_DUST));
     }
 
     @Nonnull
@@ -130,7 +129,7 @@ public class CreatingFluxRecipeCategory implements IRecipeCategory<CreatingFluxR
         guiGraphics.pose().scale(16, 16, 16);
         guiGraphics.pose().mulPose(quat);
         dispatcher.renderSingleBlock(recipe.crusher().defaultBlockState(), guiGraphics.pose(), bufferSource,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, null);
+                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
         guiGraphics.pose().popPose();
 
         //// BEDROCK
@@ -139,7 +138,7 @@ public class CreatingFluxRecipeCategory implements IRecipeCategory<CreatingFluxR
         guiGraphics.pose().scale(16, 16, 16);
         guiGraphics.pose().mulPose(quat);
         dispatcher.renderSingleBlock(recipe.base().defaultBlockState(), guiGraphics.pose(), bufferSource,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, null);
+                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
         guiGraphics.pose().popPose();
 
         //// ITEM
