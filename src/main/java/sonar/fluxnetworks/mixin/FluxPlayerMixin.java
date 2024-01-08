@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.common.access.FluxPlayer;
 
 /**
@@ -14,6 +15,7 @@ import sonar.fluxnetworks.common.access.FluxPlayer;
  */
 @Unique
 @Mixin(Player.class)
+@SuppressWarnings({"MissingUnique", "override", "AddedMixinMembersNamePattern"})
 public class FluxPlayerMixin implements FluxPlayer {
     private static final String SUPER_ADMIN_KEY = "superAdmin";
 
@@ -21,7 +23,7 @@ public class FluxPlayerMixin implements FluxPlayer {
 
     private int fn$mWirelessMode = 0;
 
-    private int fn$mWirelessNetwork = -1;
+    private int fn$mWirelessNetwork = FluxConstants.INVALID_NETWORK_ID;
 
     public boolean isSuperAdmin() {
         return fn$mSuperAdmin;

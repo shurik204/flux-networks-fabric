@@ -3,13 +3,18 @@ package sonar.fluxnetworks.common.util;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +31,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 
+@SuppressWarnings("ALL")
 public class FluxUtils {
 
     private static final double[] COMPACT_SCALE = new double[]{0.001D, 0.000_001D, 0.000_000_001D, 0.000_000_000_001D,
@@ -345,15 +351,18 @@ public class FluxUtils {
     }
 
     @Nullable
-    @SuppressWarnings("UnstableApiUsage")
     public static EnergyStorage getItemEnergy(@Nonnull ItemStack stack) {
         return getItemEnergy(stack, ContainerItemContext.withConstant(stack));
     }
 
     @Nullable
-    @SuppressWarnings("UnstableApiUsage")
     public static EnergyStorage getItemEnergy(@Nonnull ItemStack stack, @Nonnull ContainerItemContext itemCtx) {
         return getItemApi(stack, EnergyStorage.ITEM, itemCtx);
+    }
+
+    @Nullable
+    public static EnergyStorage getItemEnergy(@Nonnull ServerPlayer player, @Nonnull SingleSlotStorage<ItemVariant> slot) {
+        return getItemApi(slot.getResource().toStack(), EnergyStorage.ITEM, ContainerItemContext.ofPlayerSlot(player, slot));
     }
 
     // TODO: add caching
@@ -362,8 +371,16 @@ public class FluxUtils {
         return lookup.find(target.getLevel(), target.getBlockPos(), target.getBlockState(), target, context);
     }
 
+//    @Nullable
+//    public static <A> A getItemApi(@Nonnull ItemStack stack)
+
+    @Nullable
     public static <A, C> A getItemApi(@Nonnull ItemStack stack, @Nonnull ItemApiLookup<A, C> lookup, @Nullable C context) {
-        return lookup.find(stack, context);
+        return !stack.isEmpty() ? lookup.find(stack, context) : null;
+    }
+
+    public static <A> A getItemApi(@Nonnull ItemStack stack, @Nonnull ItemApiLookup<A, ContainerItemContext> lookup) {
+        return lookup.find(stack, ContainerItemContext.withConstant(stack));
     }
 
     public static float getRed(int color) {

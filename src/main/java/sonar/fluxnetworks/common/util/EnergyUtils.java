@@ -1,5 +1,7 @@
 package sonar.fluxnetworks.common.util;
 
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +16,7 @@ import sonar.fluxnetworks.api.device.IFluxDevice;
 import sonar.fluxnetworks.api.energy.IBlockEnergyConnector;
 import sonar.fluxnetworks.api.energy.IItemEnergyConnector;
 import sonar.fluxnetworks.common.integration.energy.TREnergyConnector;
+import team.reborn.energy.api.EnergyStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,7 +24,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.ToLongBiFunction;
 
+@SuppressWarnings("UnstableApiUsage")
 public final class EnergyUtils {
 
     private static final Marker MARKER = MarkerManager.getMarker("Energy");
@@ -116,13 +121,8 @@ public final class EnergyUtils {
 
     @Nullable
     public static IItemEnergyConnector getConnector(@Nullable ItemStack stack) {
-        if (stack == null) {
-            return null;
-        }
-        if (stack.isEmpty()) {
-            return null;
-        }
-        if (ITEM_BLACKLIST.contains(stack.getItem())) {
+        // Check if item is valid
+        if (stack == null || stack.isEmpty() || ITEM_BLACKLIST.contains(stack.getItem())) {
             return null;
         }
         for (IItemEnergyConnector connector : ITEM_ENERGY_CONNECTORS) {
@@ -131,5 +131,24 @@ public final class EnergyUtils {
             }
         }
         return null;
+    }
+
+    public static long tryAction(long amount, EnergyStorage storage, boolean simulate, ToLongBiFunction<Long, TransactionContext> action) {
+        if (storage == null) return 0;
+        long result;
+        try (Transaction tx = Transaction.openOuter()) {
+            result = action.applyAsLong(amount, tx);
+            if (simulate) tx.abort();
+            else tx.commit();
+        }
+        return result;
+    }
+
+    public static boolean supportsInsertion(@Nullable EnergyStorage storage) {
+        return storage != null && storage.supportsInsertion();
+    }
+
+    public static boolean supportsExtraction(@Nullable EnergyStorage storage) {
+        return storage != null && storage.supportsExtraction();
     }
 }

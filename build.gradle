@@ -110,7 +110,6 @@ dependencies {
 
 //    modImplementation "curse.maven:gregtechceu-modern-890405:${gtceu_file_id}"
 
-
     modImplementation("dev.emi:trinkets:${trinkets_version}")
 //    modCompileOnly("dev.emi:trinkets:${trinkets_version}")
     // for Trinkets
@@ -120,6 +119,9 @@ dependencies {
     // for GregTechCEu
     // modCompileOnly("com.lowdragmc.ldlib:ldlib-common-1.20.1:${ldlib_version}")
     // modCompileOnly("com.lowdragmc.ldlib:ldlib-fabric-1.20.1:${ldlib_version}")
+
+    // I got tiered of creating a new network every time. ¯\_(ツ)_/¯
+    modImplementation "com.ptsmods:devlogin:3.4.1"
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }

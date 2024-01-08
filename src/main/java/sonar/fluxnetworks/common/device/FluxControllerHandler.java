@@ -16,6 +16,8 @@ import sonar.fluxnetworks.common.connection.TransferHandler;
 import sonar.fluxnetworks.common.integration.TrinketsIntegration;
 import sonar.fluxnetworks.common.util.EnergyUtils;
 import sonar.fluxnetworks.common.util.FluxUtils;
+import sonar.fluxnetworks.common.util.ItemReference;
+import sonar.fluxnetworks.common.util.SlotIterator;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -108,6 +110,8 @@ public class FluxControllerHandler extends TransferHandler {
     private void updatePlayers() {
         mPlayers.clear();
 
+        // TODO: shouldn't there be a check for invalid network?
+
         PlayerList playerList = FluxNetworks.getServer().getPlayerList();
         for (NetworkMember p : mDevice.getNetwork().getAllMembers()) {
             ServerPlayer player = playerList.getPlayer(p.getPlayerUUID());
@@ -115,12 +119,11 @@ public class FluxControllerHandler extends TransferHandler {
                 continue;
             }
             FluxPlayer fluxPlayer = FluxUtils.getFluxPlayer(player);
-//            if (fluxPlayer == null) {
-//                continue;
-//            }
+            // Skip if player is not in the same network
             if (fluxPlayer.getWirelessNetwork() != mDevice.getNetworkID()) {
                 continue;
             }
+            // or wireless is not enabled
             int wirelessMode = fluxPlayer.getWirelessMode();
             if (!WirelessType.ENABLE_WIRELESS.isActivated(wirelessMode)) {
                 continue;
@@ -131,40 +134,25 @@ public class FluxControllerHandler extends TransferHandler {
             final Inventory inventory = player.getInventory();
             final List<WirelessHandler> handlers = new ArrayList<>();
             if (WirelessType.MAIN_HAND.isActivated(wirelessMode)) {
-                handlers.add(new WirelessHandler(() -> new Iterator<>() {
-                    private boolean mHasNext = true;
-
-                    @Override
-                    public boolean hasNext() {
-                        return mHasNext;
-                    }
-
-                    @Override
-                    public ItemStack next() {
-                        if (mHasNext) {
-                            mHasNext = false;
-                            return inventory.getSelected();
-                        }
-                        throw new NoSuchElementException();
-                    }
-                }, NOT_EMPTY));
+                // TODO: there's a small delay when player changes selected item
+                handlers.add(new WirelessHandler(player, Collections.singleton(new ItemReference(player, player.getInventory().selected)), NOT_EMPTY));
             }
             if (WirelessType.OFF_HAND.isActivated(wirelessMode)) {
-                handlers.add(new WirelessHandler(inventory.offhand, NOT_EMPTY));
+                handlers.add(new WirelessHandler(player, () -> new SlotIterator(player, Inventory.SLOT_OFFHAND, Inventory.SLOT_OFFHAND + 1), NOT_EMPTY));
             }
             if (WirelessType.HOT_BAR.isActivated(wirelessMode)) {
-                handlers.add(new WirelessHandler(inventory.items.subList(0, Inventory.getSelectionSize()),
-                        stack -> {
-                            ItemStack heldItem;
-                            return !stack.isEmpty() &&
-                                    ((heldItem = inventory.getSelected()).isEmpty() || heldItem != stack);
-                        }));
+                handlers.add(new WirelessHandler(player, () -> new SlotIterator(player, Inventory.getSelectionSize()),
+                stack -> {
+                    ItemStack heldItem;
+                    return !stack.isEmpty() &&
+                            ((heldItem = inventory.getSelected()).isEmpty() || heldItem != stack);
+                }));
             }
             if (WirelessType.ARMOR.isActivated(wirelessMode)) {
-                handlers.add(new WirelessHandler(inventory.armor, NOT_EMPTY));
+                handlers.add(new WirelessHandler(player, () -> new SlotIterator(player, Inventory.INVENTORY_SIZE, Inventory.INVENTORY_SIZE + Inventory.ALL_ARMOR_SLOTS.length), NOT_EMPTY));
             }
             if (WirelessType.TRINKETS.isActivated(wirelessMode) && FluxNetworks.isTrinketsLoaded()) {
-                handlers.add(new WirelessHandler(TrinketsIntegration.getFlatStacks(player), NOT_EMPTY));
+                handlers.add(new WirelessHandler(player, TrinketsIntegration.getItemRefs(player), NOT_EMPTY));
             }
             if (!handlers.isEmpty()) {
                 mPlayers.put(player, handlers);
@@ -172,18 +160,16 @@ public class FluxControllerHandler extends TransferHandler {
         }
     }
 
-    private record WirelessHandler(
-            Iterable<ItemStack> stacks,
-            Predicate<ItemStack> validator) {
+    private record WirelessHandler(ServerPlayer player, Iterable<ItemReference> items, Predicate<ItemStack> validator) {
 
         private long chargeItems(long remaining, boolean simulate) {
-            for (ItemStack stack : stacks) {
+            for (ItemReference ref : items) {
                 IItemEnergyConnector connector;
-                if (!validator.test(stack) || (connector = EnergyUtils.getConnector(stack)) == null) {
+                if (!validator.test(ref.stack) || (connector = EnergyUtils.getConnector(ref.stack)) == null) {
                     continue;
                 }
-                if (connector.supportsInsertion(stack)) {
-                    remaining -= connector.insert(remaining, stack, simulate);
+                if (connector.supportsInsertion(ref.stack)) {
+                        remaining -= connector.insert(remaining, player, ref.slot, simulate);
                     if (remaining <= 0) {
                         return 0;
                     }

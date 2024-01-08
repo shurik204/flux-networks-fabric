@@ -9,7 +9,9 @@ import org.lwjgl.glfw.GLFW;
 import sonar.fluxnetworks.FluxConfig;
 import sonar.fluxnetworks.api.FluxTranslate;
 import sonar.fluxnetworks.client.ClientCache;
-import sonar.fluxnetworks.client.gui.*;
+import sonar.fluxnetworks.client.gui.EnumNavigationTab;
+import sonar.fluxnetworks.client.gui.GuiFluxAdminHome;
+import sonar.fluxnetworks.client.gui.GuiFluxDeviceHome;
 import sonar.fluxnetworks.client.gui.button.NavigationButton;
 import sonar.fluxnetworks.client.gui.tab.*;
 import sonar.fluxnetworks.common.connection.FluxMenu;
@@ -118,7 +120,7 @@ public abstract class GuiTabCore extends GuiFluxCore {
         }
         if (playSound && FluxConfig.enableButtonSound) {
             Minecraft.getInstance().getSoundManager().play(
-                    SimpleSoundInstance.forUI(RegistrySounds.BUTTON_CLICK, 1.0F));
+                    SimpleSoundInstance.forUI(RegistrySounds.BUTTON_CLICK, 1.0F + (float) Math.random() * 0.1F));
         }
     }
 }

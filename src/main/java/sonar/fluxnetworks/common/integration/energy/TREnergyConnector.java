@@ -1,17 +1,19 @@
 package sonar.fluxnetworks.common.integration.energy;
 
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import sonar.fluxnetworks.api.energy.*;
+import sonar.fluxnetworks.api.energy.IBlockEnergyConnector;
+import sonar.fluxnetworks.api.energy.IItemEnergyConnector;
+import sonar.fluxnetworks.common.util.EnergyUtils;
 import sonar.fluxnetworks.common.util.FluxUtils;
 import team.reborn.energy.api.EnergyStorage;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.function.ToLongBiFunction;
 
 @SuppressWarnings("UnstableApiUsage")
 public class TREnergyConnector implements IBlockEnergyConnector, IItemEnergyConnector {
@@ -31,7 +33,7 @@ public class TREnergyConnector implements IBlockEnergyConnector, IItemEnergyConn
     @Override
     public boolean supportsInsertion(@Nonnull BlockEntity target, @Nonnull Direction side) {
         if (!target.isRemoved()) {
-            return supportsInsertion(FluxUtils.getBlockEnergy(target, side));
+            return EnergyUtils.supportsInsertion(FluxUtils.getBlockEnergy(target, side));
         }
         return false;
     }
@@ -39,7 +41,7 @@ public class TREnergyConnector implements IBlockEnergyConnector, IItemEnergyConn
     @Override
     public boolean supportsExtraction(@Nonnull BlockEntity target, @Nonnull Direction side) {
         if (!target.isRemoved()) {
-            return supportsExtraction(FluxUtils.getBlockEnergy(target, side));
+            return EnergyUtils.supportsExtraction(FluxUtils.getBlockEnergy(target, side));
         }
         return false;
     }
@@ -47,13 +49,15 @@ public class TREnergyConnector implements IBlockEnergyConnector, IItemEnergyConn
     @Override
     public long insert(long amount, @Nonnull BlockEntity target, @Nonnull Direction side, boolean simulate) {
         EnergyStorage storage = FluxUtils.getBlockEnergy(target, side);
-        return tryAction(amount, storage, simulate, storage::insert);
+        //noinspection DataFlowIssue
+        return EnergyUtils.tryAction(amount, storage, simulate, storage::insert);
     }
 
     @Override
     public long extract(long amount, @Nonnull BlockEntity target, @Nonnull Direction side, boolean simulate) {
         EnergyStorage storage = FluxUtils.getBlockEnergy(target, side);
-        return tryAction(amount, storage, simulate, storage::extract);
+        //noinspection DataFlowIssue
+        return EnergyUtils.tryAction(amount, storage, simulate, storage::extract);
     }
 
     //
@@ -67,7 +71,7 @@ public class TREnergyConnector implements IBlockEnergyConnector, IItemEnergyConn
     @Override
     public boolean supportsInsertion(@Nonnull ItemStack stack) {
         if (!stack.isEmpty()) {
-            return supportsInsertion(FluxUtils.getItemEnergy(stack));
+            return EnergyUtils.supportsInsertion(FluxUtils.getItemEnergy(stack));
         }
         return false;
     }
@@ -75,40 +79,29 @@ public class TREnergyConnector implements IBlockEnergyConnector, IItemEnergyConn
     @Override
     public boolean supportsExtraction(@Nonnull ItemStack stack) {
         if (!stack.isEmpty()) {
-            return supportsExtraction(FluxUtils.getItemEnergy(stack));
+            return EnergyUtils.supportsExtraction(FluxUtils.getItemEnergy(stack));
         }
         return false;
     }
 
     @Override
-    public long insert(long amount, @Nonnull ItemStack stack, boolean simulate) {
-        EnergyStorage storage = FluxUtils.getItemEnergy(stack);
-        return tryAction(amount, storage, simulate, storage::insert);
-    }
-
-    @Override
-    public long extract(long amount, @Nonnull ItemStack stack, boolean simulate) {
-        EnergyStorage storage = FluxUtils.getItemEnergy(stack);
-        return tryAction(amount, storage, simulate, storage::extract);
-    }
-
-    // TODO: move these to a more appropriate place
-    public static long tryAction(long amount, EnergyStorage storage, boolean simulate, ToLongBiFunction<Long, TransactionContext> action) {
-        if (storage == null) return 0;
+    public long insert(long amount, @Nonnull ServerPlayer player, @Nonnull SingleSlotStorage<ItemVariant> slot, boolean simulate) {
+        EnergyStorage storage = FluxUtils.getItemEnergy(player, slot);
         long result = 0;
-        try (Transaction tx = Transaction.openNested(Transaction.getCurrentUnsafe())) {
-            result = action.applyAsLong(amount, tx);
-            if (simulate) tx.abort();
-            else tx.commit();
+        if (storage != null) {
+            try (Transaction tx = Transaction.openOuter()) {
+                result = storage.insert(amount, tx);
+                if (simulate) tx.abort();
+                else tx.commit();
+            }
         }
         return result;
     }
 
-    public static boolean supportsInsertion(@Nullable EnergyStorage storage) {
-        return storage != null && storage.supportsInsertion();
-    }
-
-    public static boolean supportsExtraction(@Nullable EnergyStorage storage) {
-        return storage != null && storage.supportsExtraction();
+    @Override
+    public long extract(long amount, @Nonnull ServerPlayer player, @Nonnull SingleSlotStorage<ItemVariant> slot, boolean simulate) {
+        EnergyStorage storage = FluxUtils.getItemEnergy(player, slot);
+        //noinspection DataFlowIssue
+        return EnergyUtils.tryAction(amount, storage, simulate, storage::extract);
     }
 }
