@@ -43,11 +43,11 @@ public class GuiTabWireless extends GuiTabCore {
                     ClientCache.sWirelessNetwork == getNetwork().getNetworkID()) {
                 gr.drawCenteredString(font,
                         '(' + FluxTranslate.EFFECTIVE_WIRELESS_NETWORK.get() + ')',
-                        leftPos + 88, topPos + 158, color);
+                        leftPos + 88, topPos + 160, color);
             } else {
                 gr.drawCenteredString(font,
                         '(' + FluxTranslate.INEFFECTIVE_WIRELESS_NETWORK.get() + ')',
-                        leftPos + 88, topPos + 158, 0xb4b4b4);
+                        leftPos + 88, topPos + 160, 0xb4b4b4);
             }
         } else {
             renderNavigationPrompt(gr, FluxTranslate.ERROR_NO_SELECTED, EnumNavigationTab.TAB_SELECTION);

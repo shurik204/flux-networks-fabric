@@ -10,7 +10,7 @@ public enum WirelessType {
     OFF_HAND(FluxTranslate.OFF_HAND),
     HOT_BAR(FluxTranslate.HOT_BAR),
     ARMOR(FluxTranslate.ARMOR),
-    TRINKETS(FluxTranslate.CURIOS),
+    TRINKETS(FluxTranslate.TRINKETS),
     INVENTORY(FluxTranslate.INVENTORY);
 
     private final FluxTranslate typeName;

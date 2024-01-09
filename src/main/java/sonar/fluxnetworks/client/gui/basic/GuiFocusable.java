@@ -55,23 +55,19 @@ public abstract class GuiFocusable extends AbstractContainerScreen<FluxMenu> {
         }
     }
 
-    // TODO: check if this works as intended
-    public boolean isActiveAndMatches(@Nonnull KeyMapping keyMapping, @Nonnull InputConstants.Key key, int scanCode) {
-        return keyMapping.isDown() && keyMapping.matches(key.getValue(), scanCode);
-    }
-
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         InputConstants.Key key = InputConstants.getKey(keyCode, scanCode);
+        KeyMapping keyInventory = Minecraft.getInstance().options.keyInventory;
         if (getFocused() != null) {
             if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
                 setFocused(null);
                 return true;
             }
-            if (isActiveAndMatches(Minecraft.getInstance().options.keyInventory, key, scanCode)) {
+            if (keyInventory.matches(key.getValue(), scanCode)) {
                 return false;
             }
-        } else if (keyCode == GLFW.GLFW_KEY_ESCAPE || isActiveAndMatches(Minecraft.getInstance().options.keyInventory, key, scanCode)) {
+        } else if (keyCode == GLFW.GLFW_KEY_ESCAPE || keyInventory.matches(key.getValue(), scanCode)) {
             if (this instanceof GuiPopupCore core) {
                 core.mHost.closePopup();
                 return true;

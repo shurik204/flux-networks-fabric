@@ -136,7 +136,8 @@ public class GuiTabSettings extends GuiTabEditAbstract {
     @Override
     public boolean onKeyPressed(int keyCode, int scanCode, int modifiers) {
         if (mDelete != null && getFocused() == null) {
-            if ((modifiers & GLFW.GLFW_MOD_SHIFT) != 0) {
+            // Replaced 'modifiers' check to 'keyCode' check
+            if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT) {
                 mDeleteCount++;
                 if (mDeleteCount > 1) {
                     mDelete.setClickable(true);
