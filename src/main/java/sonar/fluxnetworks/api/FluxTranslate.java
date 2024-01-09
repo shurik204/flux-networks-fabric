@@ -1,16 +1,22 @@
 package sonar.fluxnetworks.api;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.resources.language.I18n;
-import net.minecraft.locale.Language;
-import net.minecraft.network.chat.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class FluxTranslate {
+    public static final int SPLIT_LENGTH = 200;
 
     public static final FluxTranslate
             FLUX_DUST_TOOLTIP = new FluxTranslate("tooltip.fluxnetworks.flux_dust"),
@@ -114,7 +120,7 @@ public class FluxTranslate {
             MAIN_HAND = new FluxTranslate("gui.fluxnetworks.slot.mainhand"),
             OFF_HAND = new FluxTranslate("gui.fluxnetworks.slot.offhand"),
             ARMOR = new FluxTranslate("gui.fluxnetworks.slot.armor"),
-            CURIOS = new FluxTranslate("gui.fluxnetworks.slot.curios"),
+            TRINKETS = new FluxTranslate("gui.fluxnetworks.slot.trinkets"),
 
     PLUGS = new FluxTranslate("gui.fluxnetworks.stat.plug"),
             POINTS = new FluxTranslate("gui.fluxnetworks.stat.point"),
@@ -179,6 +185,11 @@ public class FluxTranslate {
     @Nonnull
     public String get() {
         return Language.getInstance().getOrDefault(mKey);
+    }
+
+    @Nonnull
+    public List<String> getSplit(int width) {
+        return Minecraft.getInstance().font.getSplitter().splitLines(get(), width, Style.EMPTY).stream().map(FormattedText::getString).toList();
     }
 
     @Nonnull

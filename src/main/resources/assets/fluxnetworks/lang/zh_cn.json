@@ -121,7 +121,7 @@
 	"gui.fluxnetworks.slot.mainhand": "主手",
 	"gui.fluxnetworks.slot.offhand": "副手",
 	"gui.fluxnetworks.slot.armor": "盔甲槽",
-	"gui.fluxnetworks.slot.curios": "饰品槽",
+	"gui.fluxnetworks.slot.trinkets": "饰品槽",
 
 	"gui.fluxnetworks.stat.plug": "输入点",
 	"gui.fluxnetworks.stat.point": "接入点",

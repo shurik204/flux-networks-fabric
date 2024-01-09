@@ -119,7 +119,7 @@
     "gui.fluxnetworks.slot.mainhand": "Haupt Hand",
     "gui.fluxnetworks.slot.offhand": "Neben Hand",
     "gui.fluxnetworks.slot.armor": "Rüstungsslots",
-    "gui.fluxnetworks.slot.curios": "Curios Slots",
+    "gui.fluxnetworks.slot.trinkets": "Trinkets",
 
     "gui.fluxnetworks.stat.plug": "Stecker",
     "gui.fluxnetworks.stat.point": "Punkte",
