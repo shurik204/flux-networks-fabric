@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.4-SNAPSHOT' // Fabric Loom
+    id 'fabric-loom' version '1.5-SNAPSHOT' // Fabric Loom
     id "io.github.p03w.machete" version "1.1.4" // Build jar compression
 
     id "com.modrinth.minotaur" version "2.+" // Modrinth publishing
@@ -70,7 +70,7 @@ dependencies {
 
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
     // Forge Config API port
-    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:8.0.0"
+    modImplementation(include("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:8.0.0"))
 
 //    modImplementation "mezz.jei:jei-${minecraft_version}-core:${jei_version}"
 //    runtimeOnly "mezz.jei:jei-${minecraft_version}-forge:${jei_version}"
@@ -103,15 +103,14 @@ dependencies {
         exclude group: "net.fabricmc.fabric-api"
     })
 
-    modImplementation(include("me.shurik:simple-chunk-manager:0.1.1"))
+    modImplementation(include("me.shurik:simple-chunk-manager:0.2.7"))
 
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:base:${porting_lib_version}"))
-    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:models:${porting_lib_version}"))
 
 //    modImplementation "curse.maven:gregtechceu-modern-890405:${gtceu_file_id}"
 
     modImplementation("dev.emi:trinkets:${trinkets_version}")
-//    modCompileOnly("dev.emi:trinkets:${trinkets_version}")
+
     // for Trinkets
     modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}")
     modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}")

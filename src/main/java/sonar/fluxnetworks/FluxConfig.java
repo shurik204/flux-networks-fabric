@@ -47,13 +47,13 @@ public class FluxConfig {
     }
 
     static void init() {
+        ModConfigEvents.reloading(FluxNetworks.MODID).register(FluxConfig::reload);
+
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             ForgeConfigRegistry.INSTANCE.register(FluxNetworks.MODID, ModConfig.Type.CLIENT, CLIENT_SPEC);
         }
         ForgeConfigRegistry.INSTANCE.register(FluxNetworks.MODID, ModConfig.Type.COMMON, COMMON_SPEC);
         ForgeConfigRegistry.INSTANCE.register(FluxNetworks.MODID, ModConfig.Type.SERVER, SERVER_SPEC);
-
-        ModConfigEvents.reloading(FluxNetworks.MODID).register(FluxConfig::reload);
     }
 
     static void reload(@Nonnull ModConfig config) {

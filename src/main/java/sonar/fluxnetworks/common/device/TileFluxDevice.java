@@ -120,7 +120,7 @@ public abstract class TileFluxDevice extends BlockEntity implements IFluxDevice,
         if (!level.isClientSide && (mFlags & FLAG_FIRST_TICKED) != 0) {
             mNetwork.enqueueConnectionRemoval(this, false);
             if (isForcedLoading()) {
-                SimpleChunkManager.getInstance().removeChunkLoader(FluxNetworks.location("flux_device"), (ServerLevel) level, worldPosition);
+                SimpleChunkManager.of((ServerLevel) level).removeChunkLoader(FluxNetworks.MODID, worldPosition);
             }
             getTransferHandler().onNetworkChanged();
             mFlags &= ~FLAG_FIRST_TICKED;
@@ -321,9 +321,19 @@ public abstract class TileFluxDevice extends BlockEntity implements IFluxDevice,
                 ((ServerFluxNetwork) mNetwork).markSortConnections();
             }
             if (tag.contains(FluxConstants.FORCED_LOADING)) {
-                boolean load = tag.getBoolean(FluxConstants.FORCED_LOADING) &&
-                        FluxConfig.enableChunkLoading && !getDeviceType().isStorage();
-                SimpleChunkManager.getInstance().addChunkLoader(FluxNetworks.location("flux_device"), (ServerLevel) level, worldPosition);
+                boolean load = tag.getBoolean(FluxConstants.FORCED_LOADING) && FluxConfig.enableChunkLoading && !getDeviceType().isStorage();
+
+                if (level instanceof ServerLevel serverLevel) {
+                    SimpleChunkManager chunkManager = SimpleChunkManager.of(serverLevel);
+                    if (load && !isForcedLoading()) {
+                        // Device was not force loaded, add chunk loader
+                        chunkManager.addChunkLoaderBlock(FluxNetworks.MODID, worldPosition);
+                    } else if (!load && isForcedLoading()) {
+                        // Device was force loaded but user disabled it, remove chunk loader
+                        chunkManager.removeChunkLoader(FluxNetworks.MODID, worldPosition);
+                    }
+                }
+
                 setForcedLoading(load);
             }
             // notify listeners

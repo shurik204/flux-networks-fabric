@@ -1,6 +1,6 @@
 package sonar.fluxnetworks.register;
 
-import dev.architectury.event.events.common.CommandRegistrationEvent;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -34,7 +34,6 @@ import sonar.fluxnetworks.common.connection.FluxNetwork;
 import sonar.fluxnetworks.common.connection.FluxNetworkData;
 import sonar.fluxnetworks.common.util.FluxCommands;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class EventHandler {
@@ -48,7 +47,7 @@ public class EventHandler {
         UseBlockCallback.EVENT.register(EventHandler::onPlayerInteract);
         ServerPlayConnectionEvents.JOIN.register(EventHandler::onPlayerJoined);
         ServerPlayerEvents.COPY_FROM.register(EventHandler::onPlayerClone);
-        CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> FluxCommands.register(dispatcher));
+        CommandRegistrationCallback.EVENT.register((dispatcher, registry, selection) -> FluxCommands.register(dispatcher));
     }
 
 //    @SubscribeEvent
