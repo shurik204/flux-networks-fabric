@@ -23,6 +23,9 @@
 		],
 		"client": [
 			"sonar.fluxnetworks.client.FluxNetworksClient"
+		],
+		"jade": [
+			"sonar.fluxnetworks.common.integration.jade.JadeEntrypoint"
 		]
 	},
 	"mixins": [

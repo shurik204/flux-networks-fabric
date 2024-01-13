@@ -72,14 +72,6 @@ dependencies {
     // Forge Config API port
     modImplementation(include("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:8.0.0"))
 
-//    modImplementation "mezz.jei:jei-${minecraft_version}-core:${jei_version}"
-//    runtimeOnly "mezz.jei:jei-${minecraft_version}-forge:${jei_version}"
-//    compileOnly "mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"
-
-    // TODO: Trinkets
-//    compileOnly "top.theillusivec4.curios:curios-fabric:5.2.0-beta.3+1.20.1:api"
-//    runtimeOnly "top.theillusivec4.curios:curios-fabric:5.2.0-beta.3+1.20.1"
-
     modImplementation("icyllis.modernui:ModernUI-Core:${modernui_core_version}") {
         exclude group: "org.apache.logging.log4j", module: "log4j-core"
         exclude group: "org.apache.logging.log4j", module: "log4j-api"
@@ -114,6 +106,9 @@ dependencies {
     // for Trinkets
     modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}")
     modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}")
+
+    // Jade
+    modImplementation "curse.maven:jade-324717:${jade_file_id}"
 
     // for GregTechCEu
     // modCompileOnly("com.lowdragmc.ldlib:ldlib-common-1.20.1:${ldlib_version}")

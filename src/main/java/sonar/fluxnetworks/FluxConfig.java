@@ -71,12 +71,12 @@ public class FluxConfig {
     }
 
     public static boolean enableButtonSound, enableGuiDebug;
-    public static boolean enableOneProbeBasicInfo, enableOneProbeAdvancedInfo, enableOneProbeSneaking;
+    public static boolean enableJadeBasicInfo, enableJadeAdvancedInfo, enableJadeSneaking;
     public static boolean enableFluxRecipe, enableChunkLoading, enableSuperAdmin;
     public static long defaultLimit, basicCapacity, basicTransfer, herculeanCapacity, herculeanTransfer,
             gargantuanCapacity, gargantuanTransfer;
     public static int maximumPerPlayer, superAdminRequiredPermission;
-    public static boolean enableGTCEU;
+//    public static boolean enableGTCEU;
 
     @Environment(EnvType.CLIENT)
     private static class Client {
@@ -106,52 +106,52 @@ public class FluxConfig {
     private static class Common {
 
         private final ForgeConfigSpec.BooleanValue
-                mEnableOneProbeBasicInfo,
-                mEnableOneProbeAdvancedInfo,
-                mEnableOneProbeSneaking;
+                mEnableJadeBasicInfo,
+                mEnableJadeAdvancedInfo,
+                mEnableJadeSneaking;
 
-        private final ForgeConfigSpec.BooleanValue mEnableGTCEU;
+//        private final ForgeConfigSpec.BooleanValue mEnableGTCEU;
 
         private Common(@Nonnull ForgeConfigSpec.Builder builder) {
             builder.comment("Most configs are moved to /serverconfig/fluxnetworks-server.toml",
                             "Copy to /defaultconfig/fluxnetworks-server.toml for modpacks")
                     .define("placeholder", true);
 
-            builder.comment("The One Probe")
-                    .push("OneProbe");
-            mEnableOneProbeBasicInfo = builder
+            builder.comment("Jade")
+                    .push("Jade");
+            mEnableJadeBasicInfo = builder
                     .comment("Displays: Network Name, Live Transfer Rate & Internal Buffer")
-                    .translation(FluxNetworks.MODID + ".config." + "enableOneProbeBasicInfo")
-                    .define("enableOneProbeBasicInfo", true);
-            mEnableOneProbeAdvancedInfo = builder
-                    .comment("Displays: Transfer Limit & Priority etc")
-                    .translation(FluxNetworks.MODID + ".config." + "enableOneProbeAdvancedInfo")
-                    .define("enableOneProbeAdvancedInfo", true);
-            mEnableOneProbeSneaking = builder
+                    .translation(FluxNetworks.MODID + ".config." + "enableJadeBasicInfo")
+                    .define("enableJadeBasicInfo", true);
+            mEnableJadeAdvancedInfo = builder
+                    .comment("Displays: Transfer Limit, Priority, Chunk Loading")
+                    .translation(FluxNetworks.MODID + ".config." + "enableJadeAdvancedInfo")
+                    .define("enableJadeAdvancedInfo", true);
+            mEnableJadeSneaking = builder
                     .comment("Displays Advanced Info when sneaking only")
-                    .translation(FluxNetworks.MODID + ".config." + "enableOneProbeSneaking")
-                    .define("enableOneProbeSneaking", true);
+                    .translation(FluxNetworks.MODID + ".config." + "enableJadeSneaking")
+                    .define("enableJadeSneaking", true);
 
             builder.pop();
 
-            builder.comment("Integration")
-                    .push("integration");
-
-            mEnableGTCEU = builder
-                    .comment("Whether to enable GTCEU integration if GregTech CE Unofficial Modern is installed.",
-                            "1 GTEU = 4 FE, and vice versa.",
-                            "A game/server restart is required to reload this setting.")
-                    .define("enableGTCEU", true);
-
-            builder.pop();
+//            builder.comment("Integration")
+//                    .push("integration");
+//
+//            mEnableGTCEU = builder
+//                    .comment("Whether to enable GTCEU integration if GregTech CE Unofficial Modern is installed.",
+//                            "1 GTEU = 4 FE, and vice versa.",
+//                            "A game/server restart is required to reload this setting.")
+//                    .define("enableGTCEU", true);
+//
+//            builder.pop();
         }
 
         private void load() {
-            enableOneProbeBasicInfo = mEnableOneProbeBasicInfo.get();
-            enableOneProbeAdvancedInfo = mEnableOneProbeAdvancedInfo.get();
-            enableOneProbeSneaking = mEnableOneProbeSneaking.get();
+            enableJadeBasicInfo = mEnableJadeBasicInfo.get();
+            enableJadeAdvancedInfo = mEnableJadeAdvancedInfo.get();
+            enableJadeSneaking = mEnableJadeSneaking.get();
 
-            enableGTCEU = mEnableGTCEU.get();
+//            enableGTCEU = mEnableGTCEU.get();
         }
     }
 
