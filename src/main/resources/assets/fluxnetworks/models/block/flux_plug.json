@@ -2,9 +2,9 @@
     "parent": "block/cube_all",
     "render_type": "cutout",
     "textures": {
-        "0":"fluxnetworks:block/flux_plug_on",
-        "colour": "fluxnetworks:block/flux_plug_colour",
-        "particle":"fluxnetworks:block/flux_plug_on"
+        "0":"fluxnetworks:block/plug/on",
+        "colour": "fluxnetworks:block/plug/color",
+        "particle":"fluxnetworks:block/plug/on"
     },
     "elements": [
         {

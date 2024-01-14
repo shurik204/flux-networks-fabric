@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 public class FluxStorageRenderType extends RenderType {
 
     private static final ResourceLocation ENERGY_TEXTURE = FluxNetworks.location(
-            "textures/block/flux_storage_energy.png");
+            "textures/block/storage/energy.png");
 
     private static final RenderType INSTANCE;
 
