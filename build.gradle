@@ -50,7 +50,12 @@ dependencies {
 
     mappings loom.layered() {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+        if (parchment_version.contains(":"))
+            // Use exact version
+            parchment("org.parchmentmc.data:parchment-${parchment_version}@zip")
+        else
+            // Use minecraft version + given date
+            parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
     }
 
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
@@ -122,9 +127,19 @@ dependencies {
 
 processResources {
     inputs.property "version", project.version
+    inputs.property "loader_version", loader_version
+    inputs.property "fabric_version", fabric_version
+    inputs.property "java_version", java.targetCompatibility.getMajorVersion()
+    filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand "version": project.version,
+                "loader_version": loader_version,
+                "fabric_version": fabric_version,
+                "java_version": java.targetCompatibility.getMajorVersion()
+    }
+    filesMatching("LICENSE") {
+        expand "current_year": Calendar.getInstance().get(Calendar.YEAR)
     }
 }
 

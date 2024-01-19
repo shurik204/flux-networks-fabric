@@ -32,10 +32,10 @@
 		"fluxnetworks.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.15.0",
+		"fabricloader": ">=${loader_version}",
 		"minecraft": "~1.20.1",
-		"java": ">=17",
-		"fabric-api": "*"
+		"java": ">=${java_version}",
+		"fabric-api": ">=${fabric_version}"
 	},
 	"suggests": {}
 }
