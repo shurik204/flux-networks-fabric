@@ -31,7 +31,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 
-@SuppressWarnings("ALL")
+@SuppressWarnings("UnstableApiUsage")
 public class FluxUtils {
 
     private static final double[] COMPACT_SCALE = new double[]{0.001D, 0.000_001D, 0.000_000_001D, 0.000_000_000_001D,
@@ -77,24 +77,29 @@ public class FluxUtils {
     }
 
     @Nonnull
-    public static String getTransferInfo(@Nonnull IFluxDevice flux, EnergyType energyType) {
+    public static String getTransferInfo(@Nonnull IFluxDevice flux, @Nonnull EnergyType energyType) {
         FluxDeviceType type = flux.getDeviceType();
         long change = flux.getTransferChange();
-        if (type.isPlug()) {
+        return getTransferInfo(type, change, energyType);
+    }
+
+    @Nonnull
+    public static String getTransferInfo(@Nonnull FluxDeviceType deviceType, long change, @Nonnull EnergyType energyType) {
+        if (deviceType.isPlug()) {
             if (change == 0) {
                 return FluxTranslate.INPUT.get() + ": " + ChatFormatting.GOLD + "0 " + energyType.getUsageSuffix();
             } else {
                 return FluxTranslate.INPUT.get() + ": " + ChatFormatting.GREEN + "+" + energyType.getUsage(change);
             }
         }
-        if (type.isPoint() || type.isController()) {
+        if (deviceType.isPoint() || deviceType.isController()) {
             if (change == 0) {
                 return FluxTranslate.OUTPUT.get() + ": " + ChatFormatting.GOLD + "0 " + energyType.getUsageSuffix();
             } else {
                 return FluxTranslate.OUTPUT.get() + ": " + ChatFormatting.RED + energyType.getUsage(change);
             }
         }
-        if (type.isStorage()) {
+        if (deviceType.isStorage()) {
             if (change == 0) {
                 return FluxTranslate.CHANGE.get() + ": " + ChatFormatting.GOLD + "0 " + energyType.getUsageSuffix();
             } else if (change > 0) {
