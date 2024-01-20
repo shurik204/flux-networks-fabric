@@ -2,8 +2,6 @@ plugins {
     id("fabric-loom") version "1.5-SNAPSHOT" // Fabric Loom
     id("io.github.p03w.machete") version "1.1.4" // Build jar compression
 
-    id("com.modrinth.minotaur") version "2.+" // Modrinth publishing
-    id("com.matthewprenger.cursegradle") version "1.+" // CurseForge publishing
     `maven-publish` // Maven publishing
     java
 }
@@ -100,8 +98,7 @@ dependencies {
 
     modImplementation(include("me.shurik:simple-chunk-manager:0.2.7")) {}
 
-//    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:base:${property("porting_lib_version")}"))
-    modImplementation("io.github.fabricators_of_create.Porting-Lib:base:${property("porting_lib_version")}")
+    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:base:${property("porting_lib_version")}")) {}
 
 //    modImplementation "curse.maven:gregtechceu-modern-890405:${gtceu_file_id}"
 
@@ -141,13 +138,10 @@ tasks {
 }
 
     java {
-        // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-        // if it is present.
-        // If you remove this line, sources will not be generated.
-        withSourcesJar()
-
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+
+        withSourcesJar()
     }
 
     jar {
