@@ -37,5 +37,9 @@
 		"java": ">=${java_version}",
 		"fabric-api": ">=${fabric_version}"
 	},
-	"suggests": {}
+	"suggests": {
+		"jei": "*",
+		"jade": "*",
+		"trinkets": "*"
+	}
 }
