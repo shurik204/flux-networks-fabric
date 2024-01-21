@@ -1,6 +1,7 @@
 plugins {
     id("fabric-loom") version "1.5-SNAPSHOT" // Fabric Loom
     id("io.github.p03w.machete") version "1.1.4" // Build jar compression
+    id("me.modmuss50.mod-publish-plugin") version "0.4.5" // Mod publishing
 
     `maven-publish` // Maven publishing
     java
@@ -8,6 +9,10 @@ plugins {
 
 version = "${property("minecraft_version")}-${property("mod_version")}-fabric"
 group = property("maven_group").toString()
+
+base {
+    archivesName = "${property("archives_base_name")}"
+}
 
 repositories {
     maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/") // Forge Config API port
@@ -92,8 +97,8 @@ dependencies {
     modImplementation("icyllis.modernui:ModernUI-Fabric:${property("minecraft_version")}-${property("modernui_fabric_version")}")
 
     modImplementation(include("teamreborn:energy:${property("tr_energy_version")}") {
-        exclude(group="net.fabricmc")
-        exclude(group="net.fabricmc.fabric-api")
+        exclude("net.fabricmc")
+        exclude("net.fabricmc.fabric-api")
     })
 
     modImplementation(include("me.shurik:simple-chunk-manager:0.2.7")) {}
@@ -150,20 +155,24 @@ tasks {
         }
     }
 
-    // configure the maven publication
-    publishing {
-    //    publications {
-    //        mavenJava(MavenPublication) {
-    //            from components.java
-    //        }
-    //    }
+    publishMods {
+        file = remapJar.get().archiveFile
+        changelog = providers.environmentVariable("CHANGELOG").getOrElse("No changelog provided")
+        type = BETA
+        displayName = "Flux Networks ${property("minecraft_version")} ${this.version} [Fabric]"
+        modLoaders.add("fabric")
+        dryRun = true
+//        dryRun = providers.environmentVariable("CI").getOrNull() == null
 
-        // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-        repositories {
-            // Add repositories to publish to here.
-            // Notice: This block does NOT have the same function as the block in the top level.
-            // The repositories here will be used for publishing your artifact, not for
-            // retrieving dependencies.
+        curseforge {
+            accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
+            projectId = "962362"
+            minecraftVersions.add(property("minecraft_version").toString())
+        }
+        modrinth {
+            accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+            projectId = "d1ItuIJe"
+            minecraftVersions.add(property("minecraft_version").toString())
         }
     }
 }

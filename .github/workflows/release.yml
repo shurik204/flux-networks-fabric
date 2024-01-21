@@ -1,0 +1,30 @@
+# https://github.com/FabricMC/fabric/blob/1.20.4/.github/workflows/release.yml
+name: Release
+on: [workflow_dispatch] # Manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    container:
+      image: mcr.microsoft.com/openjdk/jdk:21-ubuntu
+      options: --user root
+    steps:
+      - run: apt update && apt install git -y && git --version
+      - run: git config --global --add safe.directory /__w/build_dir
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: FabricMC/fabric-action-scripts@v2
+        id: changelog
+        with:
+          context: changelog
+          workflow_id: release.yml
+      - uses: gradle/wrapper-validation-action@v1
+      - run: ./gradlew build publishMods --stacktrace -Porg.gradle.parallel.threads=4
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+          CHANGELOG: ${{ steps.changelog.outputs.changelog }}
