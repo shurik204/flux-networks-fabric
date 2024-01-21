@@ -155,10 +155,6 @@ tasks {
         }
     }
 
-    machete {
-        ignoredTasks.add("remapJar")
-    }
-
     publishMods {
         file = remapJar.get().archiveFile
         changelog = providers.environmentVariable("CHANGELOG").getOrElse("No changelog provided")
@@ -172,7 +168,7 @@ tasks {
             projectId = "962362"
             minecraftVersions.add(property("minecraft_version").toString())
             requires("fabric-api")
-            optional("roughly-enough-items")
+            optional("modern-ui")
             optional("jade")
             optional("trinkets")
             optional("jei")
@@ -182,10 +178,18 @@ tasks {
             projectId = "d1ItuIJe"
             minecraftVersions.add(property("minecraft_version").toString())
             requires("fabric-api")
-            optional("rei")
+            optional("modern-ui")
             optional("jade")
             optional("trinkets")
             optional("jei")
+        }
+
+        // Fix machete compression
+        getTasksByName("publishModrinth", true).forEach {
+            it.dependsOn("optimizeOutputsOfRemapJar")
+        }
+        getTasksByName("publishCurseforge", true).forEach {
+            it.dependsOn("optimizeOutputsOfRemapJar")
         }
     }
 }
