@@ -161,8 +161,7 @@ tasks {
         type = BETA
         displayName = "Flux Networks ${property("minecraft_version")} ${this.version} [Fabric]"
         modLoaders.add("fabric")
-        dryRun = true
-//        dryRun = providers.environmentVariable("CI").getOrNull() == null
+        dryRun = providers.environmentVariable("CI").getOrNull() == null
 
         curseforge {
             accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")

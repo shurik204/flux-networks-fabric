@@ -12,8 +12,10 @@ jobs:
       image: mcr.microsoft.com/openjdk/jdk:21-ubuntu
       options: --user root
     steps:
-      - run: apt update && apt install git -y && git --version
-      - run: git config --global --add safe.directory /__w/build_dir
+      - name: Install git
+        run: apt update && apt install git -y && git --version
+      - name: Add safe directory
+        run: git config --global --add safe.directory /__w/$REPOSITORY_NAME/$REPOSITORY_NAME
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -27,6 +29,7 @@ jobs:
       - uses: gradle/wrapper-validation-action@v1
       - run: ./gradlew build publishMods --stacktrace -Porg.gradle.parallel.threads=4
         env:
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
           CHANGELOG: ${{ steps.changelog.outputs.changelog }}
