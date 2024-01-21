@@ -155,6 +155,10 @@ tasks {
         }
     }
 
+    machete {
+        ignoredTasks.add("remapJar")
+    }
+
     publishMods {
         file = remapJar.get().archiveFile
         changelog = providers.environmentVariable("CHANGELOG").getOrElse("No changelog provided")
@@ -167,11 +171,21 @@ tasks {
             accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
             projectId = "962362"
             minecraftVersions.add(property("minecraft_version").toString())
+            requires("fabric-api")
+            optional("roughly-enough-items")
+            optional("jade")
+            optional("trinkets")
+            optional("jei")
         }
         modrinth {
             accessToken = providers.environmentVariable("MODRINTH_TOKEN")
             projectId = "d1ItuIJe"
             minecraftVersions.add(property("minecraft_version").toString())
+            requires("fabric-api")
+            optional("rei")
+            optional("jade")
+            optional("trinkets")
+            optional("jei")
         }
     }
 }
