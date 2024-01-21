@@ -22,6 +22,8 @@ jobs:
         with:
           context: changelog
           workflow_id: release.yml
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
       - uses: gradle/wrapper-validation-action@v1
       - run: ./gradlew build publishMods --stacktrace -Porg.gradle.parallel.threads=4
         env:
