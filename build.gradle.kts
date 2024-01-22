@@ -6,12 +6,11 @@ plugins {
     `maven-publish` // Maven publishing
     java
 }
-
-version = "${property("minecraft_version")}-${property("mod_version")}-fabric"
+version = "${property("minecraft_version")}-${property("mod_version")}"
 group = property("maven_group").toString()
 
 base {
-    archivesName = "${property("archives_base_name")}"
+    archivesName = "${property("archives_base_name")}-Fabric"
 }
 
 repositories {
@@ -159,7 +158,7 @@ tasks {
         file = remapJar.get().archiveFile
         changelog = providers.environmentVariable("CHANGELOG").getOrElse("No changelog provided")
         type = BETA
-        displayName = "Flux Networks ${property("minecraft_version")} ${this.version} [Fabric]"
+        displayName = "Flux Networks ${property("minecraft_version")} ${property("mod_version")} [Fabric]"
         modLoaders.add("fabric")
         dryRun = providers.environmentVariable("CI").getOrNull() == null
 
