@@ -103,6 +103,7 @@ dependencies {
     modImplementation(include("me.shurik:simple-chunk-manager:0.2.7")) {}
 
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:base:${property("porting_lib_version")}")) {}
+    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:models:${property("porting_lib_version")}")) {}
 
 //    modImplementation "curse.maven:gregtechceu-modern-890405:${gtceu_file_id}"
 
