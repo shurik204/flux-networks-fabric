@@ -8,10 +8,8 @@ import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Player;
-import org.joml.Matrix4f;
 import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.api.FluxTranslate;
 import sonar.fluxnetworks.api.energy.EnergyType;
@@ -42,51 +40,51 @@ public class GuiTabStatistics extends GuiTabCore {
     }
 
     @Override
-    protected void drawForegroundLayer(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
-        super.drawForegroundLayer(gr, mouseX, mouseY, deltaTicks);
+    protected void drawForegroundLayer(PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
+        super.drawForegroundLayer(poseStack, mouseX, mouseY, deltaTicks);
         final FluxNetwork network = getNetwork();
         if (network.isValid()) {
             int color = network.getNetworkColor();
-            renderNetwork(gr, network.getNetworkName(), color, topPos + 8);
+            renderNetwork(poseStack, network.getNetworkName(), color, topPos + 8);
 
-            gr.pose().pushPose();
-            gr.pose().translate(leftPos, topPos, 0);
+            poseStack.pushPose();
+            poseStack.translate(leftPos, topPos, 0);
             final NetworkStatistics stats = network.getStatistics();
-            gr.drawString(font, ChatFormatting.GRAY + FluxTranslate.PLUGS.get() + ChatFormatting.GRAY + ": " +
+            font.draw(poseStack, ChatFormatting.GRAY + FluxTranslate.PLUGS.get() + ChatFormatting.GRAY + ": " +
                     ChatFormatting.RESET + stats.fluxPlugCount, 12, 24, color);
-            gr.drawString(font, ChatFormatting.GRAY + FluxTranslate.POINTS.get() + ChatFormatting.GRAY + ": " +
+            font.draw(poseStack, ChatFormatting.GRAY + FluxTranslate.POINTS.get() + ChatFormatting.GRAY + ": " +
                     ChatFormatting.RESET + stats.fluxPointCount, 12, 36, color);
-            gr.drawString(font, ChatFormatting.GRAY + FluxTranslate.STORAGES.get() + ChatFormatting.GRAY + ": " +
+            font.draw(poseStack, ChatFormatting.GRAY + FluxTranslate.STORAGES.get() + ChatFormatting.GRAY + ": " +
                     ChatFormatting.RESET + stats.fluxStorageCount, 82, 24, color);
-            gr.drawString(font, ChatFormatting.GRAY + FluxTranslate.CONTROLLERS.get() + ChatFormatting.GRAY + ": " +
+            font.draw(poseStack, ChatFormatting.GRAY + FluxTranslate.CONTROLLERS.get() + ChatFormatting.GRAY + ": " +
                     ChatFormatting.RESET + stats.fluxControllerCount, 82, 36, color);
-            gr.drawString(font,
+            font.draw(poseStack,
                     ChatFormatting.GRAY + FluxTranslate.INPUT.get() + ChatFormatting.GRAY + ": " + ChatFormatting.RESET +
                             EnergyType.E.getUsage(stats.energyInput), 12, 48, color);
-            gr.drawString(font,
+            font.draw(poseStack,
                     ChatFormatting.GRAY + FluxTranslate.OUTPUT.get() + ChatFormatting.GRAY + ": " + ChatFormatting.RESET +
                             EnergyType.E.getUsage(stats.energyOutput), 12, 60, color);
-            gr.drawString(font,
+            font.draw(poseStack,
                     ChatFormatting.GRAY + FluxTranslate.BUFFER.get() + ChatFormatting.GRAY + ": " + ChatFormatting.RESET +
                             EnergyType.E.getStorage(stats.totalBuffer), 12, 72, color);
-            gr.drawString(font,
+            font.draw(poseStack,
                     ChatFormatting.GRAY + FluxTranslate.ENERGY.get() + ChatFormatting.GRAY + ": " + ChatFormatting.RESET +
                             EnergyType.E.getStorage(stats.totalEnergy), 12, 84, color);
-            gr.pose().scale(0.75f, 0.75f, 1);
-            gr.drawCenteredString(font,
+            poseStack.scale(0.75f, 0.75f, 1);
+            drawCenteredString(poseStack, font,
                     FluxTranslate.AVERAGE_TICK.get() + ": " + stats.averageTickMicro + " \u00b5s/t",
                     (int) ((imageWidth / 2f) * (1 / 0.75f)), (int) ((imageHeight - 2f) * (1 / 0.75f)), color);
-            gr.pose().popPose();
+            poseStack.popPose();
         } else {
-            renderNavigationPrompt(gr, FluxTranslate.ERROR_NO_SELECTED, EnumNavigationTab.TAB_SELECTION);
+            renderNavigationPrompt(poseStack, FluxTranslate.ERROR_NO_SELECTED, EnumNavigationTab.TAB_SELECTION);
         }
     }
 
     @Override
-    protected void drawBackgroundLayer(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
-        super.drawBackgroundLayer(gr, mouseX, mouseY, deltaTicks);
+    protected void drawBackgroundLayer(PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
+        super.drawBackgroundLayer(poseStack, mouseX, mouseY, deltaTicks);
         if (getNetwork().isValid() && mChart != null) {
-            mChart.drawChart(Minecraft.getInstance(), gr, deltaTicks);
+            mChart.drawChart(getMinecraft(), poseStack, deltaTicks);
         }
     }
 
@@ -173,9 +171,10 @@ public class GuiTabStatistics extends GuiTabCore {
             }
         }
 
-        public void drawChart(Minecraft mc, GuiGraphics gr, float deltaTicks) {
+        public void drawChart(Minecraft mc, PoseStack poseStack, float deltaTicks) {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
+            RenderSystem.disableTexture();
 
             Tesselator tesselator = Tesselator.getInstance();
             BufferBuilder builder = tesselator.getBuilder();
@@ -189,14 +188,13 @@ public class GuiTabStatistics extends GuiTabCore {
                 float ly = currentHeight.getFloat(i);
                 float rx = x + 20 * (i + 1);
                 float ry = currentHeight.getFloat(i + 1);
-                Matrix4f matrix = gr.pose().last().pose();
-                builder.vertex(matrix, rx, ry - hw, 0)
+                builder.vertex(poseStack.last().pose(), rx, ry - hw, 0)
                         .color(255, 255, 255, 255).endVertex();
-                builder.vertex(matrix, lx, ly - hw, 0)
+                builder.vertex(poseStack.last().pose(), lx, ly - hw, 0)
                         .color(255, 255, 255, 255).endVertex();
-                builder.vertex(matrix, lx, ly + hw, 0)
+                builder.vertex(poseStack.last().pose(), lx, ly + hw, 0)
                         .color(255, 255, 255, 255).endVertex();
-                builder.vertex(matrix, rx, ry + hw, 0)
+                builder.vertex(poseStack.last().pose(), rx, ry + hw, 0)
                         .color(255, 255, 255, 255).endVertex();
             }
             tesselator.end();
@@ -206,44 +204,42 @@ public class GuiTabStatistics extends GuiTabCore {
             for (int i = 0; i < currentHeight.size(); i++) {
                 float cx = x + 20 * i;
                 float cy = currentHeight.getFloat(i);
-                Matrix4f matrix = gr.pose().last().pose();
-                builder.vertex(matrix, cx + hw, cy - hw, 0)
+                builder.vertex(poseStack.last().pose(), cx + hw, cy - hw, 0)
                         .color(255, 255, 255, 255).endVertex();
-                builder.vertex(matrix, cx - hw, cy - hw, 0)
+                builder.vertex(poseStack.last().pose(), cx - hw, cy - hw, 0)
                         .color(255, 255, 255, 255).endVertex();
-                builder.vertex(matrix, cx - hw, cy + hw, 0)
+                builder.vertex(poseStack.last().pose(), cx - hw, cy + hw, 0)
                         .color(255, 255, 255, 255).endVertex();
-                builder.vertex(matrix, cx + hw, cy + hw, 0)
+                builder.vertex(poseStack.last().pose(), cx + hw, cy + hw, 0)
                         .color(255, 255, 255, 255).endVertex();
             }
             tesselator.end();
 
-            gr.fill(x - 16, y + height, x + 116, y + height + 1, 0xcfffffff);
-            gr.fill(x - 14, y - 6, x - 13, y + height + 3, 0xcfffffff);
+            fill(poseStack, x - 16, y + height, x + 116, y + height + 1, 0xcfffffff);
+            fill(poseStack, x - 14, y - 6, x - 13, y + height + 3, 0xcfffffff);
 
-            gr.pose().pushPose();
-            gr.pose().scale(0.75f, 0.75f, 1);
-            // TODO: is casting to int correct?
-            gr.drawString(mc.font, suffixUnitY,
-                    (int) ((x - 15) / 0.75f - mc.font.width(suffixUnitY)),
-                    (int) ((y - 7.5f) / 0.75f), 0xffffff, true);
-            gr.drawString(mc.font, displayUnitY,
-                    (int) ((x - 15) / 0.75f - mc.font.width(displayUnitY)),
-                    (int) ((y - 2) / 0.75f), 0xffffff, true);
-            gr.drawString(mc.font, displayUnitX,
-                    (int) ((x + 118) / 0.75f - mc.font.width(displayUnitX)),
-                    (int) ((y + height + 1.5f) / 0.75f), 0xffffff, true);
+            poseStack.pushPose();
+            poseStack.scale(0.75f, 0.75f, 1);
+            mc.font.draw(poseStack, suffixUnitY,
+                    (x - 15) / 0.75f - mc.font.width(suffixUnitY),
+                    (y - 7.5f) / 0.75f, 0xffffff);
+            mc.font.draw(poseStack, displayUnitY,
+                    (x - 15) / 0.75f - mc.font.width(displayUnitY),
+                    (y - 2) / 0.75f, 0xffffff);
+            mc.font.draw(poseStack, displayUnitX,
+                    ((x + 118) / 0.75f - mc.font.width(displayUnitX)),
+                    (y + height + 1.5f) / 0.75f, 0xffffff);
             for (int i = 0; i < data.size(); i++) {
                 String d = FluxUtils.compact(data.getLong(i));
-                gr.drawString(mc.font, d,
-                        (int) (((x + 20 * i) / 0.75f) - (mc.font.width(d) * 0.5f)),
-                        (int) ((currentHeight.getFloat(i) - 8) / 0.75f), 0xffffff, true);
+                mc.font.draw(poseStack, d,
+                        ((x + 20 * i) / 0.75f) - (mc.font.width(d) * 0.5f),
+                        (currentHeight.getFloat(i) - 8) / 0.75f, 0xffffff);
                 String c = String.valueOf((5 - i) * 5);
-                gr.drawString(mc.font, c,
-                        (int) (((x + 20 * i) / 0.75f) - (mc.font.width(c) * 0.5f)),
-                        (int) ((y + height + 2) / 0.75f), 0xffffff, true);
+                mc.font.draw(poseStack, c,
+                        ((x + 20 * i) / 0.75f) - (mc.font.width(c) * 0.5f),
+                        (y + height + 2) / 0.75f, 0xffffff);
             }
-            gr.pose().popPose();
+            poseStack.popPose();
 
             updateHeight(deltaTicks);
         }

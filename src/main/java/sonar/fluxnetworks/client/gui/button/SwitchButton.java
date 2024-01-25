@@ -1,7 +1,7 @@
 package sonar.fluxnetworks.client.gui.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.util.Mth;
 import sonar.fluxnetworks.api.gui.EnumNetworkColor;
 import sonar.fluxnetworks.client.gui.basic.GuiButtonCore;
@@ -40,7 +40,7 @@ public class SwitchButton extends GuiButtonCore {
     }
 
     @Override
-    protected void drawButton(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+    protected void drawButton(PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
         // Calculate animation
         // 1000ms=20ticks, so animation duration is (1000/20*4)=200ms
         float delta = deltaTicks / 4f;
@@ -62,7 +62,7 @@ public class SwitchButton extends GuiButtonCore {
             RenderSystem.setShaderColor(r * 0.5F, g * 0.5F, b * 0.5F, 0.9F);
         }
         // Background
-        GuiFocusable.blitF(gr, x, y, thumbOffset * 2, height, 320, 256, thumbOffset * 8, 32);
+        screen.blitF(poseStack, x, y, thumbOffset * 2, height, 320, 256, thumbOffset * 8, 32);
 
         if (mClickable) {
             if (isMouseHovered(mouseX, mouseY)) {
@@ -76,7 +76,7 @@ public class SwitchButton extends GuiButtonCore {
             RenderSystem.setShaderColor(0.5F, 0.5F, 0.5F, 1.0F);
         }
         // Track
-        GuiFocusable.blitF(gr, x, y, width, height, 256, 256, 64, 32);
+        screen.blitF(poseStack, x, y, width, height, 256, 256, 64, 32);
 
         if (mClickable) {
             if (mChecked || isMouseHovered(mouseX, mouseY)) {
@@ -88,8 +88,7 @@ public class SwitchButton extends GuiButtonCore {
             RenderSystem.setShaderColor(0.5F, 0.5F, 0.5F, 1.0F);
         }
         // Thumb
-        GuiFocusable.blitF(gr, x + thumbOffset, y, width / 2f, height, 256, 288, 32, 32);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        screen.blitF(poseStack, x + thumbOffset, y, width / 2f, height, 256, 288, 32, 32);
     }
 
     public void toggle() {

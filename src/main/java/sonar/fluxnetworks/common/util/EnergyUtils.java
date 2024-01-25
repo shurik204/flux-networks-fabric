@@ -3,7 +3,7 @@ package sonar.fluxnetworks.common.util;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -77,7 +77,7 @@ public final class EnergyUtils {
                 continue;
             }
             try {
-                BuiltInRegistries.BLOCK.getOptional(new ResourceLocation(s)).ifPresent(BLOCK_BLACKLIST::add);
+                Registry.BLOCK.getOptional(new ResourceLocation(s)).ifPresent(BLOCK_BLACKLIST::add);
             } catch (Exception e) {
                 FluxNetworks.LOGGER.warn(MARKER, "Block blacklist error: {} has incorrect formatting", s, e);
             }
@@ -88,7 +88,7 @@ public final class EnergyUtils {
                 continue;
             }
             try {
-                BuiltInRegistries.ITEM.getOptional(new ResourceLocation(s)).ifPresent(ITEM_BLACKLIST::add);
+                Registry.ITEM.getOptional(new ResourceLocation(s)).ifPresent(ITEM_BLACKLIST::add);
             } catch (Exception e) {
                 FluxNetworks.LOGGER.warn(MARKER, "Item blacklist error: {} has incorrect formatting", s, e);
             }

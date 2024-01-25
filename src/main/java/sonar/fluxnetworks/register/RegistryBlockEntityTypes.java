@@ -2,7 +2,6 @@ package sonar.fluxnetworks.register;
 
 import com.mojang.datafixers.DSL;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -23,7 +22,7 @@ public class RegistryBlockEntityTypes {
     public static final BlockEntityType<TileFluxStorage.Gargantuan> GARGANTUAN_FLUX_STORAGE = register(RegistryBlocks.GARGANTUAN_FLUX_STORAGE_KEY, new BlockEntityType<>(TileFluxStorage.Gargantuan::new, Set.of(RegistryBlocks.GARGANTUAN_FLUX_STORAGE), DSL.remainderType()));
 
     private static <T extends BlockEntity> BlockEntityType<T> register(ResourceLocation key, BlockEntityType<T> blockEntityType) {
-        return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, key, blockEntityType);
+        return Registry.register(Registry.BLOCK_ENTITY_TYPE, key, blockEntityType);
     }
 
     public static void init() {

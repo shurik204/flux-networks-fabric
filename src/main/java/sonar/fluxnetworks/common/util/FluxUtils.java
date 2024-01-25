@@ -9,7 +9,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
@@ -172,7 +172,7 @@ public class FluxUtils {
 
     @Nonnull
     public static GlobalPos readGlobalPos(@Nonnull CompoundTag tag) {
-        return GlobalPos.of(ResourceKey.create(Registries.DIMENSION,
+        return GlobalPos.of(ResourceKey.create(Registry.DIMENSION_REGISTRY,
                         new ResourceLocation(tag.getString("dim"))),
                 new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z")));
     }
@@ -184,7 +184,7 @@ public class FluxUtils {
 
     @Nonnull
     public static GlobalPos readGlobalPos(@Nonnull FriendlyByteBuf buffer) {
-        return GlobalPos.of(ResourceKey.create(Registries.DIMENSION,
+        return GlobalPos.of(ResourceKey.create(Registry.DIMENSION_REGISTRY,
                 buffer.readResourceLocation()), buffer.readBlockPos());
     }
 

@@ -3,16 +3,15 @@ package sonar.fluxnetworks.client.gui.basic;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.client.gui.EnumNavigationTab;
@@ -58,7 +57,7 @@ public abstract class GuiFocusable extends AbstractContainerScreen<FluxMenu> {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         InputConstants.Key key = InputConstants.getKey(keyCode, scanCode);
-        KeyMapping keyInventory = Minecraft.getInstance().options.keyInventory;
+        KeyMapping keyInventory = getMinecraft().options.keyInventory;
         if (getFocused() != null) {
             if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
                 setFocused(null);
@@ -94,20 +93,20 @@ public abstract class GuiFocusable extends AbstractContainerScreen<FluxMenu> {
         }
     }
 
-    protected void blitBackgroundOrFrame(@Nonnull GuiGraphics gr) {
+    protected void blitBackgroundOrFrame(@Nonnull PoseStack poseStack) {
         float cx = width / 2f;
         float cy = height / 2f + 5;
-        blitF(gr.pose().last().pose(), cx - 86, cy - 86, 0, 172, 172,
+        blitF(poseStack.last().pose(), cx - 86, cy - 86, getBlitOffset(), 172, 172,
                 0, 0, 1, 1);
     }
 
-    public static void blitF(@Nonnull GuiGraphics gr, float x, float y, float width, float height,
-                             float uOffset, float vOffset, float uWidth, float vHeight) {
+    public void blitF(@Nonnull PoseStack poseStack, float x, float y, float width, float height,
+                      float uOffset, float vOffset, float uWidth, float vHeight) {
         float minU = uOffset / TEXTURE_SIZE;
         float minV = vOffset / TEXTURE_SIZE;
         float maxU = (uOffset + uWidth) / TEXTURE_SIZE;
         float maxV = (vOffset + vHeight) / TEXTURE_SIZE;
-        blitF(gr.pose().last().pose(), x, y, 0, width, height, minU, minV, maxU, maxV);
+        blitF(poseStack.last().pose(), x, y, getBlitOffset(), width, height, minU, minV, maxU, maxV);
     }
 
     public static void blitF(Matrix4f matrix, float x, float y, float z, float width, float height,
@@ -121,5 +120,9 @@ public abstract class GuiFocusable extends AbstractContainerScreen<FluxMenu> {
         builder.vertex(matrix, x + width, y + height, z).uv(maxU, maxV).endVertex();
         var buffer = builder.end();
         BufferUploader.drawWithShader(buffer);
+    }
+
+    public Minecraft getMinecraft() {
+        return Minecraft.getInstance();
     }
 }

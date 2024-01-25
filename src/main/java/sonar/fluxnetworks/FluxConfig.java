@@ -1,11 +1,11 @@
 package sonar.fluxnetworks;
 
 import com.google.common.collect.Lists;
-import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
-import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraftforge.api.ModLoadingContext;
+import net.minecraftforge.api.fml.event.config.ModConfigEvents;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.IConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
@@ -50,10 +50,10 @@ public class FluxConfig {
         ModConfigEvents.reloading(FluxNetworks.MODID).register(FluxConfig::reload);
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            ForgeConfigRegistry.INSTANCE.register(FluxNetworks.MODID, ModConfig.Type.CLIENT, CLIENT_SPEC);
+            ModLoadingContext.registerConfig(FluxNetworks.MODID, ModConfig.Type.CLIENT, CLIENT_SPEC);
         }
-        ForgeConfigRegistry.INSTANCE.register(FluxNetworks.MODID, ModConfig.Type.COMMON, COMMON_SPEC);
-        ForgeConfigRegistry.INSTANCE.register(FluxNetworks.MODID, ModConfig.Type.SERVER, SERVER_SPEC);
+        ModLoadingContext.registerConfig(FluxNetworks.MODID, ModConfig.Type.COMMON, COMMON_SPEC);
+        ModLoadingContext.registerConfig(FluxNetworks.MODID, ModConfig.Type.SERVER, SERVER_SPEC);
     }
 
     static void reload(@Nonnull ModConfig config) {

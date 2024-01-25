@@ -3,7 +3,7 @@
     "render_type": "cutout",
     "textures": {
         "0":"fluxnetworks:block/plug/on",
-        "colour": "fluxnetworks:block/plug/colour",
+        "colour": "fluxnetworks:block/plug/color",
         "particle":"fluxnetworks:block/plug/on"
     },
     "elements": [

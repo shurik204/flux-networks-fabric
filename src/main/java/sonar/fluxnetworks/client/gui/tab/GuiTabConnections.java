@@ -1,8 +1,8 @@
 package sonar.fluxnetworks.client.gui.tab;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -80,26 +80,26 @@ public class GuiTabConnections extends GuiTabPages<IFluxDevice> {
     }
 
     @Override
-    protected void drawBackgroundLayer(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
-        super.drawBackgroundLayer(gr, mouseX, mouseY, deltaTicks);
+    protected void drawBackgroundLayer(PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
+        super.drawBackgroundLayer(poseStack, mouseX, mouseY, deltaTicks);
         if (getNetwork().isValid()) {
             if (mSelectionMode) {
-                gr.drawString(font,
+                font.draw(poseStack,
                         FluxTranslate.SELECTED.format(ChatFormatting.AQUA.toString() + mSelected.size() + ChatFormatting.RESET),
                         leftPos + 20, topPos + 10,
                         0xffffff);
             } else {
-                gr.drawString(font,
+                font.draw(poseStack,
                         FluxTranslate.SORT_BY.get() + ": " + ChatFormatting.AQUA + FluxTranslate.SORTING_SMART.get(),
                         leftPos + 19, topPos + 10, 0xffffff);
             }
         } else {
-            renderNavigationPrompt(gr, FluxTranslate.ERROR_NO_SELECTED, EnumNavigationTab.TAB_SELECTION);
+            renderNavigationPrompt(poseStack, FluxTranslate.ERROR_NO_SELECTED, EnumNavigationTab.TAB_SELECTION);
         }
     }
 
     @Override
-    public void renderElement(GuiGraphics gr, IFluxDevice element, int x, int y) {
+    public void renderElement(PoseStack poseStack, IFluxDevice element, int x, int y) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -115,13 +115,13 @@ public class GuiTabConnections extends GuiTabPages<IFluxDevice> {
 
         if (mSelectionMode) {
             if (mSelected.contains(element)) {
-                gr.fill(x - 5, y + 1, x - 3, y + mElementHeight - 1, 0xccffffff);
-                gr.fill(x + mElementWidth + 3, y + 1, x + mElementWidth + 5, y + mElementHeight - 1,
+                fill(poseStack, x - 5, y + 1, x - 3, y + mElementHeight - 1, 0xccffffff);
+                fill(poseStack, x + mElementWidth + 3, y + 1, x + mElementWidth + 5, y + mElementHeight - 1,
                         0xccffffff);
                 RenderSystem.setShaderColor(r, g, b, 1.0f);
             } else {
-                gr.fill(x - 5, y + 1, x - 3, y + mElementHeight - 1, 0xaa606060);
-                gr.fill(x + mElementWidth + 3, y + 1, x + mElementWidth + 5, y + mElementHeight - 1,
+                fill(poseStack, x - 5, y + 1, x - 3, y + mElementHeight - 1, 0xaa606060);
+                fill(poseStack, x + mElementWidth + 3, y + 1, x + mElementWidth + 5, y + mElementHeight - 1,
                         0xaa606060);
                 RenderSystem.setShaderColor(r * 0.5f, g * 0.5f, b * 0.5f, 1.0f);
                 textColor = 0xd0d0d0;
@@ -129,33 +129,32 @@ public class GuiTabConnections extends GuiTabPages<IFluxDevice> {
         } else {
             RenderSystem.setShaderColor(r, g, b, 1.0f);
         }
-        blitF(gr, x, y, mElementWidth, mElementHeight, 0, 384, mElementWidth * 2, mElementHeight * 2);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        blitF(poseStack, x, y, mElementWidth, mElementHeight, 0, 384, mElementWidth * 2, mElementHeight * 2);
         int titleY;
         if (element.isChunkLoaded()) {
-            gr.pose().pushPose();
-            gr.pose().scale(0.75f, 0.75f, 1);
-            gr.drawString(font, FluxUtils.getTransferInfo(element, EnergyType.E), (int) ((x + 20) / 0.75f),
-                    (int) ((y + 10) / 0.75f), textColor, true);
-            gr.pose().popPose();
+            poseStack.pushPose();
+            poseStack.scale(0.75f, 0.75f, 1);
+            font.draw(poseStack, FluxUtils.getTransferInfo(element, EnergyType.E), (x + 20) / 0.75f,
+                    (y + 10) / 0.75f, textColor);
+            poseStack.popPose();
             titleY = y + 2;
         } else {
             textColor = 0x808080;
             titleY = y + 5;
         }
         if (element.getCustomName().isEmpty()) {
-            gr.drawString(font,
+            font.draw(poseStack,
                     Language.getInstance().getOrDefault(element.getDisplayStack().getItem().getDescriptionId()),
                     x + 20, titleY, textColor);
         } else {
-            gr.drawString(font, element.getCustomName(), x + 21, titleY, textColor);
+            font.draw(poseStack, element.getCustomName(), x + 21, titleY, textColor);
         }
-        renderItemStack(gr, element.getDisplayStack(), x + 2, y + 1);
+        renderItemStack(element.getDisplayStack(), x + 2, y + 1);
     }
 
     @Override
-    public void renderElementTooltip(GuiGraphics gr, IFluxDevice element, int mouseX, int mouseY) {
-        gr.renderComponentTooltip(font, getElementTooltips(element), mouseX, mouseY);
+    public void renderElementTooltip(PoseStack poseStack, IFluxDevice element, int mouseX, int mouseY) {
+        renderComponentTooltip(poseStack, getElementTooltips(element), mouseX, mouseY);
     }
 
     protected List<Component> getElementTooltips(@Nonnull IFluxDevice element) {

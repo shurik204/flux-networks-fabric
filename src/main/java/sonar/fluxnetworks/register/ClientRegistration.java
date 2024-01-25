@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
-import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.client.FluxColorHandler;
 import sonar.fluxnetworks.client.gui.GuiFluxAdminHome;
@@ -22,7 +21,6 @@ import sonar.fluxnetworks.client.gui.GuiFluxDeviceHome;
 import sonar.fluxnetworks.client.render.FluxStorageEntityRenderer;
 import sonar.fluxnetworks.common.connection.FluxMenu;
 import sonar.fluxnetworks.common.device.TileFluxDevice;
-import sonar.fluxnetworks.common.integration.MUIIntegration;
 
 import javax.annotation.Nonnull;
 
@@ -31,7 +29,8 @@ public class ClientRegistration {
     public static void init() {
         // TODO: maybe move this to another thread again?
         MenuScreens.register(RegistryMenuTypes.FLUX_MENU,
-                FluxNetworks.isModernUILoaded() ? MUIIntegration.upgradeScreenFactory(getScreenFactory()) : getScreenFactory()
+//                FluxNetworks.isModernUILoaded() ? MUIIntegration.upgradeScreenFactory(getScreenFactory()) : getScreenFactory()
+                getScreenFactory()
         );
         registerEntityRenderers();
         ColorHandlersCallback.ITEM.register(ClientRegistration::registerColorHandlers);
@@ -41,7 +40,7 @@ public class ClientRegistration {
         // onPlayerLoggedOut is now handled by MinecraftClientMixin
         // Add device data to the picked block
         ClientPickBlockGatherCallback.EVENT.register((player, result) -> {
-            if (result instanceof BlockHitResult blockHit && player.level().getBlockEntity(blockHit.getBlockPos()) instanceof TileFluxDevice fluxDevice) {
+            if (result instanceof BlockHitResult blockHit && player.level.getBlockEntity(blockHit.getBlockPos()) instanceof TileFluxDevice fluxDevice) {
                 ItemStack stack = fluxDevice.getDisplayStack();
                 // Fix colors on storages
                 stack.removeTagKey(FluxConstants.FLUX_COLOR);

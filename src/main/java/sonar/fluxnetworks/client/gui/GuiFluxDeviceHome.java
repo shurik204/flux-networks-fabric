@@ -1,6 +1,6 @@
 package sonar.fluxnetworks.client.gui;
 
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.locale.Language;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -112,25 +112,25 @@ public class GuiFluxDeviceHome extends GuiTabCore {
     }
 
     @Override
-    protected void drawForegroundLayer(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
-        super.drawForegroundLayer(gr, mouseX, mouseY, deltaTicks);
+    protected void drawForegroundLayer(PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
+        super.drawForegroundLayer(poseStack, mouseX, mouseY, deltaTicks);
 
         int color = getNetwork().getNetworkColor();
-        renderNetwork(gr, getNetwork().getNetworkName(), color, topPos + 8);
-        renderTransfer(gr, getDevice(), leftPos + 30, topPos + 90);
+        renderNetwork(poseStack, getNetwork().getNetworkName(), color, topPos + 8);
+        renderTransfer(poseStack, getDevice(), leftPos + 30, topPos + 90);
 
         if (mCustomName.getValue().isEmpty()) {
-            int y = mCustomName.getY() + (mCustomName.getHeight() - 8) / 2;
-            gr.drawString(font,
+            int y = mCustomName.y + (mCustomName.getHeight() - 8) / 2;
+            font.draw(poseStack,
                     Language.getInstance().getOrDefault(getDevice().getBlockState().getBlock().getDescriptionId()),
-                    mCustomName.getX() + 4, y, FluxConstants.INVALID_NETWORK_COLOR);
+                    mCustomName.x + 4, y, FluxConstants.INVALID_NETWORK_COLOR);
         }
 
-        gr.drawString(font, FluxTranslate.SURGE_MODE.get(), 20 + leftPos, 120 + topPos, color);
-        gr.drawString(font, FluxTranslate.DISABLE_LIMIT.get(), 20 + leftPos, 132 + topPos, color);
+        font.draw(poseStack, FluxTranslate.SURGE_MODE.get(), 20 + leftPos, 120 + topPos, color);
+        font.draw(poseStack, FluxTranslate.DISABLE_LIMIT.get(), 20 + leftPos, 132 + topPos, color);
 
         if (mChunkLoading != null) {
-            gr.drawString(font, FluxTranslate.CHUNK_LOADING.get(), 20 + leftPos, 144 + topPos, color);
+            font.draw(poseStack, FluxTranslate.CHUNK_LOADING.get(), 20 + leftPos, 144 + topPos, color);
         }
     }
 

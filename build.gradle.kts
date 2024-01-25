@@ -25,7 +25,7 @@ repositories {
     maven("https://maven.shedaniel.me") // REI
     maven("https://maven.shurik.me/releases") // simple-chunk-manager
     maven("https://cursemaven.com") { // GregTechCEu
-        content { includeGroup("curse.maven") }
+//        content { includeGroup("curse.maven") }
     }
     maven("https://mvn.devos.one/snapshots") // Porting Lib
     maven("https://jitpack.io") // Mixin Extras (Porting Lib)
@@ -62,38 +62,39 @@ dependencies {
 
     // Fabric API
     modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
-
-//    modCompileOnly("curse.maven:gregtechceu-modern-890405:4676506") // GregTechCEu 1.20.1-1.0.10-forge
+//    modImplementation(fabricApi.module("fabric-"))
 
     // EMI
-    modCompileOnly("dev.emi:emi-fabric:${property("emi_version")}:api") { isTransitive = false }
+//    modCompileOnly("dev.emi:emi-fabric:${property("emi_version")}:api") { isTransitive = false }
     // JEI
     modCompileOnly("mezz.jei:jei-${property("minecraft_version")}-fabric:${property("jei_version")}") { isTransitive = false }
     // REI
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${property("rei_version")}")
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${property("rei_version")}")
+//    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${property("rei_version")}")
+//    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${property("rei_version")}")
 
-    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${property("rei_version")}")
+//    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${property("rei_version")}")
     // Forge Config API port
-    modImplementation(include("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:8.0.0")) {}
+    implementation(include("com.electronwill.night-config:core:3.6.5")) {}
+    implementation(include("com.electronwill.night-config:toml:3.6.5")) {}
+    modImplementation(include("curse.maven:forge-config-api-port-fabric-547434:4143545")) {}
 
-    modImplementation("icyllis.modernui:ModernUI-Core:${property("modernui_core_version")}") {
-        exclude("org.apache.logging.log4j", "log4j-core")
-        exclude("org.apache.logging.log4j", "log4j-api")
-        exclude("com.google.code.findbugs", "jsr305")
-        exclude("org.jetbrains", "annotations")
-        exclude("com.ibm.icu", "icu4j")
-        exclude("it.unimi.dsi", "fastutil")
-    }
-    modImplementation("icyllis.modernui:ModernUI-Markdown:${property("modernui_core_version")}") {
-        exclude("org.apache.logging.log4j", "log4j-core")
-        exclude("org.apache.logging.log4j", "log4j-api")
-        exclude("com.google.code.findbugs", "jsr305")
-        exclude("org.jetbrains", "annotations")
-        exclude("com.ibm.icu", "icu4j")
-        exclude("it.unimi.dsi", "fastutil")
-    }
-    modImplementation("icyllis.modernui:ModernUI-Fabric:${property("minecraft_version")}-${property("modernui_fabric_version")}")
+//    modImplementation("icyllis.modernui:ModernUI-Core:${property("modernui_core_version")}") {
+//        exclude("org.apache.logging.log4j", "log4j-core")
+//        exclude("org.apache.logging.log4j", "log4j-api")
+//        exclude("com.google.code.findbugs", "jsr305")
+//        exclude("org.jetbrains", "annotations")
+//        exclude("com.ibm.icu", "icu4j")
+//        exclude("it.unimi.dsi", "fastutil")
+//    }
+//    modImplementation("icyllis.modernui:ModernUI-Markdown:${property("modernui_core_version")}") {
+//        exclude("org.apache.logging.log4j", "log4j-core")
+//        exclude("org.apache.logging.log4j", "log4j-api")
+//        exclude("com.google.code.findbugs", "jsr305")
+//        exclude("org.jetbrains", "annotations")
+//        exclude("com.ibm.icu", "icu4j")
+//        exclude("it.unimi.dsi", "fastutil")
+//    }
+//    modImplementation("icyllis.modernui:ModernUI-Fabric:${property("minecraft_version")}-${property("modernui_fabric_version")}")
 
     modImplementation(include("teamreborn:energy:${property("tr_energy_version")}") {
         exclude("net.fabricmc")
@@ -104,7 +105,7 @@ dependencies {
 
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:base:${property("porting_lib_version")}")) {}
 
-//    modImplementation "curse.maven:gregtechceu-modern-890405:${gtceu_file_id}"
+//    modImplementation("curse.maven:gregtechceu-modern-890405:${property("gtceu_file_id")}")
 
     modImplementation("dev.emi:trinkets:${property("trinkets_version")}")
 
@@ -115,6 +116,7 @@ dependencies {
     // Jade
     modImplementation("curse.maven:jade-324717:${property("jade_file_id")}")
 
+
     // for GregTechCEu
     // modCompileOnly("com.lowdragmc.ldlib:ldlib-common-1.20.1:${property("ldlib_version")}")
     // modCompileOnly("com.lowdragmc.ldlib:ldlib-fabric-1.20.1:${property("ldlib_version")}")
@@ -123,6 +125,10 @@ dependencies {
     modImplementation("com.ptsmods:devlogin:3.4.1")
 
     implementation("com.google.code.findbugs:jsr305:3.0.2")
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/fluxnetworks.accessWidener")
 }
 
 tasks {

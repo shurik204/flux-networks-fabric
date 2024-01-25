@@ -1,7 +1,7 @@
 package sonar.fluxnetworks.client.gui.tab;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 import org.lwjgl.glfw.GLFW;
 import sonar.fluxnetworks.api.FluxConstants;
@@ -33,22 +33,22 @@ public class GuiTabSettings extends GuiTabEditAbstract {
     }
 
     @Override
-    protected void drawForegroundLayer(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
-        super.drawForegroundLayer(gr, mouseX, mouseY, deltaTicks);
+    protected void drawForegroundLayer(PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
+        super.drawForegroundLayer(poseStack, mouseX, mouseY, deltaTicks);
         if (getNetwork().isValid()) {
             if (mDelete.isMouseHovered(mouseX, mouseY)) {
                 if (mDelete.isClickable()) {
-                    gr.drawCenteredString(font,
+                    drawCenteredString(poseStack, font,
                             ChatFormatting.BOLD + FluxTranslate.DELETE_NETWORK.get(),
                             mDelete.x + mDelete.width / 2, mDelete.y - 12, 0xff0000);
                 } else {
-                    gr.drawCenteredString(font,
+                    drawCenteredString(poseStack, font,
                             FluxTranslate.DOUBLE_SHIFT.get(),
                             mDelete.x + mDelete.width / 2, mDelete.y - 12, 0xffffff);
                 }
             }
         } else {
-            renderNavigationPrompt(gr, FluxTranslate.ERROR_NO_SELECTED, EnumNavigationTab.TAB_SELECTION);
+            renderNavigationPrompt(poseStack, FluxTranslate.ERROR_NO_SELECTED, EnumNavigationTab.TAB_SELECTION);
         }
     }
 
@@ -136,8 +136,7 @@ public class GuiTabSettings extends GuiTabEditAbstract {
     @Override
     public boolean onKeyPressed(int keyCode, int scanCode, int modifiers) {
         if (mDelete != null && getFocused() == null) {
-            // Replaced 'modifiers' check to 'keyCode' check
-            if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT) {
+            if ((modifiers & GLFW.GLFW_MOD_SHIFT) != 0) {
                 mDeleteCount++;
                 if (mDeleteCount > 1) {
                     mDelete.setClickable(true);

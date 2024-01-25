@@ -1,6 +1,6 @@
 package sonar.fluxnetworks.client.gui;
 
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.entity.player.Player;
 import org.lwjgl.glfw.GLFW;
 import sonar.fluxnetworks.api.FluxTranslate;
@@ -31,14 +31,14 @@ public class GuiFluxAdminHome extends GuiTabCore {
     }
 
     @Override
-    protected void drawForegroundLayer(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
-        super.drawForegroundLayer(gr, mouseX, mouseY, deltaTicks);
+    protected void drawForegroundLayer(PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
+        super.drawForegroundLayer(poseStack, mouseX, mouseY, deltaTicks);
 
         int color = getNetwork().getNetworkColor();
-        renderNetwork(gr, getNetwork().getNetworkName(), color, topPos + 8);
+        renderNetwork(poseStack, getNetwork().getNetworkName(), color, topPos + 8);
 
-        gr.drawString(font, AccessLevel.SUPER_ADMIN.getFormattedName(), leftPos + 20, topPos + 30, color);
-        gr.drawString(font, FluxTranslate.DETAILED_VIEW.get(), leftPos + 20, topPos + 42, color);
+        font.draw(poseStack, AccessLevel.SUPER_ADMIN.getFormattedName(), leftPos + 20, topPos + 30, color);
+        font.draw(poseStack, FluxTranslate.DETAILED_VIEW.get(), leftPos + 20, topPos + 42, color);
     }
 
     @Override

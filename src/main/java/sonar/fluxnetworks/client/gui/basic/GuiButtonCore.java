@@ -1,8 +1,9 @@
 package sonar.fluxnetworks.client.gui.basic;
 
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiComponent;
 
-public abstract class GuiButtonCore {
+public abstract class GuiButtonCore extends GuiComponent {
 
     public final GuiFocusable screen;
 
@@ -21,7 +22,7 @@ public abstract class GuiButtonCore {
         this.height = height;
     }
 
-    protected abstract void drawButton(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks);
+    protected abstract void drawButton(PoseStack poseStack, int mouseX, int mouseY, float deltaTicks);
 
     public boolean isClickable() {
         return mClickable;
@@ -35,10 +36,10 @@ public abstract class GuiButtonCore {
         return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
     }
 
-    public static void drawOuterFrame(GuiGraphics gr, int x, int y, int width, int height, int color) {
-        gr.fill(x - 1, y - 1, x + width + 1, y, color);
-        gr.fill(x - 1, y + height, x + width + 1, y + height + 1, color);
-        gr.fill(x - 1, y, x, y + height, color);
-        gr.fill(x + width, y, x + width + 1, y + height, color);
+    public static void drawOuterFrame(PoseStack poseStack, int x, int y, int width, int height, int color) {
+        fill(poseStack, x - 1, y - 1, x + width + 1, y, color);
+        fill(poseStack, x - 1, y + height, x + width + 1, y + height + 1, color);
+        fill(poseStack, x - 1, y, x, y + height, color);
+        fill(poseStack, x + width, y, x + width + 1, y + height, color);
     }
 }

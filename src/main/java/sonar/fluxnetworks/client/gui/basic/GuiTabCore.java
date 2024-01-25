@@ -1,17 +1,14 @@
 package sonar.fluxnetworks.client.gui.basic;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.world.entity.player.Player;
 import org.lwjgl.glfw.GLFW;
 import sonar.fluxnetworks.FluxConfig;
 import sonar.fluxnetworks.api.FluxTranslate;
 import sonar.fluxnetworks.client.ClientCache;
-import sonar.fluxnetworks.client.gui.EnumNavigationTab;
-import sonar.fluxnetworks.client.gui.GuiFluxAdminHome;
-import sonar.fluxnetworks.client.gui.GuiFluxDeviceHome;
+import sonar.fluxnetworks.client.gui.*;
 import sonar.fluxnetworks.client.gui.button.NavigationButton;
 import sonar.fluxnetworks.client.gui.tab.*;
 import sonar.fluxnetworks.common.connection.FluxMenu;
@@ -55,15 +52,15 @@ public abstract class GuiTabCore extends GuiFluxCore {
         }
     }
 
-    protected void renderNavigationPrompt(GuiGraphics gr, @Nonnull FluxTranslate error,
+    protected void renderNavigationPrompt(PoseStack poseStack, @Nonnull FluxTranslate error,
                                           @Nonnull EnumNavigationTab tab) {
-        gr.drawCenteredString(font, error.get(), width / 2, topPos + 16, 0xff808080);
-        gr.pose().pushPose();
-        gr.pose().scale(0.75f, 0.75f, 1);
-        gr.drawCenteredString(font,
+        drawCenteredString(poseStack, font, error.get(), width / 2, topPos + 16, 0xff808080);
+        poseStack.pushPose();
+        poseStack.scale(0.75f, 0.75f, 1);
+        drawCenteredString(poseStack, font,
                 FluxTranslate.CLICK_ABOVE.format(ChatFormatting.AQUA + tab.getTranslatedName() + ChatFormatting.RESET),
                 (int) ((width / 2f) / 0.75f), (int) ((topPos + 28f) / 0.75f), 0x808080);
-        gr.pose().popPose();
+        poseStack.popPose();
     }
 
     protected boolean redirectNavigationPrompt(double mouseX, double mouseY, int mouseButton,
@@ -81,11 +78,11 @@ public abstract class GuiTabCore extends GuiFluxCore {
         switch (tab) {
             case TAB_HOME:
                 if (menu.mProvider instanceof TileFluxDevice) {
-                    Minecraft.getInstance().setScreen(new GuiFluxDeviceHome(menu, mPlayer));
+                    getMinecraft().setScreen(new GuiFluxDeviceHome(menu, mPlayer));
                 } /*else if (menu.mDevice instanceof ItemFluxConfigurator.MenuBridge) {
-                    Minecraft.getInstance().setScreen(new GuiFluxConfiguratorHome(menu, mPlayer));
+                    getMinecraft().setScreen(new GuiFluxConfiguratorHome(menu, mPlayer));
                 }*/ else if (menu.mProvider instanceof ItemAdminConfigurator.Provider) {
-                    Minecraft.getInstance().setScreen(new GuiFluxAdminHome(menu, mPlayer));
+                    getMinecraft().setScreen(new GuiFluxAdminHome(menu, mPlayer));
                 } else {
                     onClose();
                 }
@@ -94,32 +91,32 @@ public abstract class GuiTabCore extends GuiFluxCore {
                 if (menu.mProvider instanceof ItemAdminConfigurator.Provider &&
                         ClientCache.sDetailedNetworkView &&
                         ClientCache.sSuperAdmin) {
-                    Minecraft.getInstance().setScreen(new GuiTabDetailedSelection(menu, mPlayer));
+                    getMinecraft().setScreen(new GuiTabDetailedSelection(menu, mPlayer));
                 } else {
-                    Minecraft.getInstance().setScreen(new GuiTabSelection(menu, mPlayer));
+                    getMinecraft().setScreen(new GuiTabSelection(menu, mPlayer));
                 }
                 break;
             case TAB_WIRELESS:
-                Minecraft.getInstance().setScreen(new GuiTabWireless(menu, mPlayer));
+                getMinecraft().setScreen(new GuiTabWireless(menu, mPlayer));
                 break;
             case TAB_CONNECTION:
-                Minecraft.getInstance().setScreen(new GuiTabConnections(menu, mPlayer));
+                getMinecraft().setScreen(new GuiTabConnections(menu, mPlayer));
                 break;
             case TAB_STATISTICS:
-                Minecraft.getInstance().setScreen(new GuiTabStatistics(menu, mPlayer));
+                getMinecraft().setScreen(new GuiTabStatistics(menu, mPlayer));
                 break;
             case TAB_MEMBER:
-                Minecraft.getInstance().setScreen(new GuiTabMembers(menu, mPlayer));
+                getMinecraft().setScreen(new GuiTabMembers(menu, mPlayer));
                 break;
             case TAB_SETTING:
-                Minecraft.getInstance().setScreen(new GuiTabSettings(menu, mPlayer));
+                getMinecraft().setScreen(new GuiTabSettings(menu, mPlayer));
                 break;
             case TAB_CREATE:
-                Minecraft.getInstance().setScreen(new GuiTabCreate(menu, mPlayer));
+                getMinecraft().setScreen(new GuiTabCreate(menu, mPlayer));
                 break;
         }
         if (playSound && FluxConfig.enableButtonSound) {
-            Minecraft.getInstance().getSoundManager().play(
+            getMinecraft().getSoundManager().play(
                     SimpleSoundInstance.forUI(RegistrySounds.BUTTON_CLICK, 1.0F));
         }
     }

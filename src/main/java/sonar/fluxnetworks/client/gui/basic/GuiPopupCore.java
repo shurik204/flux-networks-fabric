@@ -1,9 +1,9 @@
 package sonar.fluxnetworks.client.gui.basic;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import org.lwjgl.glfw.GLFW;
 import sonar.fluxnetworks.common.util.FluxUtils;
@@ -36,47 +36,46 @@ public abstract class GuiPopupCore<T extends GuiFluxCore> extends GuiFocusable {
     }
 
     @Override
-    public final void render(@Nonnull GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+    public final void render(@Nonnull PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected void renderLabels(@Nonnull GuiGraphics gr, int mouseX, int mouseY) {
+    protected void renderLabels(@Nonnull PoseStack poseStack, int mouseX, int mouseY) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected final void renderBg(@Nonnull GuiGraphics gr, float deltaTicks, int mouseX, int mouseY) {
+    protected final void renderBg(@Nonnull PoseStack poseStack, float deltaTicks, int mouseX, int mouseY) {
         throw new UnsupportedOperationException();
     }
 
-    public void drawForegroundLayer(@Nonnull GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+    public void drawForegroundLayer(@Nonnull PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
         for (GuiButtonCore button : mButtons) {
-            button.drawButton(gr, mouseX, mouseY, deltaTicks);
+            button.drawButton(poseStack, mouseX, mouseY, deltaTicks);
         }
     }
 
-    public void drawBackgroundLayer(@Nonnull GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+    public void drawBackgroundLayer(@Nonnull PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
         mAlpha = Math.min(1.0f, mAlpha + deltaTicks / 6); // animation duration is (1000/20*6)=300ms
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, mAlpha);
         RenderSystem.setShaderTexture(0, BACKGROUND);
-        blitBackgroundOrFrame(gr);
+        blitBackgroundOrFrame(poseStack);
 
         int color = mHost.getNetwork().getNetworkColor();
         RenderSystem.setShaderColor(FluxUtils.getRed(color), FluxUtils.getGreen(color), FluxUtils.getBlue(color), mAlpha);
         RenderSystem.setShaderTexture(0, FRAME);
-        blitBackgroundOrFrame(gr);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        blitBackgroundOrFrame(poseStack);
 
         // dimmer
         int bgColor = (int) (mAlpha * 128) << 24;
-        gr.fill(0, 0, width, height, bgColor);
+        fill(poseStack, 0, 0, width, height, bgColor);
 
-        for (Renderable widget : renderables) {
-            widget.render(gr, mouseX, mouseY, deltaTicks);
+        for (Widget widget : renderables) {
+            widget.render(poseStack, mouseX, mouseY, deltaTicks);
         }
     }
 

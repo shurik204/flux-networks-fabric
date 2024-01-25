@@ -28,12 +28,13 @@
 			"sonar.fluxnetworks.common.integration.jade.JadeEntrypoint"
 		]
 	},
+	"accessWidener": "fluxnetworks.accessWidener",
 	"mixins": [
 		"fluxnetworks.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=${loader_version}",
-		"minecraft": "~1.20.1",
+		"minecraft": "~1.19.2",
 		"java": ">=${java_version}",
 		"fabric-api": ">=${fabric_version}"
 	},

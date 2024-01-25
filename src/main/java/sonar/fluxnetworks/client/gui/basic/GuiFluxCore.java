@@ -1,9 +1,8 @@
 package sonar.fluxnetworks.client.gui.basic;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +16,6 @@ import sonar.fluxnetworks.client.ClientCache;
 import sonar.fluxnetworks.common.connection.FluxMenu;
 import sonar.fluxnetworks.common.connection.FluxNetwork;
 import sonar.fluxnetworks.common.device.TileFluxDevice;
-import sonar.fluxnetworks.common.integration.MUIIntegration;
 import sonar.fluxnetworks.common.item.ItemAdminConfigurator;
 import sonar.fluxnetworks.common.util.FluxUtils;
 import sonar.fluxnetworks.register.ClientMessages;
@@ -48,14 +46,14 @@ public abstract class GuiFluxCore extends GuiPopupHost {
     private void onResponse(FluxMenu menu, int key, int code) {
         final FluxTranslate t = FluxTranslate.fromResponseCode(code);
         if (t != null) {
-            if (FluxNetworks.isModernUILoaded()) {
-                MUIIntegration.showToastError(t);
-            } else {
-                Minecraft.getInstance().getToasts().addToast(SystemToast.multiline(Minecraft.getInstance(),
+//            if (FluxNetworks.isModernUILoaded()) {
+//                MUIIntegration.showToastError(t);
+//            } else {
+                getMinecraft().getToasts().addToast(SystemToast.multiline(getMinecraft(),
                         SystemToast.SystemToastIds.TUTORIAL_HINT,
                         Component.literal(FluxNetworks.NAME),
                         t.getComponent()));
-            }
+//            }
         }
         onResponseAction(key, code);
     }
@@ -90,27 +88,26 @@ public abstract class GuiFluxCore extends GuiPopupHost {
     }
 
     @Override
-    protected void drawForegroundLayer(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
-        super.drawForegroundLayer(gr, mouseX, mouseY, deltaTicks);
+    protected void drawForegroundLayer(PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
+        super.drawForegroundLayer(poseStack, mouseX, mouseY, deltaTicks);
         for (GuiButtonCore button : mButtons) {
-            button.drawButton(gr, mouseX, mouseY, deltaTicks);
+            button.drawButton(poseStack, mouseX, mouseY, deltaTicks);
         }
     }
 
     @Override
-    protected void drawBackgroundLayer(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
-        super.drawBackgroundLayer(gr, mouseX, mouseY, deltaTicks);
+    protected void drawBackgroundLayer(PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
+        super.drawBackgroundLayer(poseStack, mouseX, mouseY, deltaTicks);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, BACKGROUND);
-        blitBackgroundOrFrame(gr);
+        blitBackgroundOrFrame(poseStack);
 
         int color = mNetwork.getNetworkColor();
         RenderSystem.setShaderColor(FluxUtils.getRed(color), FluxUtils.getGreen(color), FluxUtils.getBlue(color), 1.0f);
         RenderSystem.setShaderTexture(0, FRAME);
-        blitBackgroundOrFrame(gr);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        blitBackgroundOrFrame(poseStack);
     }
 
     @Override
@@ -141,36 +138,35 @@ public abstract class GuiFluxCore extends GuiPopupHost {
     /**
      * Render the network bar on the top.
      */
-    protected void renderNetwork(GuiGraphics gr, String name, int color, int y) {
+    protected void renderNetwork(PoseStack poseStack, String name, int color, int y) {
         RenderSystem.enableBlend();
         RenderSystem.setShaderColor(FluxUtils.getRed(color), FluxUtils.getGreen(color), FluxUtils.getBlue(color), 1.0f);
         RenderSystem.setShaderTexture(0, ICON);
         int x = leftPos + 20;
-        blitF(gr, x, y, 135, 12, 0, 320, 270, 24);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        gr.drawString(font, name, x + 4, y + 2, 0xffffff);
+        blitF(poseStack, x, y, 135, 12, 0, 320, 270, 24);
+        font.draw(poseStack, name, x + 4, y + 2, 0xffffff);
     }
 
     /**
      * Render the energy change.
      */
-    protected void renderTransfer(GuiGraphics gr, IFluxDevice device, int x, int y) {
+    protected void renderTransfer(PoseStack poseStack, IFluxDevice device, int x, int y) {
         RenderSystem.enableBlend();
-        gr.drawString(font, FluxUtils.getTransferInfo(device, EnergyType.E), x, y, 0xffffff);
+        font.draw(poseStack, FluxUtils.getTransferInfo(device, EnergyType.E), x, y, 0xffffff);
 
         String text = device.getDeviceType().isStorage() ? FluxTranslate.ENERGY.get() : FluxTranslate.BUFFER.get();
         text += ": " + ChatFormatting.BLUE + EnergyType.E.getStorage(device.getTransferBuffer());
-        gr.drawString(font, text, x, y + 10, 0xffffff);
+        font.draw(poseStack, text, x, y + 10, 0xffffff);
 
-        renderItemStack(gr, device.getDisplayStack(), x - 20, y + 1);
+        renderItemStack(device.getDisplayStack(), x - 20, y + 1);
     }
 
-    protected void renderItemStack(GuiGraphics gr, ItemStack stack, int x, int y) {
-        gr.pose().pushPose();
-        gr.pose().translate(0, 0, 50);
-        gr.renderItem(stack, x, y);
-        gr.renderItemDecorations(font, stack, x, y);
-        gr.pose().popPose();
+    protected void renderItemStack(ItemStack stack, int x, int y) {
+        setBlitOffset(50);
+        itemRenderer.blitOffset = 50.0F;
+        itemRenderer.renderAndDecorateItem(stack, x, y);
+        setBlitOffset(0);
+        itemRenderer.blitOffset = 0.0F;
     }
 
     public void setConnectedNetwork(FluxNetwork network, String password) {

@@ -1,7 +1,6 @@
 package sonar.fluxnetworks.register;
 
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -13,8 +12,8 @@ public class RegistryItems {
     private static final ResourceLocation FLUX_CORE_KEY = FluxNetworks.location("flux_core");
     private static final ResourceLocation FLUX_CONFIGURATOR_KEY = FluxNetworks.location("flux_configurator");
     private static final ResourceLocation ADMIN_CONFIGURATOR_KEY = FluxNetworks.location("admin_configurator");
-    private static final Item.Properties ITEM_PROPS = new Item.Properties().fireResistant();
-    private static final Item.Properties TOOL_PROPS = new Item.Properties().fireResistant().stacksTo(1);
+    private static final Item.Properties ITEM_PROPS = new Item.Properties().tab(RegistryCreativeModeTabs.CREATIVE_MODE_TAB).fireResistant();
+    private static final Item.Properties TOOL_PROPS = new Item.Properties().tab(RegistryCreativeModeTabs.CREATIVE_MODE_TAB).fireResistant().stacksTo(1);
 
     public static final Item FLUX_BLOCK = register(RegistryBlocks.FLUX_BLOCK_KEY, new BlockItem(RegistryBlocks.FLUX_BLOCK, ITEM_PROPS));
     public static final Item FLUX_PLUG = register(RegistryBlocks.FLUX_PLUG_KEY, new FluxDeviceItem(RegistryBlocks.FLUX_PLUG, ITEM_PROPS));
@@ -29,8 +28,9 @@ public class RegistryItems {
     public static final Item ADMIN_CONFIGURATOR = register(ADMIN_CONFIGURATOR_KEY, new ItemAdminConfigurator(TOOL_PROPS));
 
     public static Item register(ResourceLocation key, Item item) {
-        return Registry.register(BuiltInRegistries.ITEM, key,item);
+        return Registry.register(Registry.ITEM, key,item);
     }
 
-    public static void init() {}
+    public static void init() {
+    }
 }

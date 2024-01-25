@@ -139,5 +139,7 @@
 	"gui.fluxnetworks.access.superadmin": "Super Admin",
 
 	"gui.fluxnetworks.jei.creatingfluxrecipe": "Creating Flux",
-	"gui.fluxnetworks.jei.leftclickhelp": "Left click the %s"
+	"gui.fluxnetworks.jei.leftclickhelp": "Left click the %s",
+
+	"config.jade.plugin_fluxnetworks.device_data_provider": "Flux Networks Integration"
 }

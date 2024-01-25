@@ -1,8 +1,7 @@
 package sonar.fluxnetworks.client.gui.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import sonar.fluxnetworks.client.gui.EnumNavigationTab;
 import sonar.fluxnetworks.client.gui.basic.GuiButtonCore;
 import sonar.fluxnetworks.client.gui.basic.GuiFocusable;
@@ -18,7 +17,7 @@ public class NavigationButton extends GuiButtonCore {
     }
 
     @Override
-    protected void drawButton(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+    protected void drawButton(PoseStack poseStack, int mouseX, int mouseY, float deltaTicks) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         boolean hovered = isMouseHovered(mouseX, mouseY);
@@ -33,10 +32,10 @@ public class NavigationButton extends GuiButtonCore {
         }
         RenderSystem.setShaderTexture(0, GuiFocusable.ICON);
 
-        GuiFocusable.blitF(gr, x, y, width, height, 64 * mTab.ordinal(), 192, 64, 64);
+        screen.blitF(poseStack, x, y, width, height, 64 * mTab.ordinal(), 192, 64, 64);
 
         if (hovered && mClickable) {
-            gr.drawCenteredString(Minecraft.getInstance().font, mTab.getTranslatedName(),
+            drawCenteredString(poseStack, screen.getMinecraft().font, mTab.getTranslatedName(),
                     x + width / 2, y - 10, 0xFFFFFFFF);
         }
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0f);

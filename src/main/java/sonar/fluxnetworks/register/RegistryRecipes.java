@@ -1,7 +1,6 @@
 package sonar.fluxnetworks.register;
 
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -19,7 +18,7 @@ public class RegistryRecipes {
     public static final RecipeSerializer<NBTWipeRecipe> NBT_WIPE_RECIPE = register(NBT_WIPE_RECIPE_KEY, NBTWipeRecipeSerializer.INSTANCE);
 
     private static <S extends RecipeSerializer<T>, T extends Recipe<?>> S register(ResourceLocation id, S recipeSerializer) {
-        return Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id, recipeSerializer);
+        return Registry.register(Registry.RECIPE_SERIALIZER, id, recipeSerializer);
     }
 
     public static void init() {}

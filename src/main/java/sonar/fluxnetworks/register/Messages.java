@@ -240,7 +240,7 @@ public class Messages {
         looper.execute(() -> {
             ServerPlayer p = player.get();
             try {
-                if (p != null && p.level().getBlockEntity(payload.readBlockPos()) instanceof TileFluxDevice e) {
+                if (p != null && p.level.getBlockEntity(payload.readBlockPos()) instanceof TileFluxDevice e) {
                     if (e.canPlayerAccess(p)) {
                         byte id = payload.readByte();
                         if (id > 0) {
@@ -309,8 +309,8 @@ public class Messages {
                 return;
             }
             try {
-                if (p.level().isLoaded(pos) &&
-                        p.level().getBlockEntity(pos) instanceof TileFluxDevice e &&
+                if (p.level.isLoaded(pos) &&
+                        p.level.getBlockEntity(pos) instanceof TileFluxDevice e &&
                         e.canPlayerAccess(p)) {
                     e.readCustomTag(tag, FluxConstants.NBT_TILE_SETTINGS);
                 } else {
@@ -405,7 +405,7 @@ public class Messages {
             if (p == null) {
                 return;
             }
-            if (p.level().getBlockEntity(pos) instanceof TileFluxDevice e) {
+            if (p.level.getBlockEntity(pos) instanceof TileFluxDevice e) {
                 if (e.getNetworkID() == networkID) {
                     return;
                 }
