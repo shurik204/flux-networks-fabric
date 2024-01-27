@@ -73,10 +73,6 @@ dependencies {
 //    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${property("rei_version")}")
 
 //    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${property("rei_version")}")
-    // Forge Config API port
-    implementation("com.electronwill.night-config:core:3.6.5")
-    implementation("com.electronwill.night-config:toml:3.6.5")
-    modImplementation(include("curse.maven:forge-config-api-port-fabric-547434:4143545")) {}
 
 //    modImplementation("icyllis.modernui:ModernUI-Core:${property("modernui_core_version")}") {
 //        exclude("org.apache.logging.log4j", "log4j-core")
@@ -104,6 +100,8 @@ dependencies {
     modImplementation(include("me.shurik:simple-chunk-manager:0.2.7")) {}
 
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:base:${property("porting_lib_version")}")) {}
+    // Use 1.19.4 version of config module. What can go wrong?
+    modImplementation(include("frankenstein.fabricators_of_create.Porting-Lib:config:2.1.995")) {}
 
 //    modImplementation("curse.maven:gregtechceu-modern-890405:${property("gtceu_file_id")}")
 
