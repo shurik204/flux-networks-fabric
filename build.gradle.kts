@@ -74,8 +74,8 @@ dependencies {
 
 //    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${property("rei_version")}")
     // Forge Config API port
-    implementation(include("com.electronwill.night-config:core:3.6.5")) {}
-    implementation(include("com.electronwill.night-config:toml:3.6.5")) {}
+    implementation("com.electronwill.night-config:core:3.6.5")
+    implementation("com.electronwill.night-config:toml:3.6.5")
     modImplementation(include("curse.maven:forge-config-api-port-fabric-547434:4143545")) {}
 
 //    modImplementation("icyllis.modernui:ModernUI-Core:${property("modernui_core_version")}") {
@@ -173,7 +173,7 @@ tasks {
             projectId = "962362"
             minecraftVersions.add(property("minecraft_version").toString())
             requires("fabric-api")
-            optional("modern-ui")
+//            optional("modern-ui")
             optional("jade")
             optional("trinkets")
             optional("jei")
@@ -183,7 +183,7 @@ tasks {
             projectId = "d1ItuIJe"
             minecraftVersions.add(property("minecraft_version").toString())
             requires("fabric-api")
-            optional("modern-ui")
+//            optional("modern-ui")
             optional("jade")
             optional("trinkets")
             optional("jei")
