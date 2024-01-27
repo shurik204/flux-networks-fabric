@@ -75,7 +75,7 @@ dependencies {
 
     modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${property("rei_version")}")
     // Forge Config API port
-    modImplementation(include("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:8.0.0")) {}
+    modRuntimeOnly(include("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${property("forge_cfg_version")}")) {}
 
     modImplementation("icyllis.modernui:ModernUI-Core:${property("modernui_core_version")}") {
         exclude("org.apache.logging.log4j", "log4j-core")
@@ -103,7 +103,7 @@ dependencies {
     modImplementation(include("me.shurik:simple-chunk-manager:0.2.7")) {}
 
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:base:${property("porting_lib_version")}")) {}
-    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:models:${property("porting_lib_version")}")) {}
+    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:config:${property("porting_lib_version")}")) {}
 
 //    modImplementation "curse.maven:gregtechceu-modern-890405:${gtceu_file_id}"
 
