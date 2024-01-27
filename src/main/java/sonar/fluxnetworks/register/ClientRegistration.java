@@ -3,6 +3,7 @@ package sonar.fluxnetworks.register;
 import io.github.fabricators_of_create.porting_lib.event.client.ColorHandlersCallback;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.client.player.ClientPickBlockGatherCallback;
 import net.minecraft.client.Minecraft;
@@ -10,6 +11,7 @@ import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +28,8 @@ import sonar.fluxnetworks.common.integration.MUIIntegration;
 
 import javax.annotation.Nonnull;
 
+import static sonar.fluxnetworks.register.RegistryBlocks.*;
+
 @Environment(EnvType.CLIENT)
 public class ClientRegistration {
     public static void init() {
@@ -35,6 +39,12 @@ public class ClientRegistration {
         );
         registerEntityRenderers();
         ColorHandlersCallback.ITEM.register(ClientRegistration::registerColorHandlers);
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), FLUX_PLUG,
+                FLUX_POINT,
+                FLUX_CONTROLLER,
+                BASIC_FLUX_STORAGE,
+                HERCULEAN_FLUX_STORAGE,
+                GARGANTUAN_FLUX_STORAGE);
 
         ClientPlayNetworking.registerGlobalReceiver(Channel.CHANNEL_NAME, (client, handler, buf, responseSender) ->
                 ClientMessages.msg(buf.readShort(), buf, () -> Minecraft.getInstance().player));
@@ -79,20 +89,12 @@ public class ClientRegistration {
 
     public static void registerColorHandlers(ItemColors itemColors, BlockColors blockColors) {
         // Items
-        itemColors.register(FluxColorHandler.INSTANCE,
-                RegistryBlocks.FLUX_CONTROLLER,
-                RegistryBlocks.FLUX_POINT,
-                RegistryBlocks.FLUX_PLUG);
+        itemColors.register(FluxColorHandler.INSTANCE, FLUX_CONTROLLER, FLUX_POINT, FLUX_PLUG);
         itemColors.register(FluxColorHandler::colorMultiplierForConfigurator,
                 RegistryItems.FLUX_CONFIGURATOR);
 
         // Blocks
-        blockColors.register(FluxColorHandler.INSTANCE,
-                RegistryBlocks.FLUX_CONTROLLER,
-                RegistryBlocks.FLUX_POINT,
-                RegistryBlocks.FLUX_PLUG,
-                RegistryBlocks.BASIC_FLUX_STORAGE,
-                RegistryBlocks.HERCULEAN_FLUX_STORAGE,
-                RegistryBlocks.GARGANTUAN_FLUX_STORAGE);
+        blockColors.register(FluxColorHandler.INSTANCE, FLUX_CONTROLLER, FLUX_POINT, FLUX_PLUG,
+                BASIC_FLUX_STORAGE, HERCULEAN_FLUX_STORAGE, GARGANTUAN_FLUX_STORAGE);
     }
 }

@@ -1,6 +1,5 @@
 {
   "parent": "fluxnetworks:block/basic_flux_storage",
-  "render_type": "cutout",
   "textures": {
     "base": "fluxnetworks:block/base_color",
     "texture": "fluxnetworks:block/storage/tier/gargantuan",
