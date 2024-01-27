@@ -1,6 +1,5 @@
 {
     "parent": "block/cube_all",
-    "render_type": "cutout",
     "textures": {
         "0":"fluxnetworks:block/plug/on",
         "colour": "fluxnetworks:block/plug/color",
