@@ -5,9 +5,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Vector2ic;
 import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxTranslate;
 import sonar.fluxnetworks.api.device.IFluxDevice;
@@ -111,6 +114,30 @@ public abstract class GuiFluxCore extends GuiPopupHost {
         RenderSystem.setShaderTexture(0, FRAME);
         blitBackgroundOrFrame(gr);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+
+    protected void drawTooltipWithBackground(GuiGraphics gr, int mouseX, int mouseY, Component text) {
+        ClientTooltipComponent tooltipText = ClientTooltipComponent.create(text.getVisualOrderText());
+
+        int textWidth = tooltipText.getWidth(font);
+        int textHeight = tooltipText.getHeight();
+
+        Vector2ic vector2ic = DefaultTooltipPositioner.INSTANCE.positionTooltip(this.width, this.height, mouseX, mouseY, textWidth, textHeight);
+        int tooltipX = vector2ic.x();
+        int tooltipY = vector2ic.y();
+
+        gr.pose().pushPose();
+
+        int backgroundX = tooltipX - 4;
+        int backgroundY = tooltipY - 4;
+
+        // Render background
+        gr.fill(backgroundX - 2, backgroundY - 2, backgroundX + textWidth + 2, backgroundY + textHeight + 2, 400, 0xB3000000);
+        gr.pose().translate(0.0F, 0.0F, 400.0F);
+        // Render tooltip text
+        gr.drawString(font, text, backgroundX, backgroundY, 0xFFFFFF);
+
+        gr.pose().popPose();
     }
 
     @Override

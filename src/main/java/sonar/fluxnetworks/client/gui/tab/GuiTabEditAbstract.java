@@ -5,10 +5,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 import org.lwjgl.glfw.GLFW;
 import sonar.fluxnetworks.api.FluxTranslate;
+import sonar.fluxnetworks.api.gui.EnumNetworkColor;
 import sonar.fluxnetworks.api.network.SecurityLevel;
 import sonar.fluxnetworks.client.gui.EnumNavigationTab;
 import sonar.fluxnetworks.client.gui.basic.*;
 import sonar.fluxnetworks.client.gui.button.ColorButton;
+import sonar.fluxnetworks.client.gui.button.CustomColorButton;
 import sonar.fluxnetworks.client.gui.button.FluxEditBox;
 import sonar.fluxnetworks.client.gui.popup.PopupCustomColor;
 import sonar.fluxnetworks.common.connection.FluxMenu;
@@ -24,6 +26,7 @@ public abstract class GuiTabEditAbstract extends GuiTabCore {
 
     protected SecurityLevel mSecurityLevel;
     public ColorButton mColorButton;
+    public CustomColorButton mCustomColorButton;
     public FluxEditBox mNetworkName;
     public FluxEditBox mPassword;
 
@@ -69,6 +72,10 @@ public abstract class GuiTabEditAbstract extends GuiTabCore {
             // .getName(), 14, 78, 0x606060);
             gr.drawString(font, FluxTranslate.NETWORK_COLOR.get() + ":", leftPos + 16, topPos + 89, 0xFF808080);
 
+            if (mCustomColorButton != null && mCustomColorButton.isMouseHovered(mouseX, mouseY)) {
+                drawTooltipWithBackground(gr, mouseX, mouseY, FluxTranslate.CUSTOM_COLOR_EDIT.makeComponent());
+            }
+
             renderNetwork(gr, mNetworkName.getValue(), mColorButton.mColor, topPos + 126);
         }
     }
@@ -98,22 +105,47 @@ public abstract class GuiTabEditAbstract extends GuiTabCore {
     @Override
     public void onButtonClicked(GuiButtonCore button, float mouseX, float mouseY, int mouseButton) {
         super.onButtonClicked(button, mouseX, mouseY, mouseButton);
-        if (button instanceof ColorButton) {
+        if (mouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT && button instanceof ColorButton colorButton) {
             mColorButton.setSelected(false);
-            mColorButton = (ColorButton) button;
+            mColorButton = colorButton;
             mColorButton.setSelected(true);
             onEditSettingsChanged();
-            if (mouseButton == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-                openPopup(new PopupCustomColor(this, mColorButton.mColor));
-            }
         }
+        if (mouseButton == GLFW.GLFW_MOUSE_BUTTON_RIGHT && button instanceof CustomColorButton) {
+            openPopup(new PopupCustomColor(this, mCustomColorButton.mColor));
+        }
+    }
+
+    protected void initColorSelector(int posX, int posY, boolean selectFirst) {
+        int colorIndex = EnumNetworkColor.getColorIndex(getNetwork().getNetworkColor());
+        int selectedIndex = selectFirst ? 0 : colorIndex;
+
+        for (int i = 0; i < EnumNetworkColor.VALUES.length; i++) {
+            ColorButton button = new ColorButton(this, posX + (i % 7) * 16, posY + (i / 7) * 16, EnumNetworkColor.VALUES[i].getRGB());
+            if (i == selectedIndex) {
+                mColorButton = button;
+                button.setSelected(true);
+            }
+            mButtons.add(button);
+        }
+
+        // Custom color button
+        mCustomColorButton = new CustomColorButton(this, leftPos + 32, topPos + 103);
+        // if the network color isn't in the default
+        // color list, then it's a custom one
+        if (mColorButton == null) {
+            mCustomColorButton.mColor = getNetwork().getNetworkColor();
+            mColorButton = mCustomColorButton;
+            mCustomColorButton.setSelected(true);
+        }
+        mButtons.add(mCustomColorButton);
     }
 
     @Override
     public void onPopupClose(GuiPopupCore<?> popUp) {
         super.onPopupClose(popUp);
         if (popUp instanceof PopupCustomColor) {
-            mColorButton.mColor = ((PopupCustomColor) popUp).mCurrentColor;
+            mCustomColorButton.mColor = ((PopupCustomColor) popUp).mCurrentColor;
             onEditSettingsChanged();
         }
     }
