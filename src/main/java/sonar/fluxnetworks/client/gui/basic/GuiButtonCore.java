@@ -12,6 +12,7 @@ public abstract class GuiButtonCore {
     public int height;
 
     protected boolean mClickable = true;
+    protected boolean mVisible = true;
 
     protected GuiButtonCore(GuiFocusable screen, int x, int y, int width, int height) {
         this.screen = screen;
@@ -20,8 +21,13 @@ public abstract class GuiButtonCore {
         this.width = width;
         this.height = height;
     }
+    protected void drawButton(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+        if (mVisible) {
+            drawButtonInternal(gr, mouseX, mouseY, deltaTicks);
+        }
+    }
 
-    protected abstract void drawButton(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks);
+    protected abstract void drawButtonInternal(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks);
 
     public boolean isClickable() {
         return mClickable;
@@ -40,5 +46,13 @@ public abstract class GuiButtonCore {
         gr.fill(x - 1, y + height, x + width + 1, y + height + 1, color);
         gr.fill(x - 1, y, x, y + height, color);
         gr.fill(x + width, y, x + width + 1, y + height, color);
+    }
+
+    public void setVisible(boolean visible) {
+        mVisible = visible;
+    }
+
+    public boolean isVisible() {
+        return mVisible;
     }
 }

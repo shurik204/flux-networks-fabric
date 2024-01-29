@@ -40,7 +40,7 @@ public class SwitchButton extends GuiButtonCore {
     }
 
     @Override
-    protected void drawButton(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+    protected void drawButtonInternal(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
         // Calculate animation
         // 1000ms=20ticks, so animation duration is (1000/20*4)=200ms
         float delta = deltaTicks / 4f;

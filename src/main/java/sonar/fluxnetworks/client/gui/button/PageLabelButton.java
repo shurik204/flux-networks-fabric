@@ -20,7 +20,7 @@ public class PageLabelButton extends GuiButtonCore {
     }
 
     @Override
-    public void drawButton(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+    public void drawButtonInternal(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
         int pages = mPages;
         if (pages <= 0) {
             return;

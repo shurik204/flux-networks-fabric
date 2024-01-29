@@ -18,7 +18,7 @@ public class NavigationButton extends GuiButtonCore {
     }
 
     @Override
-    protected void drawButton(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+    protected void drawButtonInternal(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         boolean hovered = isMouseHovered(mouseX, mouseY);

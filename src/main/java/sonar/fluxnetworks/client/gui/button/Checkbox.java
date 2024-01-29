@@ -21,7 +21,7 @@ public class Checkbox extends GuiButtonCore {
     }
 
     @Override
-    protected void drawButton(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+    protected void drawButtonInternal(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
         int color = isMouseHovered(mouseX, mouseY) ? 0xccffffff : 0xccb4b4b4;
 
         drawOuterFrame(gr, x, y, width, height, color);

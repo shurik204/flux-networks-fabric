@@ -15,7 +15,7 @@ public class ColorButton extends GuiButtonCore {
     }
 
     @Override
-    protected void drawButton(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+    protected void drawButtonInternal(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
         if (mSelected) {
             drawOuterFrame(gr, x, y, width, height, 0xFFFFFFFF);
         }

@@ -24,7 +24,7 @@ public class SimpleButton extends GuiButtonCore {
     }
 
     @Override
-    protected void drawButton(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
+    protected void drawButtonInternal(GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
         int color;
         int r = mColor >> 16 & 0xFF;
         int g = mColor >> 8 & 0xFF;
