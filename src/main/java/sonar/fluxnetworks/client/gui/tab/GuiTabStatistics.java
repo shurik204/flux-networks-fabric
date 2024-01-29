@@ -74,7 +74,7 @@ public class GuiTabStatistics extends GuiTabCore {
                             EnergyType.E.getStorage(stats.totalEnergy), 12, 84, color);
             gr.pose().scale(0.75f, 0.75f, 1);
             gr.drawCenteredString(font,
-                    FluxTranslate.AVERAGE_TICK.get() + ": " + stats.averageTickMicro + " \u00b5s/t",
+                    FluxTranslate.AVERAGE_TICK.get() + ": " + stats.averageTickMicro + " µs/t",
                     (int) ((imageWidth / 2f) * (1 / 0.75f)), (int) ((imageHeight - 2f) * (1 / 0.75f)), color);
             gr.pose().popPose();
         } else {

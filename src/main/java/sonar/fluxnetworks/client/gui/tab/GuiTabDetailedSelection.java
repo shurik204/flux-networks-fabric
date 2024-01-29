@@ -37,7 +37,7 @@ public class GuiTabDetailedSelection extends GuiTabSelection {
         String text = "C: " + element.getStatistics().getConnectionCount();
         text += ", I: " + EnergyType.E.getUsageCompact(element.getStatistics().energyInput);
         text += ", O: " + EnergyType.E.getUsageCompact(element.getStatistics().energyOutput);
-        text += ", T: " + element.getStatistics().averageTickMicro + " \u00b5s/t";
+        text += ", T: " + element.getStatistics().averageTickMicro + " µs/t";
         gr.drawString(font, text,
                 (int) ((x + 4) / 0.75), (int) ((y + 11) / 0.75), selected ? 0xffffff : 0x808080);
         gr.pose().popPose();
@@ -63,7 +63,7 @@ public class GuiTabDetailedSelection extends GuiTabSelection {
                 EnergyType.E.getStorageCompact(stats.totalBuffer)));
         components.add(FluxTranslate.ENERGY.makeComponent().append(ChatFormatting.GRAY + ": " + ChatFormatting.RESET +
                 EnergyType.E.getStorageCompact(stats.totalEnergy)));
-        components.add(FluxTranslate.AVERAGE_TICK.makeComponent().append(": " + stats.averageTickMicro + " \u00b5s/t"));
+        components.add(FluxTranslate.AVERAGE_TICK.makeComponent().append(": " + stats.averageTickMicro + " µs/t"));
         return components;
     }
 

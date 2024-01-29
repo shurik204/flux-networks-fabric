@@ -1,11 +1,11 @@
 package sonar.fluxnetworks.client.gui.button;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 
 import javax.annotation.Nonnull;
@@ -159,7 +159,7 @@ public class FluxEditBox extends EditBox {
 
     @Nonnull
     public static FormattedCharSequence getInvisibleText(String string, int cursorPos) {
-        return FormattedCharSequence.forward("\u2022".repeat(string.length()), Style.EMPTY);
+        return FormattedCharSequence.forward("•".repeat(string.length()), Style.EMPTY);
     }
 
     public FluxEditBox setDigitsOnly() {
