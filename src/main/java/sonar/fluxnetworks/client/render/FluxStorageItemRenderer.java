@@ -83,7 +83,7 @@ public class FluxStorageItemRenderer extends BlockEntityWithoutLevelRenderer {
         dispatcher.getModelRenderer()
                 .renderModel(poseStack.last(), bufferSource.getBuffer(Sheets.cutoutBlockSheet()),
                         renderState, model, r, g, b, packedLight, packedOverlay);
-        FluxStorageEntityRenderer.render(poseStack, bufferSource.getBuffer(FluxStorageRenderType.getType()),
+        FluxStorageEntityRenderer.render(poseStack, bufferSource.getBuffer(FluxStorageRenderType.ENTITY_TRANSLUCENT),
                 color, packedOverlay, energy, block.getEnergyCapacity());
     }
 }

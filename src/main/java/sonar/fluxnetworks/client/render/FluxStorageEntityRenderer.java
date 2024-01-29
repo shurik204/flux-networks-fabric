@@ -38,7 +38,7 @@ public class FluxStorageEntityRenderer implements BlockEntityRenderer<TileFluxSt
     @Override
     public void render(@Nonnull TileFluxStorage entity, float partialTick, @Nonnull PoseStack poseStack,
                        @Nonnull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        render(poseStack, bufferSource.getBuffer(FluxStorageRenderType.getType()), entity.mClientColor,
+        render(poseStack, bufferSource.getBuffer(FluxStorageRenderType.CUSTOM_TYPE), entity.mClientColor,
                 packedOverlay, entity.getTransferBuffer(), entity.getMaxTransferLimit());
     }
 
