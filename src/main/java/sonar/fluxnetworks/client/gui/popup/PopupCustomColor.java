@@ -5,6 +5,7 @@ import org.lwjgl.glfw.GLFW;
 import sonar.fluxnetworks.api.FluxTranslate;
 import sonar.fluxnetworks.client.gui.basic.GuiButtonCore;
 import sonar.fluxnetworks.client.gui.basic.GuiPopupCore;
+import sonar.fluxnetworks.client.gui.button.ColorButton;
 import sonar.fluxnetworks.client.gui.button.FluxEditBox;
 import sonar.fluxnetworks.client.gui.button.SimpleButton;
 import sonar.fluxnetworks.client.gui.tab.GuiTabEditAbstract;
@@ -18,6 +19,7 @@ public class PopupCustomColor extends GuiPopupCore<GuiTabEditAbstract> {
     public SimpleButton mCancel;
     public SimpleButton mApply;
     public int mCurrentColor;
+    private ColorButton mColorPreview;
 
     public PopupCustomColor(GuiTabEditAbstract host, int currentColor) {
         super(host);
@@ -39,8 +41,30 @@ public class PopupCustomColor extends GuiPopupCore<GuiTabEditAbstract> {
                 .setHexOnly();
         mColor.setMaxLength(6);
         mColor.setValue(Integer.toHexString(mCurrentColor).toUpperCase(Locale.ROOT));
-        mColor.setResponder(string -> mApply.setClickable(string.length() == 6));
+        mColor.setResponder(this::onInputChanged);
+
+        mColorPreview = new ColorButton(this, leftPos + 30, topPos + 64, mCurrentColor);
+        mColorPreview.setSelected(true);
+        mColorPreview.setClickable(false);
+
+        mButtons.add(mColorPreview);
+
         addRenderableWidget(mColor);
+    }
+
+    private void onInputChanged(String string) {
+        if (string.length() == 6) {
+            try {
+                mColorPreview.mColor = mColor.getIntegerFromHex();
+                mColorPreview.setVisible(true);
+                mApply.setClickable(true);
+            } catch (NumberFormatException e) {
+                mColorPreview.setVisible(false);
+            }
+        } else {
+            mApply.setClickable(false);
+            mColorPreview.setVisible(false);
+        }
     }
 
     @Override
