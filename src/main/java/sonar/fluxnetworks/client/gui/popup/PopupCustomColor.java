@@ -40,7 +40,7 @@ public class PopupCustomColor extends GuiPopupCore<GuiTabEditAbstract> {
         mColor = FluxEditBox.create("0x", font, leftPos + (imageWidth / 2) - 40, topPos + 64, 80, 12)
                 .setHexOnly();
         mColor.setMaxLength(6);
-        mColor.setValue(Integer.toHexString(mCurrentColor).toUpperCase(Locale.ROOT));
+        mColor.setValue(paddedColorHex(mCurrentColor));
         mColor.setResponder(this::onInputChanged);
 
         mColorPreview = new ColorButton(this, leftPos + 30, topPos + 64, mCurrentColor);
@@ -50,6 +50,14 @@ public class PopupCustomColor extends GuiPopupCore<GuiTabEditAbstract> {
         mButtons.add(mColorPreview);
 
         addRenderableWidget(mColor);
+    }
+
+    private String paddedColorHex(int color) {
+        StringBuilder builder = new StringBuilder(Integer.toHexString(color));
+        while (builder.length() < 6) {
+            builder.insert(0, '0');
+        }
+        return builder.toString().toUpperCase(Locale.ROOT);
     }
 
     private void onInputChanged(String string) {
