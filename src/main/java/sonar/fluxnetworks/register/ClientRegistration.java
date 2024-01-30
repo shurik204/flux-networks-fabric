@@ -89,7 +89,8 @@ public class ClientRegistration {
 
     public static void registerColorHandlers(ItemColors itemColors, BlockColors blockColors) {
         // Items
-        itemColors.register(FluxColorHandler.INSTANCE, FLUX_CONTROLLER, FLUX_POINT, FLUX_PLUG);
+        itemColors.register(FluxColorHandler.INSTANCE, FLUX_CONTROLLER, FLUX_POINT, FLUX_PLUG,
+                BASIC_FLUX_STORAGE, HERCULEAN_FLUX_STORAGE, GARGANTUAN_FLUX_STORAGE, FLUX_POINT, FLUX_PLUG);
         itemColors.register(FluxColorHandler::colorMultiplierForConfigurator,
                 RegistryItems.FLUX_CONFIGURATOR);
 
