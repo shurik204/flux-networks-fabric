@@ -17,7 +17,9 @@ import sonar.fluxnetworks.common.access.FluxPlayer;
 @Mixin(Player.class)
 @SuppressWarnings({"MissingUnique", "override", "AddedMixinMembersNamePattern"})
 public class FluxPlayerMixin implements FluxPlayer {
-    private static final String SUPER_ADMIN_KEY = "superAdmin";
+    private static final String FN$SUPER_ADMIN_KEY = "superAdmin";
+    private static final String FN$WIRELESS_MODE_KEY = "wirelessMode";
+    private static final String FN$WIRELESS_NETWORK_KEY = "wirelessNetwork";
 
     private boolean fn$mSuperAdmin = false;
 
@@ -67,15 +69,19 @@ public class FluxPlayerMixin implements FluxPlayer {
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     public void writeNBT(CompoundTag tag, CallbackInfo ci) {
-        tag.putBoolean(SUPER_ADMIN_KEY, fn$mSuperAdmin);
-        tag.putInt("wirelessMode", fn$mWirelessMode);
-        tag.putInt("wirelessNetwork", fn$mWirelessNetwork);
+        CompoundTag fluxTag = new CompoundTag();
+        fluxTag.putBoolean(FN$SUPER_ADMIN_KEY, fn$mSuperAdmin);
+        fluxTag.putInt(FN$WIRELESS_MODE_KEY, fn$mWirelessMode);
+        fluxTag.putInt(FN$WIRELESS_NETWORK_KEY, fn$mWirelessNetwork);
+
+        tag.put(FluxConstants.TAG_FLUX_DATA, fluxTag);
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     public void readNBT(CompoundTag tag, CallbackInfo ci) {
-        fn$mSuperAdmin = tag.getBoolean(SUPER_ADMIN_KEY);
-        fn$mWirelessMode = tag.getInt("wirelessMode");
-        fn$mWirelessNetwork = tag.getInt("wirelessNetwork");
+        CompoundTag fluxTag = tag.getCompound(FluxConstants.TAG_FLUX_DATA);
+        fn$mSuperAdmin = fluxTag.getBoolean(FN$SUPER_ADMIN_KEY);
+        fn$mWirelessMode = fluxTag.getInt(FN$WIRELESS_MODE_KEY);
+        fn$mWirelessNetwork = fluxTag.getInt(FN$WIRELESS_NETWORK_KEY);
     }
 }
