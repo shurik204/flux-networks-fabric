@@ -7,8 +7,10 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
+import sonar.fluxnetworks.api.FluxConstants;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class FluxEditBox extends EditBox {
 
@@ -18,6 +20,8 @@ public class FluxEditBox extends EditBox {
 
     private String mOrigin;
     private boolean mHexOnly;
+    @Nullable
+    private String mPlaceholderText;
 
     ///digits
     private boolean mDigitsOnly;
@@ -71,10 +75,17 @@ public class FluxEditBox extends EditBox {
 
         gr.pose().pushPose();
         int dy = (height - 8) / 2;
-        gr.pose().translate(4, dy, 0);
+        gr.pose().translate(0, dy, 0);
 
         setBordered(false);
         super.renderWidget(gr, mouseX, mouseY, deltaTicks);
+
+        gr.pose().translate(2, 0, 0);
+        if (getValue().isEmpty() && mPlaceholderText != null) {
+            gr.enableScissor(getX(), getY(), getX() + width, getY() + height);
+            gr.drawString(Minecraft.getInstance().font, mPlaceholderText, getX(), getY(), FluxConstants.INVALID_NETWORK_COLOR);
+            gr.disableScissor();
+        }
 
         gr.drawString(mFont, mHeader, getX() - mHeaderWidth, getY(), mOutlineColor);
         gr.pose().popPose();
@@ -132,6 +143,14 @@ public class FluxEditBox extends EditBox {
             }
         }
         super.setFocused(isFocused);
+    }
+
+    public void setPlaceholderText(@Nullable String string) {
+        mPlaceholderText = string;
+    }
+
+    public String getPlaceholderText() {
+        return mPlaceholderText;
     }
 
     public long getValidLong() {

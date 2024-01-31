@@ -3,7 +3,6 @@ package sonar.fluxnetworks.client.gui.tab;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import org.lwjgl.glfw.GLFW;
@@ -143,13 +142,15 @@ public class GuiTabConnections extends GuiTabPages<IFluxDevice> {
             textColor = 0x808080;
             titleY = y + 5;
         }
+        gr.enableScissor(x + 1, y + 1, x + mElementWidth - 1, y + mElementHeight - 1);
         if (element.getCustomName().isEmpty()) {
             gr.drawString(font,
-                    Language.getInstance().getOrDefault(element.getDisplayStack().getItem().getDescriptionId()),
+                    FluxTranslate.getTranslation(element.getDisplayStack().getItem().getDescriptionId()),
                     x + 20, titleY, textColor);
         } else {
             gr.drawString(font, element.getCustomName(), x + 21, titleY, textColor);
         }
+        gr.disableScissor();
         renderItemStack(gr, element.getDisplayStack(), x + 2, y + 1);
     }
 

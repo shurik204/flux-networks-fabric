@@ -1,7 +1,6 @@
 package sonar.fluxnetworks.client.gui;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.locale.Language;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -63,6 +62,7 @@ public class GuiFluxDeviceHome extends GuiTabCore {
             tag.putString(FluxConstants.CUSTOM_NAME, mCustomName.getValue());
             ClientMessages.editTile(getToken(), getDevice(), tag);
         });
+        mCustomName.setPlaceholderText(FluxTranslate.getTranslation(getDevice().getBlockState().getBlock().getDescriptionId()));
         addRenderableWidget(mCustomName);
 
         mPriority = FluxEditBox.create(FluxTranslate.PRIORITY.get() + ": ", font,
@@ -118,13 +118,6 @@ public class GuiFluxDeviceHome extends GuiTabCore {
         int color = getNetwork().getNetworkColor();
         renderNetwork(gr, getNetwork().getNetworkName(), color, topPos + 8);
         renderTransfer(gr, getDevice(), leftPos + 30, topPos + 90);
-
-        if (mCustomName.getValue().isEmpty()) {
-            int y = mCustomName.getY() + (mCustomName.getHeight() - 8) / 2;
-            gr.drawString(font,
-                    Language.getInstance().getOrDefault(getDevice().getBlockState().getBlock().getDescriptionId()),
-                    mCustomName.getX() + 4, y, FluxConstants.INVALID_NETWORK_COLOR);
-        }
 
         gr.drawString(font, FluxTranslate.SURGE_MODE.get(), 20 + leftPos, 120 + topPos, color);
         gr.drawString(font, FluxTranslate.DISABLE_LIMIT.get(), 20 + leftPos, 132 + topPos, color);

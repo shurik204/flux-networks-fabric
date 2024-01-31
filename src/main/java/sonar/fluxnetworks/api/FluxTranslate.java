@@ -174,6 +174,11 @@ public class FluxTranslate {
         };
     }
 
+    @Nonnull
+    public static String getTranslation(String key) {
+        return Language.getInstance().getOrDefault(key);
+    }
+
     private static final ChatFormatting[] ERROR_STYLE = {ChatFormatting.BOLD, ChatFormatting.DARK_RED};
 
     public static final Component
@@ -185,7 +190,7 @@ public class FluxTranslate {
 
     @Nonnull
     public String get() {
-        return Language.getInstance().getOrDefault(mKey);
+        return getTranslation(mKey);
     }
 
     @Nonnull
