@@ -132,7 +132,7 @@ public class GuiTabSelection extends GuiTabPages<FluxNetwork> {
             components.add(FluxTranslate.ACCESS.makeComponent().append(": " + access.getFormattedName()));
         }
         if (ClientCache.sWirelessNetwork == element.getNetworkID()) {
-            components.add(FluxTranslate.EFFECTIVE_WIRELESS_NETWORK.makeComponent()
+            components.add(FluxTranslate.WIRELESS_CHARGING_ON.makeComponent()
                     .withStyle(ChatFormatting.YELLOW));
         }
         return components;

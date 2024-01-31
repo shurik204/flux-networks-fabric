@@ -3,13 +3,17 @@ package sonar.fluxnetworks.client.gui.tab;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 import org.lwjgl.glfw.GLFW;
+import sonar.fluxnetworks.api.FluxConstants;
 import sonar.fluxnetworks.api.FluxTranslate;
+import sonar.fluxnetworks.api.device.FluxDeviceType;
 import sonar.fluxnetworks.api.network.WirelessType;
 import sonar.fluxnetworks.client.ClientCache;
 import sonar.fluxnetworks.client.gui.EnumNavigationTab;
 import sonar.fluxnetworks.client.gui.basic.GuiButtonCore;
 import sonar.fluxnetworks.client.gui.basic.GuiTabCore;
-import sonar.fluxnetworks.client.gui.button.*;
+import sonar.fluxnetworks.client.gui.button.InventoryButton;
+import sonar.fluxnetworks.client.gui.button.SimpleButton;
+import sonar.fluxnetworks.client.gui.button.SwitchButton;
 import sonar.fluxnetworks.common.connection.FluxMenu;
 import sonar.fluxnetworks.register.ClientMessages;
 
@@ -21,9 +25,13 @@ public class GuiTabWireless extends GuiTabCore {
     public SimpleButton mApply;
 
     public int mWirelessMode;
+    private boolean mHasController = true;
 
     public GuiTabWireless(@Nonnull FluxMenu menu, @Nonnull Player player) {
         super(menu, player);
+        if (getNetwork().isValid()) {
+            ClientMessages.updateNetwork(getToken(), getNetwork(), FluxConstants.NBT_NET_ALL_CONNECTIONS);
+        }
     }
 
     @Override
@@ -39,15 +47,15 @@ public class GuiTabWireless extends GuiTabCore {
             gr.drawCenteredString(font, FluxTranslate.TAB_WIRELESS.get(), leftPos + 88, topPos + 10, 0xb4b4b4);
             gr.drawString(font, FluxTranslate.ENABLE_WIRELESS.get(), leftPos + 20, topPos + 148, color);
 
-            if (WirelessType.ENABLE_WIRELESS.isActivated(ClientCache.sWirelessMode) &&
-                    ClientCache.sWirelessNetwork == getNetwork().getNetworkID()) {
-                gr.drawCenteredString(font,
-                        '(' + FluxTranslate.EFFECTIVE_WIRELESS_NETWORK.get() + ')',
-                        leftPos + 88, topPos + 160, color);
+            if (mHasController) {
+                if (WirelessType.ENABLE_WIRELESS.isActivated(ClientCache.sWirelessMode) &&
+                        ClientCache.sWirelessNetwork == getNetwork().getNetworkID()) {
+                    gr.drawCenteredString(font, FluxTranslate.WIRELESS_CHARGING_ON.get(), leftPos + 88, topPos + 160, color);
+                } else {
+                    gr.drawCenteredString(font,FluxTranslate.WIRELESS_CHARGING_OFF.get(),leftPos + 88, topPos + 160, 0xb4b4b4);
+                }
             } else {
-                gr.drawCenteredString(font,
-                        '(' + FluxTranslate.INEFFECTIVE_WIRELESS_NETWORK.get() + ')',
-                        leftPos + 88, topPos + 160, 0xb4b4b4);
+                gr.drawCenteredString(font, FluxTranslate.WIRELESS_CHARGING_NO_CONTROLLER.get(), leftPos + 88, topPos + 160, 0xFFb4b4);
             }
         } else {
             renderNavigationPrompt(gr, FluxTranslate.ERROR_NO_SELECTED, EnumNavigationTab.TAB_SELECTION);
@@ -137,6 +145,7 @@ public class GuiTabWireless extends GuiTabCore {
         if (mEnable != null) {
             mEnable.setColor(getNetwork().getNetworkColor());
         }
+        mHasController = getNetwork().getAllConnections().stream().anyMatch(c -> c.getDeviceType() == FluxDeviceType.CONTROLLER);
     }
 
     /* @Override

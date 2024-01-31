@@ -58,6 +58,7 @@
 	"gui.fluxnetworks.flux.wireless": "Enable Wireless",
 	"gui.fluxnetworks.flux.wirelessnetwork": "Wireless Charging is ON",
 	"gui.fluxnetworks.flux.nonwirelessnetwork": "Wireless Charging is OFF",
+	"gui.fluxnetworks.flux.wirelessnetwork.nocontroller": "Missing Flux Controller",
 	"gui.fluxnetworks.flux.energy": "Energy",
 	"gui.fluxnetworks.flux.energystored": "Energy Stored",
 	"gui.fluxnetworks.flux.buffer": "Buffer",
