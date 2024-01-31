@@ -61,6 +61,8 @@ public class ClientRegistration {
                 tag.putString(FluxConstants.CUSTOM_NAME, fluxDevice.getCustomName());
                 tag.putLong(FluxConstants.LIMIT, fluxDevice.getRawLimit());
                 tag.putLong(FluxConstants.PRIORITY, fluxDevice.getRawPriority());
+                // Do not store the color
+                tag.remove(FluxConstants.CLIENT_COLOR);
 
                 return stack;
             }
