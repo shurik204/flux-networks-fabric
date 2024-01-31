@@ -3,6 +3,7 @@ package sonar.fluxnetworks.client.gui.basic;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -116,7 +117,31 @@ public abstract class GuiFluxCore extends GuiPopupHost {
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    protected void drawTooltipWithBackground(GuiGraphics gr, int mouseX, int mouseY, Component text) {
+    public void drawCenteredStringWithBackground(GuiGraphics gr, int x, int y, String text) {
+        Font font = Minecraft.getInstance().font;
+        int textWidth = font.width(text);
+        int textHeight = font.lineHeight;
+        x -= textWidth / 2;
+        y -= textHeight / 2;
+
+        gr.pose().pushPose();
+
+        // Render outline
+        gr.fill(x - 2, y - 2, x + 2 + textWidth, y + 2 + textHeight, 400, 0xB3A0A0A0);
+        // Render background
+        gr.fill(x - 1, y - 1, x + 1 + textWidth, y + 1 + textHeight, 400, 0xF3000000);
+
+        gr.pose().translate(0.0F, 0.0F, 400.0F);
+        gr.drawString(font, text, x, y, 0xFFFFFF);
+
+        gr.pose().popPose();
+    }
+
+    public void drawTooltipWithBackground(GuiGraphics gr, int mouseX, int mouseY, String text) {
+        drawTooltipWithBackground(gr, mouseX, mouseY, Component.nullToEmpty(text));
+    }
+
+    public void drawTooltipWithBackground(GuiGraphics gr, int mouseX, int mouseY, Component text) {
         ClientTooltipComponent tooltipText = ClientTooltipComponent.create(text.getVisualOrderText());
 
         int textWidth = tooltipText.getWidth(font);
