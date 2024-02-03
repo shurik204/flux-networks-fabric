@@ -1,0 +1,8 @@
+{
+  "parent": "fluxnetworks:block/basic_flux_storage",
+  "textures": {
+    "base": "fluxnetworks:block/base_color",
+    "texture": "fluxnetworks:block/storage/tier/bottomless",
+    "particle": "fluxnetworks:block/storage/particle"
+  }
+}

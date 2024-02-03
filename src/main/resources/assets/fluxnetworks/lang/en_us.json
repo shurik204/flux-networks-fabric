@@ -8,6 +8,8 @@
 	"block.fluxnetworks.basic_flux_storage": "Basic Flux Storage",
 	"block.fluxnetworks.herculean_flux_storage": "Herculean Flux Storage",
 	"block.fluxnetworks.gargantuan_flux_storage": "Gargantuan Flux Storage",
+	"block.fluxnetworks.bottomless_flux_storage": "Bottomless Flux Storage",
+	"block.fluxnetworks.bottomless_flux_storage.filled": "Filled Bottomless Flux Storage",
 
 	"item.fluxnetworks.flux_dust": "Flux Dust",
 	"item.fluxnetworks.flux_core": "Flux Core",

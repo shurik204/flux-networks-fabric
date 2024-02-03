@@ -23,6 +23,7 @@ public class RegistryItems {
     public static final Item BASIC_FLUX_STORAGE = register(RegistryBlocks.BASIC_FLUX_STORAGE_KEY, new FluxStorageItem(RegistryBlocks.BASIC_FLUX_STORAGE, ITEM_PROPS));
     public static final Item HERCULEAN_FLUX_STORAGE = register(RegistryBlocks.HERCULEAN_FLUX_STORAGE_KEY, new FluxStorageItem(RegistryBlocks.HERCULEAN_FLUX_STORAGE, ITEM_PROPS));
     public static final Item GARGANTUAN_FLUX_STORAGE = register(RegistryBlocks.GARGANTUAN_FLUX_STORAGE_KEY, new FluxStorageItem(RegistryBlocks.GARGANTUAN_FLUX_STORAGE, ITEM_PROPS));
+    public static final Item BOTTOMLESS_FLUX_STORAGE = register(RegistryBlocks.BOTTOMLESS_FLUX_STORAGE_KEY, new FluxStorageItem(RegistryBlocks.BOTTOMLESS_FLUX_STORAGE, ITEM_PROPS));
     public static final Item FLUX_DUST = register(FLUX_DUST_KEY, new FluxDustItem(ITEM_PROPS));
     public static final Item FLUX_CORE = register(FLUX_CORE_KEY, new Item(ITEM_PROPS));
     public static final Item FLUX_CONFIGURATOR = register(FLUX_CONFIGURATOR_KEY, new ItemFluxConfigurator(TOOL_PROPS));

@@ -1,0 +1,12 @@
+{
+  "type": "fluxnetworks:nbt_wipe_recipe",
+  "group": "fluxnetworks",
+  "ingredients": [
+    {
+      "item": "fluxnetworks:bottomless_flux_storage"
+    }
+  ],
+  "result": {
+    "item": "fluxnetworks:bottomless_flux_storage"
+  }
+}

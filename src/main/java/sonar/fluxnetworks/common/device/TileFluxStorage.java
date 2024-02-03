@@ -62,6 +62,19 @@ public abstract class TileFluxStorage extends TileFluxDevice implements IFluxSto
         }
     }
 
+    public static class Bottomless extends TileFluxStorage {
+
+        public Bottomless(@Nonnull BlockPos pos, @Nonnull BlockState state) {
+            super(RegistryBlockEntityTypes.BOTTOMLESS_FLUX_STORAGE, pos, state, new FluxStorageHandler.Bottomless());
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack getDisplayStack() {
+            return writeToDisplayStack(FluxGuiStack.BOTTOMLESS_STORAGE);
+        }
+    }
+
     @Override
     public long getMaxTransferLimit() {
         return mHandler.getMaxEnergyStorage();

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "fluxnetworks:block/bottomless_flux_storage"
+    }
+  }
+}

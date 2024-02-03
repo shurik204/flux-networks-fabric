@@ -121,4 +121,32 @@ public abstract class FluxStorageBlock extends FluxDeviceBlock {
             return null;
         }
     }
+
+    public static class Bottomless extends FluxStorageBlock {
+
+        public Bottomless(Properties props) {
+            super(props);
+        }
+
+        @Override
+        public long getEnergyCapacity() {
+            return Long.MAX_VALUE;
+        }
+
+        @Nullable
+        @Override
+        public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new TileFluxStorage.Bottomless(pos, state);
+        }
+
+        @Nullable
+        @Override
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
+                                                                      BlockEntityType<T> type) {
+            if (type == RegistryBlockEntityTypes.BOTTOMLESS_FLUX_STORAGE) {
+                return TileFluxDevice.getTicker(level);
+            }
+            return null;
+        }
+    }
 }

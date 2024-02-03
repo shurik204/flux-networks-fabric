@@ -134,4 +134,28 @@ public abstract class FluxStorageHandler extends TransferHandler {
             return FluxConfig.gargantuanCapacity;
         }
     }
+
+    public static class Bottomless extends FluxStorageHandler {
+        private long mLastEnergy;
+        public Bottomless() {
+            super(Long.MAX_VALUE);
+        }
+
+        @Override
+        public long getMaxEnergyStorage() {
+            return Long.MAX_VALUE;
+        }
+
+        @Override
+        public void onCycleStart() {
+            super.onCycleStart();
+            mLastEnergy = mBuffer;
+        }
+
+        @Override
+        public void onCycleEnd() {
+            super.onCycleEnd();
+            mBuffer = mLastEnergy;
+        }
+    }
 }

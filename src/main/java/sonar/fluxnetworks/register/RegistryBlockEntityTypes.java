@@ -21,6 +21,7 @@ public class RegistryBlockEntityTypes {
     public static final BlockEntityType<TileFluxStorage.Basic> BASIC_FLUX_STORAGE = register(RegistryBlocks.BASIC_FLUX_STORAGE_KEY, new BlockEntityType<>(TileFluxStorage.Basic::new, Set.of(RegistryBlocks.BASIC_FLUX_STORAGE), DSL.remainderType()));
     public static final BlockEntityType<TileFluxStorage.Herculean> HERCULEAN_FLUX_STORAGE = register(RegistryBlocks.HERCULEAN_FLUX_STORAGE_KEY, new BlockEntityType<>(TileFluxStorage.Herculean::new, Set.of(RegistryBlocks.HERCULEAN_FLUX_STORAGE), DSL.remainderType()));
     public static final BlockEntityType<TileFluxStorage.Gargantuan> GARGANTUAN_FLUX_STORAGE = register(RegistryBlocks.GARGANTUAN_FLUX_STORAGE_KEY, new BlockEntityType<>(TileFluxStorage.Gargantuan::new, Set.of(RegistryBlocks.GARGANTUAN_FLUX_STORAGE), DSL.remainderType()));
+    public static final BlockEntityType<TileFluxStorage.Bottomless> BOTTOMLESS_FLUX_STORAGE = register(RegistryBlocks.BOTTOMLESS_FLUX_STORAGE_KEY, new BlockEntityType<>(TileFluxStorage.Bottomless::new, Set.of(RegistryBlocks.BOTTOMLESS_FLUX_STORAGE), DSL.remainderType()));
 
     private static <T extends BlockEntity> BlockEntityType<T> register(ResourceLocation key, BlockEntityType<T> blockEntityType) {
         return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, key, blockEntityType);

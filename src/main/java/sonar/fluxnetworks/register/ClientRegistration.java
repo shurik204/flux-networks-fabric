@@ -44,7 +44,8 @@ public class ClientRegistration {
                 FLUX_CONTROLLER,
                 BASIC_FLUX_STORAGE,
                 HERCULEAN_FLUX_STORAGE,
-                GARGANTUAN_FLUX_STORAGE);
+                GARGANTUAN_FLUX_STORAGE,
+                BOTTOMLESS_FLUX_STORAGE);
 
         ClientPlayNetworking.registerGlobalReceiver(Channel.CHANNEL_NAME, (client, handler, buf, responseSender) ->
                 ClientMessages.msg(buf.readShort(), buf, () -> Minecraft.getInstance().player));
@@ -87,17 +88,18 @@ public class ClientRegistration {
         BlockEntityRenderers.register(RegistryBlockEntityTypes.BASIC_FLUX_STORAGE, FluxStorageEntityRenderer.PROVIDER);
         BlockEntityRenderers.register(RegistryBlockEntityTypes.HERCULEAN_FLUX_STORAGE, FluxStorageEntityRenderer.PROVIDER);
         BlockEntityRenderers.register(RegistryBlockEntityTypes.GARGANTUAN_FLUX_STORAGE, FluxStorageEntityRenderer.PROVIDER);
+        BlockEntityRenderers.register(RegistryBlockEntityTypes.BOTTOMLESS_FLUX_STORAGE, FluxStorageEntityRenderer.PROVIDER);
     }
 
     public static void registerColorHandlers(ItemColors itemColors, BlockColors blockColors) {
         // Items
         itemColors.register(FluxColorHandler.INSTANCE, FLUX_CONTROLLER, FLUX_POINT, FLUX_PLUG,
-                BASIC_FLUX_STORAGE, HERCULEAN_FLUX_STORAGE, GARGANTUAN_FLUX_STORAGE, FLUX_POINT, FLUX_PLUG);
+                BASIC_FLUX_STORAGE, HERCULEAN_FLUX_STORAGE, GARGANTUAN_FLUX_STORAGE, BOTTOMLESS_FLUX_STORAGE);
         itemColors.register(FluxColorHandler::colorMultiplierForConfigurator,
                 RegistryItems.FLUX_CONFIGURATOR);
 
         // Blocks
         blockColors.register(FluxColorHandler.INSTANCE, FLUX_CONTROLLER, FLUX_POINT, FLUX_PLUG,
-                BASIC_FLUX_STORAGE, HERCULEAN_FLUX_STORAGE, GARGANTUAN_FLUX_STORAGE);
+                BASIC_FLUX_STORAGE, HERCULEAN_FLUX_STORAGE, GARGANTUAN_FLUX_STORAGE, BOTTOMLESS_FLUX_STORAGE);
     }
 }

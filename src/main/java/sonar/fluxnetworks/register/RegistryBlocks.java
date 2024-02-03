@@ -21,6 +21,7 @@ public class RegistryBlocks {
     public static final ResourceLocation BASIC_FLUX_STORAGE_KEY = FluxNetworks.location("basic_flux_storage");
     public static final ResourceLocation HERCULEAN_FLUX_STORAGE_KEY = FluxNetworks.location("herculean_flux_storage");
     public static final ResourceLocation GARGANTUAN_FLUX_STORAGE_KEY = FluxNetworks.location("gargantuan_flux_storage");
+    public static final ResourceLocation BOTTOMLESS_FLUX_STORAGE_KEY = FluxNetworks.location("bottomless_flux_storage");
 
     private static final BlockBehaviour.Properties BLOCK_PROPS = BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).strength(1.0F, 1000F);
     private static final BlockBehaviour.Properties DEVICE_PROPS = BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).strength(1.0F, 1000F).noOcclusion();
@@ -32,6 +33,7 @@ public class RegistryBlocks {
     public static final Block BASIC_FLUX_STORAGE = register(BASIC_FLUX_STORAGE_KEY, new FluxStorageBlock.Basic(DEVICE_PROPS));
     public static final Block HERCULEAN_FLUX_STORAGE = register(HERCULEAN_FLUX_STORAGE_KEY, new FluxStorageBlock.Herculean(DEVICE_PROPS));
     public static final Block GARGANTUAN_FLUX_STORAGE = register(GARGANTUAN_FLUX_STORAGE_KEY, new FluxStorageBlock.Gargantuan(DEVICE_PROPS));
+    public static final Block BOTTOMLESS_FLUX_STORAGE = register(BOTTOMLESS_FLUX_STORAGE_KEY, new FluxStorageBlock.Bottomless(DEVICE_PROPS));
 
     private static Block register(ResourceLocation key, Block block) {
         return Registry.register(BuiltInRegistries.BLOCK, key, block);
