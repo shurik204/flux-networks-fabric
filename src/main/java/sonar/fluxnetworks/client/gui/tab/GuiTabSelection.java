@@ -192,6 +192,13 @@ public class GuiTabSelection extends GuiTabPages<FluxNetwork> {
                         CompoundTag tag = p.mStack.getOrCreateTagElement(FluxConstants.TAG_FLUX_DATA);
                         tag.putInt(FluxConstants.NETWORK_ID, mSelectedNetwork.getNetworkID());
                     }
+                    // Remember last network id
+                    if (mSelectedNetwork.isValid()) {
+                        ClientCache.sLastNetworkID = mSelectedNetwork.getNetworkID();
+                    }
+                    // TODO: Should the page be refreshed after selecting a network?
+                    // refreshPages(ClientCache.getAllNetworks());
+                    // sortGrids(mSortType);
                 }
                 closePopup();
                 mSelectedNetwork = null;
@@ -214,6 +221,22 @@ public class GuiTabSelection extends GuiTabPages<FluxNetwork> {
         switch (sortType) {
             case ID -> mElements.sort(Comparator.comparing(FluxNetwork::getNetworkID));
             case NAME -> mElements.sort(Comparator.comparing(FluxNetwork::getNetworkName));
+            case SMART -> {
+                Comparator<FluxNetwork> comparator =
+                        Comparator.comparing(this::isLastNetwork).thenComparingInt(this::getNetworkPlacement).reversed();
+                mElements.sort(comparator);
+            }
         }
+    }
+
+    private int getNetworkPlacement(FluxNetwork n) {
+        if (mPlayer.getUUID().equals(n.getOwnerUUID())) {
+            return Integer.MAX_VALUE - n.getNetworkID();
+        }
+        return n.getPlayerAccess(mPlayer) != AccessLevel.BLOCKED ? n.getNetworkID() : Integer.MIN_VALUE + n.getNetworkID();
+    }
+
+    private boolean isLastNetwork(FluxNetwork n) {
+        return n.getNetworkID() == ClientCache.sLastNetworkID;
     }
 }

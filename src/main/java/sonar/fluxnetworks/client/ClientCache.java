@@ -29,6 +29,7 @@ public final class ClientCache {
     private static final Int2ObjectLinkedOpenHashMap<String> sRecentPasswords =
             new Int2ObjectLinkedOpenHashMap<>(MAX_RECENT_PASSWORD_COUNT); // LRU cache
 
+    public static int sLastNetworkID = FluxConstants.INVALID_NETWORK_ID;
     public static boolean sSuperAdmin = false;
     public static int sWirelessMode = 0;
     public static int sWirelessNetwork = FluxConstants.INVALID_NETWORK_ID;
@@ -47,6 +48,7 @@ public final class ClientCache {
         sNetworks.trim(); // rehash
         sRecentPasswords.clear(); // preserved memory, no need to rehash
         sAdminViewingNetwork = FluxConstants.INVALID_NETWORK_ID;
+        sLastNetworkID = FluxConstants.INVALID_NETWORK_ID;
         FluxNetworks.LOGGER.info("Released client Flux Networks cache");
     }
 

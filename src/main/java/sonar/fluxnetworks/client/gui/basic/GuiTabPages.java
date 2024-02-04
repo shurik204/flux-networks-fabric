@@ -17,7 +17,7 @@ public abstract class GuiTabPages<T> extends GuiTabCore {
 
     public final List<T> mElements = new ArrayList<>(); // all elements
     protected final List<T> mCurrent = new ArrayList<>(); // elements of current page
-    protected SortType mSortType = SortType.ID; // current sort type
+    protected SortType mSortType = SortType.SMART; // current sort type
     protected PageLabelButton mLabelButton; // bottom button
 
     public int mPage = 0; // current page, 0-based indexing
@@ -160,7 +160,8 @@ public abstract class GuiTabPages<T> extends GuiTabCore {
 
     public enum SortType {
         ID(FluxTranslate.SORTING_ID),
-        NAME(FluxTranslate.SORTING_NAME);
+        NAME(FluxTranslate.SORTING_NAME),
+        SMART(FluxTranslate.SORTING_SMART);
 
         private final FluxTranslate mName;
 
