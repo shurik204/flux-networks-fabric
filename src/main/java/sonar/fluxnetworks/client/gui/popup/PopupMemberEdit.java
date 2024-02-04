@@ -129,7 +129,8 @@ public class PopupMemberEdit extends GuiPopupCore<GuiTabMembers> {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (mTransferOwnership != null) {
-            if ((modifiers & GLFW.GLFW_MOD_SHIFT) != 0) {
+            // Replaced 'modifiers' check with 'keyCode' check
+            if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT) {
                 mTransferOwnershipCount++;
                 if (mTransferOwnershipCount > 1) {
                     mTransferOwnership.setClickable(mHost.getAccessLevel().canDelete() &&
