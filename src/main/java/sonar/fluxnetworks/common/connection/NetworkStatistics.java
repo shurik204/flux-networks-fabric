@@ -5,7 +5,12 @@ import it.unimi.dsi.fastutil.longs.LongList;
 import net.minecraft.nbt.CompoundTag;
 import sonar.fluxnetworks.common.device.TileFluxDevice;
 
+import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.function.ToLongFunction;
+import java.util.stream.Stream;
 
 public class NetworkStatistics {
 
@@ -65,34 +70,19 @@ public class NetworkStatistics {
      * Called every 5 ticks
      */
     private void weakTick() {
-        List<TileFluxDevice> plugs = network.getLogicalDevices(FluxNetwork.PLUG);
-        plugs.forEach(p -> {
-            if (!p.getDeviceType().isStorage()) {
-                energyInput4 += p.getTransferChange();
-            }
-        });
-        List<TileFluxDevice> points = network.getLogicalDevices(FluxNetwork.POINT);
-        points.forEach(p -> {
-            if (!p.getDeviceType().isStorage()) {
-                energyOutput4 -= p.getTransferChange();
-            }
-        });
+        energyInput4 += getEnergySum(network.getLogicalDevices(FluxNetwork.PLUG), TileFluxDevice::getTransferChange, (d) -> !d.getDeviceType().isStorage());
+        energyOutput4 -= getEnergySum(network.getLogicalDevices(FluxNetwork.POINT), TileFluxDevice::getTransferChange, (d) -> !d.getDeviceType().isStorage());
     }
 
     /**
      * Called every 20 ticks
      */
     private void weakerTick() {
-        totalBuffer = 0;
-        totalEnergy = 0;
-        List<TileFluxDevice> devices = network.getLogicalDevices(FluxNetwork.ANY);
-        devices.forEach(p -> {
-            if (!p.getDeviceType().isStorage()) {
-                totalBuffer += p.getTransferBuffer();
-            }
-        });
+        totalBuffer = getEnergySum(
+                network.getLogicalDevices(FluxNetwork.ANY), TileFluxDevice::getTransferBuffer, (d) -> !d.getDeviceType().isStorage()
+        );
         List<TileFluxDevice> storages = network.getLogicalDevices(FluxNetwork.STORAGE);
-        storages.forEach(p -> totalEnergy += p.getTransferBuffer());
+        totalEnergy = getEnergySum(storages, TileFluxDevice::getTransferBuffer, null);
         fluxControllerCount = network.getLogicalDevices(FluxNetwork.CONTROLLER).size();
         fluxStorageCount = storages.size();
         fluxPlugCount = network.getLogicalDevices(FluxNetwork.PLUG).size() - fluxStorageCount;
@@ -148,6 +138,18 @@ public class NetworkStatistics {
         long[] a = tag.getLongArray("a");
         for (int i = 0; i < a.length; i++) {
             energyChange.set(i, a[i]);
+        }
+    }
+
+    private static long getEnergySum(Collection<TileFluxDevice> devices, ToLongFunction<TileFluxDevice> energyGetter, @Nullable Predicate<TileFluxDevice> filter) {
+        Stream<TileFluxDevice> stream = devices.stream();
+        if (filter != null) {
+            stream = stream.filter(filter);
+        }
+        try {
+            return stream.mapToLong(energyGetter).reduce(0L, Math::addExact);
+        } catch (ArithmeticException e) {
+            return Long.MAX_VALUE;
         }
     }
 }
