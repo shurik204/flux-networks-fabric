@@ -19,6 +19,7 @@ public class PopupCustomColor extends GuiPopupCore<GuiTabEditAbstract> {
     public SimpleButton mCancel;
     public SimpleButton mApply;
     public int mCurrentColor;
+    public boolean mCancelled = true;
     private ColorButton mColorPreview;
 
     public PopupCustomColor(GuiTabEditAbstract host, int currentColor) {
@@ -88,6 +89,7 @@ public class PopupCustomColor extends GuiPopupCore<GuiTabEditAbstract> {
             if (button == mCancel) {
                 mHost.closePopup();
             } else if (button == mApply) {
+                mCancelled = false;
                 mCurrentColor = mColor.getIntegerFromHex();
                 mHost.closePopup();
             }

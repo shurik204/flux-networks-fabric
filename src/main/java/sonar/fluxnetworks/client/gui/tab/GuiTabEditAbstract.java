@@ -72,9 +72,14 @@ public abstract class GuiTabEditAbstract extends GuiTabCore {
             // .getName(), 14, 78, 0x606060);
             gr.drawString(font, FluxTranslate.NETWORK_COLOR.get() + ":", leftPos + 16, topPos + 89, 0xFF808080);
 
-            if (mCustomColorButton != null && mCustomColorButton.isMouseHovered(mouseX, mouseY)) {
-                drawTooltipWithBackground(gr, mouseX, mouseY, FluxTranslate.CUSTOM_COLOR_EDIT.makeComponent());
+            for (GuiButtonCore button : mButtons) {
+                if (button instanceof ColorButton colorButton && colorButton.isMouseHovered(mouseX, mouseY)) {
+                    drawTooltipWithBackground(gr, mouseX, mouseY, FluxTranslate.CUSTOM_COLOR_EDIT.makeComponent());
+                }
             }
+
+//            if (mCustomColorButton != null && mCustomColorButton.isMouseHovered(mouseX, mouseY)) {
+//            }
 
             renderNetwork(gr, mNetworkName.getValue(), mColorButton.mColor, topPos + 126);
         }
@@ -105,14 +110,15 @@ public abstract class GuiTabEditAbstract extends GuiTabCore {
     @Override
     public void onButtonClicked(GuiButtonCore button, float mouseX, float mouseY, int mouseButton) {
         super.onButtonClicked(button, mouseX, mouseY, mouseButton);
-        if (mouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT && button instanceof ColorButton colorButton) {
-            mColorButton.setSelected(false);
-            mColorButton = colorButton;
-            mColorButton.setSelected(true);
-            onEditSettingsChanged();
-        }
-        if (mouseButton == GLFW.GLFW_MOUSE_BUTTON_RIGHT && button instanceof CustomColorButton) {
-            openPopup(new PopupCustomColor(this, mCustomColorButton.mColor));
+        if (button instanceof ColorButton colorButton) {
+            if (mouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+                mColorButton.setSelected(false);
+                mColorButton = colorButton;
+                mColorButton.setSelected(true);
+                onEditSettingsChanged();
+            } else if (mouseButton == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+                openPopup(new PopupCustomColor(this, colorButton.mColor));
+            }
         }
     }
 
@@ -144,8 +150,11 @@ public abstract class GuiTabEditAbstract extends GuiTabCore {
     @Override
     public void onPopupClose(GuiPopupCore<?> popUp) {
         super.onPopupClose(popUp);
-        if (popUp instanceof PopupCustomColor) {
+        if (popUp instanceof PopupCustomColor colorPopup && !colorPopup.mCancelled) {
             mCustomColorButton.mColor = ((PopupCustomColor) popUp).mCurrentColor;
+            mColorButton.setSelected(false);
+            mColorButton = mCustomColorButton;
+            mColorButton.setSelected(true);
             onEditSettingsChanged();
         }
     }
