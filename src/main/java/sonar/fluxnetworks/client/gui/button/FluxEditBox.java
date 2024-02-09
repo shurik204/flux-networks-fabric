@@ -39,7 +39,7 @@ public class FluxEditBox extends EditBox {
 
     @Nonnull
     public static FluxEditBox create(String header, Font font, int x, int y, int width, int height) {
-        return new FluxEditBox(header, font, x, y, width, height, font.width(header));
+        return new FluxEditBox(header, font, x, y, width, height, font.width(header) + 3);
     }
 
     public int getIntegerFromText(boolean allowNegatives) {
@@ -65,6 +65,7 @@ public class FluxEditBox extends EditBox {
     @Override
     public void renderWidget(@Nonnull GuiGraphics gr, int mouseX, int mouseY, float deltaTicks) {
         Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
+        // Render outline
         if (isVisible()) {
             gr.fill(getX() - mHeaderWidth, getY(), getX() + width, getY() + height, 0x30000000);
             gr.fill(getX() - mHeaderWidth - 1, getY() - 1, getX() + width + 1, getY(), mOutlineColor);
@@ -74,20 +75,31 @@ public class FluxEditBox extends EditBox {
         }
 
         gr.pose().pushPose();
+        // Prepare to render text
+
         int dy = (height - 8) / 2;
         gr.pose().translate(0, dy, 0);
 
-        setBordered(false);
-        super.renderWidget(gr, mouseX, mouseY, deltaTicks);
+        // Prepare to render header
+        gr.pose().pushPose();
 
-        gr.pose().translate(2, 0, 0);
+        // Offset from the left edge
+        gr.pose().translate(3, 0, 0);
+        gr.drawString(mFont, mHeader, getX() - mHeaderWidth, getY(), mOutlineColor);
+
+        gr.pose().popPose();
+
+        // Render placeholder text
         if (getValue().isEmpty() && mPlaceholderText != null) {
             gr.enableScissor(getX(), getY(), getX() + width, getY() + height);
             gr.drawString(Minecraft.getInstance().font, mPlaceholderText, getX(), getY(), FluxConstants.INVALID_NETWORK_COLOR);
             gr.disableScissor();
         }
 
-        gr.drawString(mFont, mHeader, getX() - mHeaderWidth, getY(), mOutlineColor);
+        // Render the underlying text box
+        setBordered(false);
+        super.renderWidget(gr, mouseX, mouseY, deltaTicks);
+
         gr.pose().popPose();
     }
 
