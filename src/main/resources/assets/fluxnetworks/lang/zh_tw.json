@@ -138,6 +138,5 @@
 	"gui.fluxnetworks.access.blocked": "陌生人",
 	"gui.fluxnetworks.access.superadmin": "超級管理員",
 
-	"gui.fluxnetworks.jei.creatingfluxrecipe": "創造通量粉",
-	"gui.fluxnetworks.jei.leftclickhelp": "左鍵點擊%s"
+	"gui.fluxnetworks.recipe.creatingflux": "創造通量粉"
 }

@@ -26,6 +26,9 @@
 		],
 		"jade": [
 			"sonar.fluxnetworks.common.integration.jade.JadeEntrypoint"
+		],
+		"rei_client": [
+			"sonar.fluxnetworks.client.rei.REIPlugin"
 		]
 	},
 	"mixins": [

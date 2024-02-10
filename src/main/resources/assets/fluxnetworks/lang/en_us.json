@@ -142,6 +142,6 @@
 	"gui.fluxnetworks.access.blocked": "Stranger",
 	"gui.fluxnetworks.access.superadmin": "Super Admin",
 
-	"gui.fluxnetworks.jei.creatingfluxrecipe": "Creating Flux",
-	"gui.fluxnetworks.jei.leftclickhelp": "Left click the %s"
+	"gui.fluxnetworks.recipe.creatingflux": "Creating Flux",
+	"gui.fluxnetworks.recipe.creatingflux.interact": "Left click the %s"
 }

@@ -138,6 +138,5 @@
 	"gui.fluxnetworks.access.blocked": "Bloqueado",
 	"gui.fluxnetworks.access.superadmin": "Super Administrador",
 
-	"gui.fluxnetworks.jei.creatingfluxrecipe": "Criando fluxo",
-	"gui.fluxnetworks.jei.leftclickhelp": "Clique à esquerda %s"
+	"gui.fluxnetworks.recipe.creatingflux": "Criando fluxo"
 }

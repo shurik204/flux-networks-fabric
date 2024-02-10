@@ -149,8 +149,8 @@ public class FluxTranslate {
             BLOCKED = new FluxTranslate("gui.fluxnetworks.access.blocked"),
             SUPER_ADMIN = new FluxTranslate("gui.fluxnetworks.access.superadmin"),
 
-    JEI_CREATING_FLUX = new FluxTranslate("gui.fluxnetworks.jei.creatingfluxrecipe"),
-            JEI_LEFT_CLICK = new FluxTranslate("gui.fluxnetworks.jei.leftclickhelp");
+    CREATING_FLUX = new FluxTranslate("gui.fluxnetworks.recipe.creatingflux"),
+            CREATING_FLUX_INTERACT = new FluxTranslate("gui.fluxnetworks.recipe.creatingflux.interact");
 
     private final String mKey;
     private final Component mComponent;

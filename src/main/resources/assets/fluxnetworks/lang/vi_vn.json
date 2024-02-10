@@ -138,6 +138,5 @@
 	"gui.fluxnetworks.access.blocked": "Người Lạ",
 	"gui.fluxnetworks.access.superadmin": "Quản Trị Viên Cao Cấp",
 
-	"gui.fluxnetworks.jei.creatingfluxrecipe": "Tạo Thông Lượng",
-	"gui.fluxnetworks.jei.leftclickhelp": "Chuột trái vào %s"
+	"gui.fluxnetworks.recipe.creatingflux": "Tạo Thông Lượng"
 }
