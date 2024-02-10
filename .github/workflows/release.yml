@@ -19,7 +19,7 @@ jobs:
             **/gradle.properties
             settings.gradle*
             **/gradle-wrapper.properties
-      - uses: FabricMC/fabric-action-scripts@v2
+      - uses: shurik204/fabric-action-scripts@v2
         id: changelog
         with:
           context: changelog
