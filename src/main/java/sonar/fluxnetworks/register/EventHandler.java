@@ -79,7 +79,7 @@ public class EventHandler {
     //// PLAYER EVENTS \\\\
 
     private static InteractionResult onPlayerInteract(Player player, Level pLevel, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!FluxConfig.enableFluxRecipe || pLevel.isClientSide) {
+        if (!FluxConfig.enableFluxRecipe || pLevel.isClientSide || player.isSpectator()) {
             return InteractionResult.PASS;
         }
         ServerLevel level = (ServerLevel) pLevel;
