@@ -158,7 +158,7 @@ tasks {
     publishMods {
         file = remapJar.get().archiveFile
         changelog = providers.environmentVariable("CHANGELOG").getOrElse("No changelog provided")
-        type = BETA
+        type = STABLE
         displayName = "Flux Networks ${property("minecraft_version")} ${property("mod_version")} [Fabric]"
         modLoaders.add("fabric")
         dryRun = providers.environmentVariable("CI").getOrNull() == null
@@ -172,6 +172,7 @@ tasks {
             optional("jade")
             optional("trinkets")
             optional("jei")
+            optional("roughly-enough-items")
         }
         modrinth {
             accessToken = providers.environmentVariable("MODRINTH_TOKEN")
@@ -182,6 +183,7 @@ tasks {
             optional("jade")
             optional("trinkets")
             optional("jei")
+            optional("rei")
         }
 
         // Fix machete compression
