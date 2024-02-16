@@ -43,6 +43,7 @@ public class FluxConfig {
     }
 
     static void init() {
+        ConfigEvents.LOADING.register(FluxConfig::reload);
         ConfigEvents.RELOADING.register(FluxConfig::reload);
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
