@@ -21,9 +21,8 @@ import java.util.Collection;
 public class FluxCommands {
 
     public static void register(@Nonnull CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal(FluxNetworks.MODID)
-                .then(Commands.literal("superadmin")
-                        .requires(s -> s.hasPermission(1))
+        dispatcher.register(Commands.literal(FluxNetworks.MODID).requires(s -> s.hasPermission(2))
+                .then(Commands.literal("superadmin").requires(s -> s.hasPermission(FluxConfig.superAdminRequiredPermission))
                         .then(Commands.argument("targets", GameProfileArgument.gameProfile())
                                 .then(Commands.argument("enable", BoolArgumentType.bool())
                                         .executes(s -> superAdmin(s.getSource(),
