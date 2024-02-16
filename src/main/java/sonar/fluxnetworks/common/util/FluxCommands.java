@@ -15,6 +15,7 @@ import sonar.fluxnetworks.common.access.FluxPlayer;
 import sonar.fluxnetworks.register.Messages;
 
 import javax.annotation.Nonnull;
+import java.lang.reflect.Field;
 import java.util.Collection;
 
 public class FluxCommands {
@@ -31,6 +32,20 @@ public class FluxCommands {
                                         )
                                 )
                         )
+                ).then(Commands.literal("dump-config").requires(s -> s.hasPermission(2))
+                        .executes(s -> {
+                            s.getSource().sendSystemMessage(Component.literal("FluxConfig DUMP"));
+                            s.getSource().sendSystemMessage(Component.literal("--------BEGIN--------"));
+                            for (Field f : FluxConfig.class.getFields()) {
+                                try {
+                                    s.getSource().sendSystemMessage(Component.literal(f.getType() + " " + f.getName() + " " + f.get(null).toString()));
+                                } catch (IllegalAccessException e) {
+                                    s.getSource().sendSystemMessage(Component.literal(f.getType() + " " + f.getName() + " ERROR " + e.getMessage()));
+                                }
+                            }
+                            s.getSource().sendSystemMessage(Component.literal("---------END---------"));
+                            return 1;
+                        })
                 )
         );
     }
