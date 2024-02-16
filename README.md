@@ -1,8 +1,9 @@
 # Flux Networks
-[![Curseforge Name](http://cf.way2muchnoise.eu/full_248020_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/flux-networks)
-[![Curseforge For](http://cf.way2muchnoise.eu/versions/For%20MC_248020_all.svg)](https://www.curseforge.com/minecraft/mc-mods/flux-networks)
+[![Fabric API](https://img.shields.io/badge/Fabric_API-%23%236A6A6A?style=for-the-badge&logoColor=%23595959&label=Requires&color=%23B1AA99)](https://modrinth.com/mod/fabric-api)
+[![Modrinth](https://img.shields.io/modrinth/dt/d1ItuIJe?style=for-the-badge&logo=modrinth&logoColor=%23FFFFFF&label=%20Modrinth&labelColor=%23479152&color=%23479152)](https://modrinth.com/mod/flux-networks-fabric)
+[![Curseforge](https://img.shields.io/curseforge/dt/962362?style=for-the-badge&logo=curseforge&logoColor=%23FFFFFF&label=%20Curseforge&labelColor=%23E16E38&color=%23E16E38)](https://www.curseforge.com/minecraft/mc-mods/flux-networks-fabric)
 
-### Homepage [CurseForge](https://www.curseforge.com/minecraft/mc-mods/flux-networks)
+### Homepage [CurseForge](https://www.curseforge.com/minecraft/mc-mods/flux-networks-fabric)
 For any suggestions or bugs, open a new issue labelled with [Suggestion] or [Bug]
 ## License
 * Flux Networks
