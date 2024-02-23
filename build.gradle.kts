@@ -14,7 +14,6 @@ base {
 }
 
 repositories {
-    maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/") // Forge Config API port
     maven("https://maven.parchmentmc.org") // Parchment mappings
     maven("https://dvs1.progwml6.com/files/maven/") // JEI
     maven("https://maven.tterrag.com") // The One Probe
@@ -74,8 +73,6 @@ dependencies {
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${property("rei_version")}")
 
     modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${property("rei_version")}")
-    // Forge Config API port
-    modRuntimeOnly(include("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${property("forge_cfg_version")}")) {}
 
     modImplementation("icyllis.modernui:ModernUI-Core:${property("modernui_core_version")}") {
         exclude("org.apache.logging.log4j", "log4j-core")
