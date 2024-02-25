@@ -1,8 +1,8 @@
 package sonar.fluxnetworks.common.device;
 
-import io.github.fabricators_of_create.porting_lib.block.ChunkUnloadListeningBlockEntity;
-import io.github.fabricators_of_create.porting_lib.block.CustomDataPacketHandlingBlockEntity;
-import io.github.fabricators_of_create.porting_lib.block.CustomUpdateTagHandlingBlockEntity;
+import io.github.fabricators_of_create.porting_lib.blocks.api.addons.ChunkUnloadListeningBlockEntity;
+import io.github.fabricators_of_create.porting_lib.blocks.api.addons.CustomDataPacketHandlingBlockEntity;
+import io.github.fabricators_of_create.porting_lib.blocks.api.addons.CustomUpdateTagHandlingBlockEntity;
 import io.github.fabricators_of_create.porting_lib.util.NetworkHooks;
 import me.shurik.simplechunkmanager.api.SimpleChunkManager;
 import net.minecraft.Util;

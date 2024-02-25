@@ -84,16 +84,6 @@ public abstract class GuiFocusable extends AbstractContainerScreen<FluxMenu> {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    @Override
-    protected void containerTick() {
-        super.containerTick();
-        for (GuiEventListener child : children()) {
-            if (child instanceof FluxEditBox editBox) {
-                editBox.tick();
-            }
-        }
-    }
-
     protected void blitBackgroundOrFrame(@Nonnull GuiGraphics gr) {
         float cx = width / 2f;
         float cy = height / 2f + 5;

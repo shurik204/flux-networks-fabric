@@ -27,13 +27,17 @@ repositories {
         content { includeGroup("curse.maven") }
     }
     maven("https://mvn.devos.one/snapshots") // Porting Lib
-    maven("https://jitpack.io") // Mixin Extras (Porting Lib)
+    maven("https://jitpack.io") { // Mixin Extras (Porting Lib)
+        content { excludeGroup("io.github.fabricators_of_create.Porting-Lib") }
+    }
     maven("https://maven.ladysnake.org/releases") // Cardinal Components (Trinkets)
+    maven ("https://maven.jamieswhiteshirt.com/libs-release") {
+        content { includeGroup("com.jamieswhiteshirt") }
+    }
+    maven("https://maven.architectury.dev") { // Architectury
+        content { includeGroup("dev.architectury") }
+    }
 //    maven { url 'https://maven.firstdarkdev.xyz/snapshots' } // LDLib (GregTechCEu)
-//    maven { // Architectury (LDLib)
-//        url 'https://maven.architectury.dev'
-//        content { includeGroup "dev.architectury" }
-//    }
 //    maven { // KubeJS and Rhino (LDLib)
 //        url 'https://maven.saps.dev/releases'
 //        content { includeGroup "dev.latvian.mods" }
@@ -71,8 +75,12 @@ dependencies {
     // REI
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${property("rei_version")}")
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${property("rei_version")}")
+    modCompileOnly("dev.architectury:architectury-fabric:${property("architectury_version")}") // For REI
+    modApi("me.shedaniel.cloth:basic-math:+") // For REI
 
-    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${property("rei_version")}")
+    modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:${property("rei_version")}")
+    modLocalRuntime("dev.architectury:architectury-fabric:${property("architectury_version")}") // For REI
+
 
     modImplementation("icyllis.modernui:ModernUI-Core:${property("modernui_core_version")}") {
         exclude("org.apache.logging.log4j", "log4j-core")
@@ -100,6 +108,8 @@ dependencies {
     modImplementation(include("me.shurik:simple-chunk-manager:0.2.7")) {}
 
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:base:${property("porting_lib_version")}")) {}
+    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:items:${property("porting_lib_version")}")) {}
+    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:blocks:${property("porting_lib_version")}")) {}
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:config:${property("porting_lib_version")}")) {}
 
 //    modImplementation "curse.maven:gregtechceu-modern-890405:${gtceu_file_id}"
@@ -109,6 +119,10 @@ dependencies {
     // for Trinkets
     modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${property("cca_version")}")
     modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${property("cca_version")}")
+
+    // for Trinkets
+    modRuntimeOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${property("cca_version")}")
+    modRuntimeOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${property("cca_version")}")
 
     // Jade
     modImplementation("curse.maven:jade-324717:${property("jade_file_id")}")

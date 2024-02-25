@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.nbt.*;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.saveddata.SavedData;
 import sonar.fluxnetworks.FluxConfig;
@@ -18,6 +19,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -66,7 +68,7 @@ public final class FluxNetworkData extends SavedData {
         if (data == null) {
             ServerLevel level = FluxNetworks.getServer().overworld();
             data = level.getDataStorage()
-                    .computeIfAbsent(FluxNetworkData::new, FluxNetworkData::new, NETWORK_DATA);
+                    .computeIfAbsent(FluxNetworkData.factory(), NETWORK_DATA);
             FluxNetworks.LOGGER.debug("FluxNetworkData has been successfully loaded");
         }
         return data;
@@ -140,6 +142,22 @@ public final class FluxNetworkData extends SavedData {
     public boolean isDirty() {
         // always dirty as a convenience
         return true;
+    }
+
+    public static SavedData.Factory<FluxNetworkData> factory() {
+        //                                                                                        Hopefully nothing explodes
+        // See: https://discord.com/channels/507304429255393322/566276937035546624/1154153653897265172 (Fabric Discord)
+        return new SavedData.Factory<>(FluxNetworkData::createData, FluxNetworkData::readData, DataFixTypes.SAVED_DATA_FORCED_CHUNKS);
+    }
+
+    private static FluxNetworkData createData() {
+        FluxNetworkData scoreboardSaveData = new FluxNetworkData();
+        Objects.requireNonNull(scoreboardSaveData);
+        return scoreboardSaveData;
+    }
+
+    private static FluxNetworkData readData(CompoundTag tag) {
+        return new FluxNetworkData(tag);
     }
 
     private void read(@Nonnull CompoundTag compound) {

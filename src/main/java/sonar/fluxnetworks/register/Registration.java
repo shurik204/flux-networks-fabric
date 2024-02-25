@@ -21,8 +21,13 @@ public class Registration {
         EventHandler.init();
         // Moved from FMLCommonSetupEvent
         EnergyUtils.register();
-        ServerPlayNetworking.registerGlobalReceiver(Channel.CHANNEL_NAME, (server, player, handler, buf, responseSender) ->
-                Messages.msg(buf.readShort(), buf, () -> player));
+        ServerPlayNetworking.registerGlobalReceiver(Channel.CHANNEL_NAME, (server, player, handler, buf, responseSender) -> {
+            try {
+                Messages.msg(buf.readShort(), buf, () -> player);
+            } catch (Exception e) {
+                FluxNetworks.LOGGER.error("Error handling network message", e);
+            }
+        });
         Channel.init();
 
         SimpleChunkManager.VALIDATION.register((level, manager) -> {

@@ -1,48 +1,38 @@
 package sonar.fluxnetworks.common.crafting;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import sonar.fluxnetworks.FluxNetworks;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-public class FluxStorageRecipeSerializer implements RecipeSerializer<FluxStorageRecipe> {
+public class FluxStorageRecipeSerializer implements RecipeSerializer<ShapedRecipe> {
 
     public static final FluxStorageRecipeSerializer INSTANCE = new FluxStorageRecipeSerializer();
 
     private FluxStorageRecipeSerializer() {
     }
 
-    @Nonnull
     @Override
-    public FluxStorageRecipe fromJson(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
-        return new FluxStorageRecipe(RecipeSerializer.SHAPED_RECIPE.fromJson(recipeId, json));
+    public Codec<ShapedRecipe> codec() {
+        return RecipeSerializer.SHAPED_RECIPE.codec();
     }
 
-    @Nullable
     @Override
-    public FluxStorageRecipe fromNetwork(@Nonnull ResourceLocation recipeId, @Nonnull FriendlyByteBuf buffer) {
+    public ShapedRecipe fromNetwork(FriendlyByteBuf buffer) {
         try {
-            ShapedRecipe recipe = RecipeSerializer.SHAPED_RECIPE.fromNetwork(recipeId, buffer);
-            if (recipe != null) {
-                return new FluxStorageRecipe(recipe);
-            }
+            return RecipeSerializer.SHAPED_RECIPE.fromNetwork(buffer);
         } catch (Exception e) {
-            FluxNetworks.LOGGER.error("Error reading Flux Storage Recipe from Packet", e);
+            throw new RuntimeException("Error reading Flux Storage recipe from packet.", e);
         }
-        return null;
     }
 
     @Override
-    public void toNetwork(@Nonnull FriendlyByteBuf buffer, @Nonnull FluxStorageRecipe recipe) {
+    public void toNetwork(FriendlyByteBuf buffer, ShapedRecipe recipe) {
         try {
             RecipeSerializer.SHAPED_RECIPE.toNetwork(buffer, recipe);
         } catch (Exception e) {
-            FluxNetworks.LOGGER.error("Error writing Flux Storage Recipe to packet.", e);
+            FluxNetworks.LOGGER.error("Error writing Flux Storage recipe to packet.", e);
         }
     }
 }

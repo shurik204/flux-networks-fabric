@@ -3,23 +3,28 @@ package sonar.fluxnetworks.common.crafting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import sonar.fluxnetworks.api.FluxConstants;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Save Flux Storage energy when upgrading storage
+ */
 public class FluxStorageRecipe extends ShapedRecipe {
 
-    public FluxStorageRecipe(ResourceLocation idIn, String groupIn, CraftingBookCategory category, int recipeWidthIn, int recipeHeightIn,
+    public FluxStorageRecipe(String group, CraftingBookCategory category, int recipeWidthIn, int recipeHeightIn,
                              NonNullList<Ingredient> recipeItemsIn, ItemStack recipeOutputIn) {
-        super(idIn, groupIn, category,recipeWidthIn, recipeHeightIn, recipeItemsIn, recipeOutputIn);
+        super(group, category,recipeWidthIn, recipeHeightIn, recipeItemsIn, recipeOutputIn);
     }
 
     public FluxStorageRecipe(@Nonnull ShapedRecipe recipe) {
-        super(recipe.getId(), recipe.getGroup(), recipe.category(), recipe.getWidth(), recipe.getHeight(),
+        super(recipe.getGroup(), recipe.category(), recipe.getWidth(), recipe.getHeight(),
                 recipe.getIngredients(), recipe.getResultItem(RegistryAccess.EMPTY));
     }
 

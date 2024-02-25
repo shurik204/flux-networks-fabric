@@ -218,7 +218,7 @@ public class ClientMessages {
         sChannel.sendToServer(buf);
     }
 
-    static void msg(short index, FriendlyByteBuf payload, Supplier<LocalPlayer> player) {
+    public static void msg(short index, FriendlyByteBuf payload, Supplier<LocalPlayer> player) {
         Minecraft minecraft = Minecraft.getInstance();
         switch (index) {
             case Messages.S2C_DEVICE_BUFFER -> onDeviceBuffer(payload, player, minecraft);

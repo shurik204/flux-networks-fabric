@@ -1,20 +1,22 @@
 package sonar.fluxnetworks.register;
 
-import io.github.fabricators_of_create.porting_lib.event.client.ColorHandlersCallback;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.event.client.player.ClientPickBlockGatherCallback;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.block.BlockColors;
-import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.BlockHitResult;
 import sonar.fluxnetworks.FluxNetworks;
 import sonar.fluxnetworks.api.FluxConstants;
@@ -38,7 +40,7 @@ public class ClientRegistration {
                 FluxNetworks.isModernUILoaded() ? MUIIntegration.upgradeScreenFactory(getScreenFactory()) : getScreenFactory()
         );
         registerEntityRenderers();
-        ColorHandlersCallback.ITEM.register(ClientRegistration::registerColorHandlers);
+        ClientRegistration.registerColorHandlers(ColorProviderRegistry.ITEM, ColorProviderRegistry.BLOCK);
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(), FLUX_PLUG,
                 FLUX_POINT,
                 FLUX_CONTROLLER,
@@ -71,6 +73,7 @@ public class ClientRegistration {
             return ItemStack.EMPTY;
         });
     }
+
     @Nonnull
     private static MenuScreens.ScreenConstructor<FluxMenu, AbstractContainerScreen<FluxMenu>> getScreenFactory() {
         return (menu, inventory, title) -> {
@@ -91,7 +94,7 @@ public class ClientRegistration {
         BlockEntityRenderers.register(RegistryBlockEntityTypes.BOTTOMLESS_FLUX_STORAGE, FluxStorageEntityRenderer.PROVIDER);
     }
 
-    public static void registerColorHandlers(ItemColors itemColors, BlockColors blockColors) {
+    public static void registerColorHandlers(ColorProviderRegistry<ItemLike, ItemColor> itemColors, ColorProviderRegistry<Block, BlockColor> blockColors) {
         // Items
         itemColors.register(FluxColorHandler.INSTANCE, FLUX_CONTROLLER, FLUX_POINT, FLUX_PLUG,
                 BASIC_FLUX_STORAGE, HERCULEAN_FLUX_STORAGE, GARGANTUAN_FLUX_STORAGE, BOTTOMLESS_FLUX_STORAGE);

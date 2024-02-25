@@ -139,15 +139,15 @@ public abstract class GuiPopupHost extends GuiFocusable {
     //// mouse scrolled \\\\
 
     @Override
-    public final boolean mouseScrolled(double mouseX, double mouseY, double vScroll) {
+    public final boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if (mCurrentPopup != null) {
-            return mCurrentPopup.mouseScrolled(mouseX, mouseY, vScroll);
+            return mCurrentPopup.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
         }
-        return onMouseScrolled(mouseX, mouseY, vScroll) ||
-                super.mouseScrolled(mouseX, mouseY, vScroll);
+        return onMouseScrolled(mouseX, mouseY, scrollY) ||
+                super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
-    public boolean onMouseScrolled(double mouseX, double mouseY, double vScroll) {
+    public boolean onMouseScrolled(double mouseX, double mouseY, double scrollY) {
         return false;
     }
 
@@ -233,15 +233,6 @@ public abstract class GuiPopupHost extends GuiFocusable {
 
     @Override
     protected final void renderBg(@Nonnull GuiGraphics gr, float deltaTicks, int mouseX, int mouseY) {
-        renderBackground(gr);
         drawBackgroundLayer(gr, mouseX, mouseY, deltaTicks);
-    }
-
-    @Override
-    protected void containerTick() {
-        super.containerTick();
-        if (mCurrentPopup != null) {
-            mCurrentPopup.containerTick();
-        }
     }
 }

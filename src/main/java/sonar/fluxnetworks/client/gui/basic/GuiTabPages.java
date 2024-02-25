@@ -100,17 +100,17 @@ public abstract class GuiTabPages<T> extends GuiTabCore {
     }
 
     @Override
-    public boolean onMouseScrolled(double mouseX, double mouseY, double vScroll) {
-        if (vScroll < 0 && mPage < mPages - 1) {
+    public boolean onMouseScrolled(double mouseX, double mouseY, double scrollY) {
+        if (scrollY < 0 && mPage < mPages - 1) {
             mPage++;
             refreshCurrentPage();
             return true;
-        } else if (vScroll > 0 && mPage > 0) {
+        } else if (scrollY > 0 && mPage > 0) {
             mPage--;
             refreshCurrentPage();
             return true;
         }
-        return super.onMouseScrolled(mouseX, mouseY, vScroll);
+        return super.onMouseScrolled(mouseX, mouseY, scrollY);
     }
 
     public abstract void renderElement(GuiGraphics gr, T element, int x, int y);

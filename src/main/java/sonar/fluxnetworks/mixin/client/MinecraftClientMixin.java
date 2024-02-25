@@ -13,7 +13,7 @@ import sonar.fluxnetworks.client.ClientCache;
  */
 @Mixin(Minecraft.class)
 public class MinecraftClientMixin {
-    @Inject(method = "clearLevel(Lnet/minecraft/client/gui/screens/Screen;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;resetData()V", shift = At.Shift.AFTER, by = 1))
+    @Inject(method = "clearClientLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;resetData()V", shift = At.Shift.AFTER, by = 1))
     void releaseFNCache(Screen screen, CallbackInfo ci) {
         ClientCache.release();
     }

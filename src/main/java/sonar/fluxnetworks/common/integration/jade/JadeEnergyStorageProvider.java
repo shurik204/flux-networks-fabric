@@ -2,10 +2,7 @@ package sonar.fluxnetworks.common.integration.jade;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import snownee.jade.api.Accessor;
-import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.view.*;
 import sonar.fluxnetworks.common.device.TileFluxStorage;
 
@@ -22,15 +19,12 @@ public enum JadeEnergyStorageProvider implements IServerExtensionProvider<TileFl
     @Override
     public List<ClientViewGroup<EnergyView>> getClientGroups(Accessor<?> accessor, List<ViewGroup<CompoundTag>> groups) {
         return ClientViewGroup.map(groups, tag -> EnergyView.read(tag, "E"), (group, clientGroup) -> {
-            // Render energy bar in the block's color
-            if (accessor instanceof BlockAccessor blockAccessor && blockAccessor.getBlockEntity() instanceof TileFluxStorage storage) {
-                clientGroup.bgColor = storage.mClientColor;
-            }
+            // TODO: render energy bar in the block's color
         });
     }
 
     @Override
-    public List<ViewGroup<CompoundTag>> getGroups(ServerPlayer player, ServerLevel world, TileFluxStorage storage, boolean showDetails) {
+    public List<ViewGroup<CompoundTag>> getGroups(Accessor<?> accessor, TileFluxStorage storage) {
         return List.of(new ViewGroup<>(List.of(EnergyView.of(storage.getTransferBuffer(), storage.getTransferHandler().getMaxEnergyStorage()))));
     }
 }
