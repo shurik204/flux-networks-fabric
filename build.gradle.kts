@@ -107,7 +107,7 @@ dependencies {
         exclude("net.fabricmc.fabric-api")
     })
 
-    modImplementation(include("me.shurik:simple-chunk-manager:0.2.7")) {}
+    modImplementation(include("me.shurik:simple-chunk-manager:0.2.8")) {}
 
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:base:${property("porting_lib_version")}")) {}
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:items:${property("porting_lib_version")}")) {}
