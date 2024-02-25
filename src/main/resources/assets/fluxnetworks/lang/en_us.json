@@ -143,5 +143,7 @@
 	"gui.fluxnetworks.access.superadmin": "Super Admin",
 
 	"gui.fluxnetworks.recipe.creatingflux": "Creating Flux",
-	"gui.fluxnetworks.recipe.creatingflux.interact": "Left click the %s"
+	"gui.fluxnetworks.recipe.creatingflux.interact": "Left click the %s",
+
+	"config.jade.plugin_fluxnetworks.device_data_provider": "Device Data Provider"
 }
