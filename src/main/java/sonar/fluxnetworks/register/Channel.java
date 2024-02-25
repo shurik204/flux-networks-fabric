@@ -29,9 +29,7 @@ public class Channel {
 
     @Nonnull
     static FriendlyByteBuf buffer(int index) {
-        FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
-        buffer.writeShort(index);
-        return buffer;
+        return new FriendlyByteBuf(Unpooled.copyShort(index));
     }
 
     public static Channel get() {
