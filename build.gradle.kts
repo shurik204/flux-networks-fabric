@@ -1,3 +1,5 @@
+import me.modmuss50.mpp.ReleaseType
+
 plugins {
     id("fabric-loom") version "1.5-SNAPSHOT" // Fabric Loom
     id("io.github.p03w.machete") version "1.1.4" // Build jar compression
@@ -169,7 +171,7 @@ tasks {
     publishMods {
         file = remapJar.get().archiveFile
         changelog = providers.environmentVariable("CHANGELOG").getOrElse("No changelog provided")
-        type = STABLE
+        type = BETA
         displayName = "Flux Networks ${property("minecraft_version")} ${property("mod_version")} [Fabric]"
         modLoaders.add("fabric")
         dryRun = providers.environmentVariable("CI").getOrNull() == null
