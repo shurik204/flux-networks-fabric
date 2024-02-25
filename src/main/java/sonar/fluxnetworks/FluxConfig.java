@@ -54,7 +54,7 @@ public class FluxConfig {
     }
 
     static void reload(@Nonnull ModConfig config) {
-        if (config.getModId() != FluxNetworks.MODID) {
+        if (!config.getModId().equals(FluxNetworks.MODID)) {
             return;
         }
 
