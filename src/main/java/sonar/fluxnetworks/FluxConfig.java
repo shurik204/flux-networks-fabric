@@ -43,6 +43,7 @@ public class FluxConfig {
     }
 
     static void init() {
+        ConfigEvents.LOADING.register(FluxConfig::reload);
         ConfigEvents.RELOADING.register(FluxConfig::reload);
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
@@ -53,7 +54,7 @@ public class FluxConfig {
     }
 
     static void reload(@Nonnull ModConfig config) {
-        if (config.getModId() != FluxNetworks.MODID) {
+        if (!config.getModId().equals(FluxNetworks.MODID)) {
             return;
         }
 
