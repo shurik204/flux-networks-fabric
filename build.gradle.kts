@@ -29,6 +29,9 @@ repositories {
     maven("https://mvn.devos.one/snapshots") // Porting Lib
     maven("https://jitpack.io") // Mixin Extras (Porting Lib)
     maven("https://maven.ladysnake.org/releases") // Cardinal Components (Trinkets)
+    maven("https://maven.jamieswhiteshirt.com/libs-release") {
+        content { includeGroup("com.jamieswhiteshirt") }
+    }
 //    maven { url 'https://maven.firstdarkdev.xyz/snapshots' } // LDLib (GregTechCEu)
 //    maven { // Architectury (LDLib)
 //        url 'https://maven.architectury.dev'
