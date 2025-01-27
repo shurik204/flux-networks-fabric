@@ -59,19 +59,18 @@ public class TrinketsIntegration {
     @SuppressWarnings("UnstableApiUsage")
     public static class SlotWrapper extends SnapshotParticipant<ItemVariant> implements SingleSlotStorage<ItemVariant> {
         private final SlotReference slotRef;
-        private final int itemCount;
-        private ItemVariant variant;
+        private ItemVariant item = null;
+        private final ItemStack stack;
 
         public SlotWrapper(Tuple<SlotReference, ItemStack> tuple) {
             this.slotRef = tuple.getA();
-            this.itemCount = tuple.getB().getCount();
-            this.variant = ItemVariant.of(tuple.getB());
+            this.stack = tuple.getB();
         }
 
         @Override
         public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction) {
             updateSnapshots(transaction);
-            variant = resource;
+            item = resource;
             return 1L;
         }
 
@@ -83,37 +82,42 @@ public class TrinketsIntegration {
 
         @Override
         public boolean isResourceBlank() {
-            return variant.isBlank();
+            return getResource().isBlank();
         }
 
         @Override
         public ItemVariant getResource() {
-            return variant;
+            return item != null ? item : ItemVariant.of(stack);
         }
 
         @Override
         public long getAmount() {
-            return itemCount;
+            return stack.getCount();
         }
 
         @Override
         public long getCapacity() {
-            return variant.getItem().getMaxStackSize();
+            return stack.getMaxStackSize();
         }
 
         @Override
         protected ItemVariant createSnapshot() {
-            return variant;
+            return ItemVariant.of(stack);
         }
 
         @Override
         protected void readSnapshot(ItemVariant snapshot) {
-            variant = snapshot;
+            stack.setTag(snapshot.getNbt());
         }
 
         @Override
         public void onFinalCommit() {
-            slotRef.inventory().setItem(slotRef.index(), variant.toStack(itemCount));
+            // Transaction is committed
+            stack.setTag(item.getNbt());
+            // Mark the slot as updated
+            slotRef.inventory().markUpdate();
+            // Clean up
+            item = null;
         }
     }
 }
