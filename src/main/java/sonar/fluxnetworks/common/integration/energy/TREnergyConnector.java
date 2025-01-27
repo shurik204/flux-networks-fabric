@@ -2,7 +2,6 @@ package sonar.fluxnetworks.common.integration.energy;
 
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -49,15 +48,15 @@ public class TREnergyConnector implements IBlockEnergyConnector, IItemEnergyConn
     @Override
     public long insert(long amount, @Nonnull BlockEntity target, @Nonnull Direction side, boolean simulate) {
         EnergyStorage storage = FluxUtils.getBlockEnergy(target, side);
-        //noinspection DataFlowIssue
-        return EnergyUtils.tryAction(amount, storage, simulate, storage::insert);
+        if (storage == null) { return 0; }
+        return EnergyUtils.tryAction(amount, simulate, storage::insert);
     }
 
     @Override
     public long extract(long amount, @Nonnull BlockEntity target, @Nonnull Direction side, boolean simulate) {
         EnergyStorage storage = FluxUtils.getBlockEnergy(target, side);
-        //noinspection DataFlowIssue
-        return EnergyUtils.tryAction(amount, storage, simulate, storage::extract);
+        if (storage == null) { return 0; }
+        return EnergyUtils.tryAction(amount, simulate, storage::extract);
     }
 
     //
@@ -87,21 +86,14 @@ public class TREnergyConnector implements IBlockEnergyConnector, IItemEnergyConn
     @Override
     public long insert(long amount, @Nonnull ServerPlayer player, @Nonnull SingleSlotStorage<ItemVariant> slot, boolean simulate) {
         EnergyStorage storage = FluxUtils.getItemEnergy(player, slot);
-        long result = 0;
-        if (storage != null) {
-            try (Transaction tx = Transaction.openOuter()) {
-                result = storage.insert(amount, tx);
-                if (simulate) tx.abort();
-                else tx.commit();
-            }
-        }
-        return result;
+        if (storage == null) { return 0; }
+        return EnergyUtils.tryAction(amount, simulate, storage::insert);
     }
 
     @Override
     public long extract(long amount, @Nonnull ServerPlayer player, @Nonnull SingleSlotStorage<ItemVariant> slot, boolean simulate) {
         EnergyStorage storage = FluxUtils.getItemEnergy(player, slot);
-        //noinspection DataFlowIssue
-        return EnergyUtils.tryAction(amount, storage, simulate, storage::extract);
+        if (storage == null) { return 0; }
+        return EnergyUtils.tryAction(amount, simulate, storage::extract);
     }
 }

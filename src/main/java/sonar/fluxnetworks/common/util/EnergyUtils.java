@@ -133,8 +133,7 @@ public final class EnergyUtils {
         return null;
     }
 
-    public static long tryAction(long amount, EnergyStorage storage, boolean simulate, ToLongBiFunction<Long, TransactionContext> action) {
-        if (storage == null) return 0;
+    public static long tryAction(long amount, boolean simulate, ToLongBiFunction<Long, TransactionContext> action) {
         long result;
         try (Transaction tx = Transaction.openOuter()) {
             result = action.applyAsLong(amount, tx);
